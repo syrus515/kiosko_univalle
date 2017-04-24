@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<XMI xmlns:UML="omg.org/UML/1.4" xmi.version="2.0">
+   <XMI.header>
+      <XMI.metamodel xmi.name="UML" xmi.version="1.4"/>
+		<XMI.documentation>
+			<XMI.exporter>
+				Embarcadero's Describe
+			</XMI.exporter>
+			<XMI.exporterVersion>
+				6.0
+			</XMI.exporterVersion>
+		</XMI.documentation>
+   </XMI.header>
+
+   <XMI.content>
+   <UML:Profile xmi.id="DCE.24BB0903-11D0-6FE0-413D-10484C93FC74" name="Unnamed" isCloned="true" href=".\Cliente_kiosko_graficas_javafx_V1.0-UML.etup#//*[@xmi.id=&apos;DCE.24BB0903-11D0-6FE0-413D-10484C93FC74&apos;]" isDirty="false"><UML:Element.ownedElement>
+<UML:Stereotype xmi.id="DCE.5FE961AC-2CF7-DDF2-DBF1-A2D5E5B4CB61" name="interface" owner="__uri_.\Cliente_kiosko_graficas_javafx_V1.0-UML.etup#//*[@xmi.id=&apos;DCE.24BB0903-11D0-6FE0-413D-10484C93FC74&apos;]"/></UML:Element.ownedElement></UML:Profile></XMI.content>
+</XMI>

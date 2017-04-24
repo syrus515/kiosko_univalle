@@ -26,12 +26,12 @@
 	<!ELEMENT Irresolvable ANY>
 	<!ATTLIST Irresolvable 
 		   id CDATA #IMPLIED >
-]--><TypeManagement projectID="DCE.8ADA7034-1012-6420-45FC-701A7120158F">
+]--><TypeManagement projectID="DCE.2AB452A6-4EB7-E323-B61C-B72B24ED53B5">
 	<Locations nextID="1">
-	<Location locID="T.0" href=".\Cliente_kiosko_graficas_javafx_V1.0-Model.etup"/></Locations>
+	<Location locID="T.0" href=".\Cliente_kiosko_graficas_javafx_V1.0-UML.etup"/></Locations>
 
    <Types>
-   <Type id="DCE.94BE7A22-28B2-EBB2-7046-FD389F754E83" location="T.0" name="Unnamed"/></Types>
+   <Type id="DCE.24BB0903-11D0-6FE0-413D-10484C93FC74" location="T.0" name="Unnamed"/></Types>
 
 	<IrresolvableTypes>
 	</IrresolvableTypes>
