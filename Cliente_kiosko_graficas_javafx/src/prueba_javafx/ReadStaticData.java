@@ -8,7 +8,7 @@ package prueba_javafx;
 
 
 /**
- *
+ * Esta interface permite leer los parametros biomedicos. 
  * @author Carlos Andres
  */
 public interface ReadStaticData {

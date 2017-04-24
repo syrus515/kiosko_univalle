@@ -8,7 +8,7 @@ package prueba_javafx;
 
 
 /**
- *
+ * Permite obtener en formato int y float los parametros biomedicos despues de recibirlos en formato string,
  * @author Carlos Andres
  */
 public class StaticParameters implements ReadStaticData{

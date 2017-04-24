@@ -33,7 +33,7 @@ import javafx.stage.Stage;
 import javax.swing.JOptionPane;
 
 /**
- *
+ * Clase main
  * @author carlo
  */
 public class Prueba_javafx extends Application {
@@ -67,7 +67,10 @@ private static final int Y_MAX_RESP = 3000;
     AdminDevice admin;
     //buffer para recibir comandos desde teclado (solo para prueba)
     BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-
+/**
+ * Configura e Inicializa los chart de graficacion de ondas
+ *
+ */
     private void init(Stage primaryStage) {
         //configuracion Axis
         xAxis = new NumberAxis(0,MAX_DATA_POINTS_SPO2,MAX_DATA_POINTS_SPO2/10);
@@ -152,14 +155,17 @@ private static final int Y_MAX_RESP = 3000;
         
         series4.setName("RESP");
         lc4.getData().add(series4);
-        
         //Las 4 graficas se agregan en la misma ventana para ver su comportamiento. 
         //--Para integrarlo en el codigo final no se como seria; vos que manejas javafx sabras mejor
         FlowPane root = new FlowPane();
         root.getChildren().addAll(lc1,lc2,lc3,lc4);
         primaryStage.setScene(new Scene(root));
     }
-
+/**
+ * Se crea un objeto de la clase AdminDevice y se agrega al executor el hilo consumidor que extrae los datos
+ * de las queue
+ *
+ */
     @Override public void start(Stage primaryStage) throws Exception {
         init(primaryStage);
         primaryStage.show();
@@ -178,10 +184,12 @@ private static final int Y_MAX_RESP = 3000;
     public static void main(String[] args) {
         launch(args);
     }
-//Este seria el hilo consumidor, donde se capturan los datos y se agregan a la queue respectiva
-//Se introduce un delay de 7 ms correspondiente al intervalo de cada dato
-//En este mismo hilo se escuchan los comandos de conexion y medicion
-//Pretendia poner este hilo en la clase threadConsumer, pero no alcance a probarlo con el equipo
+/**
+ * Hilo consumidor, donde se capturan los datos y se agregan a la queue respectiva
+ * Se introduce un delay de 7 ms correspondiente al intervalo de cada dato.
+ * En este mismo hilo se escuchan los comandos de conexion y medicion
+ * Posteriormente se realizara este hilo en la clase ThreadConsumer
+ */
     private class AddToQueue implements Runnable {
         public void run() {
             try {
@@ -209,7 +217,10 @@ private static final int Y_MAX_RESP = 3000;
                   }
                        Thread.sleep(7);
                 //System.out.println("Sistole: "+ admin.staticParameters.readPresSist()+", Diastole: "+admin.staticParameters.readPresDias()+", Media: "+admin.staticParameters.readPresMed()+", HR: "+admin.staticParameters.readSpo2Hr());
-      
+/**
+ * Este es un ejemplo de como enviar los comandos al servidor. En lugar de escuchar el teclado, 
+ * se debe implementar con botones o checkbox
+ */
                     if(br.ready()){
                 String s = br.readLine();
                 System.out.println("Se oprimio: "+s);

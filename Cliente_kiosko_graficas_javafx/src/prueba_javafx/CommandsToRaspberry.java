@@ -20,6 +20,13 @@ public class CommandsToRaspberry implements SetRaspConfig{
     String nibpTest="notest";
     String configCommand="";//"KUV!config!leadsEcg!"+leads+"!nibp!"+nibpMode+";"+nibpState+";"+nibpTest;
     
+/**
+ * Permite configurar el comando a enviar al dispositivo.
+ *
+ * @param  command  String correspondiente al comando a enviar. Para ver todos los comandos, ir a seccion ver tambien.
+ * @param  setPoint Int para algunos comandos de configuracion. 
+ * @see    CommandsToRaspberry
+ */
     @Override
     public void setCommand(String command, int setPoint) {
         estado=command;
@@ -98,12 +105,24 @@ public class CommandsToRaspberry implements SetRaspConfig{
            
         
     }
-
+    /**
+ * Retorna el ultimo comando configurado
+ *
+ * @return  el comando configurado para enviar al dispositivo
+ */
     @Override
     public String getCommand() {
         return configCommand;
     }
-
+    /**
+ * Permite configurar el comando de medicion que se envia a la Tanita para que devuelva el peso, body fat, etc
+ *
+ * @param  ID  Numero en string de identificacion de usuario. Puede asignar valor fijo entre 20 y 256.
+ * @param  genero sexo del paciente. Asignar "masculino" o "femenino".
+ * @param  edad Edad del paciente en formato string.
+ * @param  estatura Estatura en centimetros del paciente en formato string.
+ * @param  tipoActividad Actividad fisica del paciente. Asignar "sedentario", "regular" o "deportista" segun sea el caso.
+ */
     @Override
     public void setUserTanita(String id, String genero, String edad, String estatura, String tipoActividad) {
         configCommand="KUV!config!SetUserTanita!ID!"+id+"!genero!"+genero+"!edad!"+edad+"!estatura!"+estatura+"!actividad!"+tipoActividad;

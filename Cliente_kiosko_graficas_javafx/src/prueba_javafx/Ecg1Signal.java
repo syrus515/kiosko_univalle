@@ -33,7 +33,7 @@ public class Ecg1Signal implements ReadSignals{
     public Ecg1Signal(ConcurrentLinkedQueue<Integer> dataQ){
         queueWaves=dataQ;
     }
-  
+ 
     @Override
     public void getWave(String waveString){
         this.waveString=waveString;
@@ -43,13 +43,13 @@ public class Ecg1Signal implements ReadSignals{
            queueWaves.add(intWave[i]);
            
         }
-        
-
     }
     @Override
     public int readWave(){
         return queueWaves.remove().intValue();
     }
+
+@Override
     public boolean isEmpty(){
        return queueWaves.isEmpty();
     }

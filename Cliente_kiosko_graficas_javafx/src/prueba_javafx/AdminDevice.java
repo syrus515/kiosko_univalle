@@ -6,14 +6,11 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 
-/**
- *
+
+/*
+ * Esta clase es el administrador del cliente. Estan definidos los metodos de conexion y desconexion,
+ * asi como los metodos para enviar comandos al dispositivo de medicion.
  * @author Carlos Andres
  */
 public class AdminDevice {
@@ -107,6 +104,14 @@ public class AdminDevice {
             bluetoothCliente=null;
         }
     }
+    /**
+ * Envia comandos de configuracion u ordenes de medicion al dispositivo a traves
+ * de TCP/IP 
+ *
+ * @param  command  String correspondiente al comando a enviar. Para ver todos los comandos, ir a seccion ver tambien.
+ * @param  setPoint Int para algunos comandos de configuracion. 
+ * @see    CommandsToRaspberry
+ */
     public void enviarComando(String command, int setPoint){
         commands.setCommand(command,setPoint);
         String comando=commands.getCommand();
@@ -122,6 +127,16 @@ public class AdminDevice {
             }
         }
     }
+        /**
+ * Envia orden de medicion a la bascula Tanita, ingresando todos los valores requeridos.
+ *
+ * @param  ID  Numero en string de identificacion de usuario. Puede asignar valor fijo entre 20 y 256.
+ * @param  genero sexo del paciente. Asignar "masculino" o "femenino".
+ * @param  edad Edad del paciente en formato string.
+ * @param  estatura Estatura en centimetros del paciente en formato string.
+ * @param  tipoActividad Actividad fisica del paciente. Asignar "sedentario", "regular" o "deportista" segun sea el caso.
+ * @see    CommandsToRaspberry
+ */
     public void solicitarTanita(String ID, String genero, String edad, String estatura, String tipoActividad){
         commands.setUserTanita(ID,genero,edad,estatura,tipoActividad);
         String comando=commands.getCommand();

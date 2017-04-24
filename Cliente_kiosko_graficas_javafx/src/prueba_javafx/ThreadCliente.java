@@ -20,7 +20,7 @@ import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
 /**
- *
+ * Definicion del cliente TCP/IP 
  * @author Carlos Andres
  */
 public class ThreadCliente extends Thread {
@@ -54,6 +54,10 @@ public class ThreadCliente extends Thread {
         arrancarCliente();
         start(); // Se arranca el hilo.
     }
+ /**
+ * Se configura la ip y puerto de conexion disponible en el sevidor.
+ *
+ */
     private void arrancarCliente() {
        
         try {
@@ -89,7 +93,13 @@ public class ThreadCliente extends Thread {
         }
     }
     
-    
+/**
+ * Metodo run del hilo que permite leer y escribir los buffer de entrada y salida.
+ * Primero se envia al servidor una clave y un handshake (futuro desarrollo con cifrado).
+ * Luego se leen los datos del buffer de entrada y se examinan sus cabeceras para determinar el 
+ * tipo de dato recibido (mensaje:"msg", requst:"req", ondas:"onda", parametros biomedicos:"estaticos")
+ *
+ */    
     public synchronized void run() {
         
         String linea = null;
@@ -215,7 +225,11 @@ public class ThreadCliente extends Thread {
                 //System.exit(-1);
         }
     }
-    
+/**
+ * Permite enviar por TCP/IP un mensaje al servidor
+ *
+ * @param  mensaje  String correspondiente al comando o trama que se desea envar al servidor
+ */    
     public void writeSocket( String mensaje) {
         try {
             this.salida.println(new String(mensaje.getBytes(), "windows-1252"));
@@ -225,7 +239,10 @@ public class ThreadCliente extends Thread {
             admin.dispositivoDesconectado();
         }
     }
-
+/**
+ * Cierra los buffers y el socket
+ *
+ */
      public void closeStreams(){
  if (entrada != null) {
             try {

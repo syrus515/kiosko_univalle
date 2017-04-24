@@ -16,7 +16,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- *
+ * Por el momento esta clase no se esta utilizando
  * @author Carlos Andres
  */
 public class ThreadConsumer implements Runnable{
