@@ -1,0 +1,13 @@
+
+.background {
+    -fx-background-color: #1d1d1d;
+}
+.chart-plot-background {
+    -fx-background-color: transparent;
+}
+.axis-tick-mark {
+    -fx-stroke: transparent;
+}
+.axis-minor-tick-mark {
+    -fx-stroke: transparent;
+}
