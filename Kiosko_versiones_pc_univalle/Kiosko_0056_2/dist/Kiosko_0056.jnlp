@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<jnlp spec="1.0" xmlns:jfx="http://javafx.com" href="Kiosko_0056.jnlp">
+  <information>
+    <title>Kiosko_0056</title>
+    <vendor>Familia</vendor>
+    <description>null</description>
+    <offline-allowed/>
+  </information>
+  <resources>
+    <j2se version="1.6+" href="http://java.sun.com/products/autodl/j2se"/>
+    <jar href="Kiosko_0056.jar" size="6400505" download="eager" />
+    <jar href="lib\bluecove-2.1.0.jar" size="547156" download="eager" />
+    <jar href="lib\bridj-0.6.3-20130316.190111-13.jar" size="893456" download="eager" />
+    <jar href="lib\controlsfx-8.0.6_20.jar" size="856539" download="eager" />
+    <jar href="lib\controlsfx-8.40.9.jar" size="1016589" download="eager" />
+    <jar href="lib\controlsfx-samples-8.40.9.jar" size="658853" download="eager" />
+    <jar href="lib\dpfpenrollment.jar" size="323314" download="eager" />
+    <jar href="lib\dpfpverification.jar" size="33662" download="eager" />
+    <jar href="lib\dpotapi.jar" size="58858" download="eager" />
+    <jar href="lib\dpotjni.jar" size="11465" download="eager" />
+    <jar href="lib\eclipselink.jar" size="8478776" download="eager" />
+    <jar href="lib\fxsampler-1.0.8.jar" size="30432" download="eager" />
+    <jar href="lib\javax.persistence_2.1.0.v201304241213.jar" size="164637" download="eager" />
+    <jar href="lib\midp_2.1.jar" size="37069" download="eager" />
+    <jar href="lib\mysql-connector-java-3.1.8-bin.jar" size="409191" download="eager" />
+    <jar href="lib\mysql-connector-java-5.1.18-bin.jar" size="789885" download="eager" />
+    <jar href="lib\openjfx-dialogs-1.0.3.jar" size="149178" download="eager" />
+    <jar href="lib\org.eclipse.persistence.jpa.jpql_2.5.2.v20140319-9ad6abd.jar" size="1366247" download="eager" />
+    <jar href="lib\slf4j-api-1.7.2.jar" size="26083" download="eager" />
+    <jar href="lib\webcam-capture-0.3.10-RC7.jar" size="405753" download="eager" />
+  </resources>
+  <applet-desc  width="800" height="600" main-class="com.javafx.main.NoJavaFXFallback"  name="Kiosko_0056" >
+    <param name="requiredFXVersion" value="8.0+"/>
+  </applet-desc>
+  <jfx:javafx-desc  width="800" height="600" main-class="vista.Kiosko"  name="Kiosko_0056" />
+  <update check="always"/>
+</jnlp>
