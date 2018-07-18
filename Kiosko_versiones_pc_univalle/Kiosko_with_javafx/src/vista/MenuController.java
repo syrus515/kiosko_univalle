@@ -50,6 +50,8 @@ import java.util.logging.Logger;
 import javafx.animation.AnimationTimer;
 import javafx.animation.Timeline;
 import javafx.application.Platform;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
@@ -57,6 +59,7 @@ import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ChoiceDialog;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -187,6 +190,13 @@ public class MenuController implements Initializable {
     private Button btonCancelar;
     @FXML
     private TableView<?> tableAfinamiento;
+    
+    // Listas desplegables de valores para las mediciones    
+    @FXML ChoiceBox<String> intervalo;
+    
+    @FXML ChoiceBox<String> duracionMuestra;
+    
+    @FXML ChoiceBox<String> duracionExamen;
 
     // Otros atributos necesarios para la interfaz.
     Kiosko programaPrincipal;
@@ -784,7 +794,7 @@ private static final int Y_MAX_RESP = 3000;
         altoGC = pintarKiosko.getHeight();
         
         gc.clearRect(0, 0, anchoGC, altoGC);
-        gc.setFill(Color.BLUE);
+        gc.setFill(Color.ALICEBLUE);
         gc.fillRect(0, 0, anchoGC, altoGC);
         
 //        pintarKiosko.addEventHandler(MouseEvent.MOUSE_PRESSED, new EventHandler<MouseEvent>() {
@@ -916,9 +926,21 @@ private static final int Y_MAX_RESP = 3000;
     }
     
     public void parametros() {
+        
+        // Asignación de parámetros para desplegables
+        
+        ObservableList<String> availableChoices = FXCollections.observableArrayList("5 minutos", "10 minutos", "15 minutos", "20 minutos", "25 minutos", "30 minutos"); 
+        intervalo.setItems(availableChoices);
+        
+        availableChoices = FXCollections.observableArrayList("15 segundos", "30 segundos", "45 segundos", "60 segundos"); 
+        duracionMuestra.setItems(availableChoices);
+        
+        availableChoices = FXCollections.observableArrayList("30 minutos", "1 hora", "1 hora, 30 minutos", "2 horas"); 
+        duracionExamen.setItems(availableChoices);
+        
         // INICIAL
         gc.clearRect(1280+1, 0+1, 600-2, 615-2);
-        gc.setFill(Color.BLUE);
+        gc.setFill(Color.ALICEBLUE);
         gc.fillRect(1280, 0, 600, 615);
         
         gc.clearRect(1580+1, 0+1, 5-2, 615-2);
@@ -926,11 +948,12 @@ private static final int Y_MAX_RESP = 3000;
         gc.fillRect(1580, 0, 5, 615);
         Image eje = null;
         eje = new Image(getClass().getResource("/imagenes/spo22.png").toString(), 100, 100, true, true);
-        gc.drawImage(eje, 1480, 335);
+        gc.drawImage(eje, 1800, 350);
         eje = new Image(getClass().getResource("/imagenes/co2.png").toString(), 60, 60, true, true);
-        gc.drawImage(eje, 1500, 490);
+        gc.drawImage(eje, 1800, 500);
         
-        Image inicio = new Image(getClass().getResource("/imagenes/botonIniciar.png").toString(), 100, 100, true, true);
+        //Graficación de los botones estáticos
+        /*Image inicio = new Image(getClass().getResource("/imagenes/botonIniciar.png").toString(), 100, 100, true, true);
         gc.drawImage(inicio, 1375, 10);
         
         Image manual = new Image(getClass().getResource("/imagenes/manual.png").toString(), 100, 100, true, true);
@@ -939,7 +962,7 @@ private static final int Y_MAX_RESP = 3000;
         gc.drawImage(automatico, 1780, 190);
         
         Image pesar = new Image(getClass().getResource("/imagenes/pesar.png").toString(), 100, 100, true, true);
-        gc.drawImage(pesar, 1700, 550);
+        gc.drawImage(pesar, 1700, 550);*/
         
         
         pintarHR(0);
@@ -963,11 +986,13 @@ private static final int Y_MAX_RESP = 3000;
 //        System.out.println("PresDiast: "+presDias);
 //        System.out.println("PresMed: "+presMed);
 //        System.out.println("PresSist: "+presSist);
-    }
+        
+    }        
+        
     
     public void pintarHR(int hr) {
            if (hr < 1 || hr > 999) {
-               ecgTextField.setText("000");
+               ecgTextField.setText("000");               
            }else{
                ecgTextField.setText(Integer.toString(hr));
            }
@@ -1063,9 +1088,9 @@ private static final int Y_MAX_RESP = 3000;
     }
     public void pintarPresion(int presRate, int presDias, int presMed, int presSist) {
         gc.clearRect(1595+1, 60+1, 300-2, 110-2);
-        gc.setFill(Color.BLUE);
+        gc.setFill(Color.ALICEBLUE);
         gc.fillRect(1595, 60, 300, 110);        
-        gc.setFill(Color.GREENYELLOW);
+        gc.setFill(Color.BLACK);
         Font fontLarge = Font.font("Verdana", FontWeight.BOLD, 20);
         gc.setFont(fontLarge);
         gc.fillText("PRESIÓN", 1700, 50);
