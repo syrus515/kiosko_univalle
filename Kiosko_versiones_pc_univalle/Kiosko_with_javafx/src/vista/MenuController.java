@@ -1,11 +1,14 @@
 package vista;
 
+
+import BD.Medicion;
 import BD.Pacientes;
 import BD.PacientesPK;
 import BD.Antecedentesfamiliares;
 import BD.AntecedentesfamiliaresPK;
 import BD.Antecedentespersonales;
 import BD.AntecedentespersonalesPK;
+import BD.ConexionDBs;
 import com.digitalpersona.onetouch.DPFPGlobal;
 import com.digitalpersona.onetouch.DPFPTemplate;
 import java.awt.image.BufferedImage;
@@ -39,8 +42,14 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 
 import cliente.AdminDevice;
+import java.sql.ResultSet;
+import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
+import java.util.Vector;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -68,9 +77,11 @@ import javafx.scene.layout.FlowPane;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
+import javax.persistence.Query;
 
 public class MenuController implements Initializable {
 
+   
     // Datos personales.
     @FXML
     private ComboBox cboxTipoIdentificacion;
@@ -217,6 +228,16 @@ public class MenuController implements Initializable {
     AdminDevice admin;
     private int banderaImg = 1;
     private boolean banderaInicio=false;
+    
+    //vectores para guardar datos de la medicion
+    Vector<Integer> vSPO2 = new Vector(0,1);
+    Vector<Integer> vECG1 = new Vector(0,1);;
+    Vector<Integer> vECG2 = new Vector(0,1);;
+    Vector<Integer> vRESP = new Vector(0,1);;
+    Vector<Integer> vsistolica = new Vector(0,1);;
+    Vector<Integer> vdiastolica = new Vector(0,1);;
+    Vector<Integer> vpulso = new Vector(0,1);;
+    Vector<Integer> vmed = new Vector(0,1);;
     
     
     private static final int MAX_DATA_POINTS_SPO2 = 500;
@@ -763,12 +784,16 @@ private static final int Y_MAX_RESP = 3000;
     
         @FXML
     void iniciarLecturaSeñales(ActionEvent event) {
-              if (banderaInicio) {
+         this.almacenarSenales();     
+        /* if (banderaInicio) {
                         pararLecturaECG();
                         executor.shutdown();
                         addToQueue=null;
                         queueParam=null;
                         btnIniciarSeñales.setText("Iniciar");
+                        //Guardar en la base de datos
+                        this.almacenarSenales();
+                        
                     } else {
                         graficarECG1();
                         graficarECG2();
@@ -784,7 +809,64 @@ private static final int Y_MAX_RESP = 3000;
                         prepareTimeline();
                         btnIniciarSeñales.setText("Parar");
                     }
-                    banderaInicio = !banderaInicio;
+                    banderaInicio = !banderaInicio;*/
+
+    }
+          
+    public void almacenarSenales()
+    {
+        
+        /*Map properties = new HashMap();
+        properties.put("identificacion", "1111111");
+
+                    
+        em = Persistence.createEntityManagerFactory("KioskoPU").createEntityManager(properties);
+        em.getTransaction().begin();*/
+        
+            em = Persistence.createEntityManagerFactory("KioskoPU").createEntityManager();
+            em.getTransaction().begin();
+            List<Pacientes> list = em.createNamedQuery("Pacientes.findAll", Pacientes.class).getResultList();
+            for (int i = 0; i < list.size(); i++) 
+            {
+                Pacientes obj = list.get(i);
+                if (obj.getPacientesPK().getIdentificacion().equals(textIdentificacion1.getText()))
+                {
+                    
+                    try
+                    {
+                        Medicion med= new Medicion();
+                        med.setId(1);
+                        med.setIdentificacion(obj); 
+                        med.setTipoid(obj);
+                        med.setTipo("1");
+                        med.setIntervalo(0);
+                        med.setDuracionMuestra(1);
+                        med.setDuracionExamen(1);
+                        med.setDetalles("Medicion de prueba, señal importante");
+                        Date today = Calendar.getInstance().getTime();
+                        med.setFecha(today);
+                        med.setOndaSPO2(vSPO2.toString());
+                        med.setOndaECG1(vECG1.toString());
+                        med.setOndaECG2(vECG2.toString());
+                        med.setOndaRESP(vRESP.toString());
+                        med.setPresionSistolica("235");
+                        med.setPresionDiastolica("236");
+                        med.setPulso("237");
+                        med.setMed("238");
+                        
+                        em.persist(med);
+                    }catch(Exception e)
+                    {
+                        System.out.println(e);
+                    } 
+                }
+            }
+            
+            em.getTransaction().commit();
+        
+        //Pacientes pacienteReferenciado= em.createNamedQuery("Pacientes.findByIdentificacion", Pacientes.class).getSingleResult();
+        
+        
 
     }
     public void graficar() {
@@ -1307,23 +1389,31 @@ private static final int Y_MAX_RESP = 3000;
             try {
 
                 if (!admin.ecg1Signal.isEmpty()){
-                     dataECG1.add(admin.ecg1Signal.readWave());
+                    int auxEcg1= admin.ecg1Signal.readWave();
+                    vECG1.add(auxEcg1);
+                     dataECG1.add(auxEcg1);
                     // System.out.println(ecg1); 
                  } else{
                      //monitor.getData();
                   }
                  if (!admin.ecg2Signal.isEmpty()){
-                     dataECG2.add(admin.ecg2Signal.readWave());
+                     int auxEcg2= admin.ecg2Signal.readWave();
+                     vECG2.add(auxEcg2);
+                     dataECG2.add(auxEcg2);
                  } else{
                      //monitor.getData();
                  }
                  if (!admin.respSignal.isEmpty()){
-                     dataRESP.add(admin.respSignal.readWave());
+                     int auxResp= admin.respSignal.readWave();
+                     vRESP.add(auxResp);
+                     dataRESP.add(auxResp);
                  }  else{
                      //monitor.getData();
                  }
                   if (!admin.spo2Signal.isEmpty()){
-                     dataSPO2.add(admin.spo2Signal.readWave()); 
+                     int auxSpo2= admin.spo2Signal.readWave();
+                     vSPO2.add(auxSpo2);
+                     dataSPO2.add(auxSpo2); 
                  }else{
                       //monitor.getData();
                   }

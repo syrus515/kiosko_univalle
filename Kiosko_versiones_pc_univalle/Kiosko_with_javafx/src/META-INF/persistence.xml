@@ -5,6 +5,8 @@
     <class>BD.Pacientes</class>
     <class>BD.Antecedentesfamiliares</class>
     <class>BD.Antecedentespersonales</class>
+    <class>BD.Examenfisico</class>
+    <class>BD.Medicion</class>
     <shared-cache-mode>ALL</shared-cache-mode>
     <properties>
       <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/kiosko"/>

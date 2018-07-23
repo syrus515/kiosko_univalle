@@ -12,16 +12,16 @@ import javax.persistence.Embeddable;
 
 /**
  *
- * @author Familia
+ * @author migma
  */
 @Embeddable
 public class PacientesPK implements Serializable {
 
     @Basic(optional = false)
-    @Column(nullable = false, length = 2)
+    @Column(name = "tipoid")
     private String tipoid;
     @Basic(optional = false)
-    @Column(nullable = false, length = 20)
+    @Column(name = "identificacion")
     private String identificacion;
 
     public PacientesPK() {
