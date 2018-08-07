@@ -67,9 +67,11 @@ import javafx.scene.Scene;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
+import javafx.scene.control.Accordion;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ChoiceDialog;
+import javafx.scene.control.MenuItem;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.input.MouseEvent;
@@ -174,9 +176,6 @@ public class MenuController implements Initializable {
     private Text respTextField;
 
 
-    // ECG, Foto y Huella dactilar.
-    @FXML
-    private Button iniciarLectura;
     @FXML
     private Button btnIniciarSeñales;
     @FXML
@@ -289,6 +288,88 @@ private static final int Y_MAX_RESP = 3000;
     LineChart<Number, Number> lc3;
     @FXML
     LineChart<Number, Number> lc4;
+    @FXML
+    private MenuItem mnuCerrarPrograma;
+    @FXML
+    private Label labIdentificacion1;
+    @FXML
+    private Label labNombre1;
+    @FXML
+    private Label labApellido1;
+    @FXML
+    private Label labAdministradora;
+    @FXML
+    private Label labNombre2;
+    @FXML
+    private Label labApellido2;
+    @FXML
+    private Label labTipoIdentificacion1;
+    @FXML
+    private Accordion siguiente;
+    @FXML
+    private Label labMedicamentosPermanentes1;
+    @FXML
+    private Label labMedicamentosPermanentes2;
+    @FXML
+    private Label labMedicamentosPermanentes3;
+    @FXML
+    private Label labMedicamentosPermanentes4;
+    @FXML
+    private Label labMedicamentosPermanentes5;
+    @FXML
+    private Label labOtrasSustancias1;
+    @FXML
+    private Label labOtrasSustancias2;
+    @FXML
+    private Label labOtrasSustancias3;
+    @FXML
+    private Label labOtrasSustancias4;
+    @FXML
+    private Label labOtrasSustancias5;
+    @FXML
+    private Label labActividadFisicaMinutos;
+    @FXML
+    private Label labSumaDias;
+    @FXML
+    private Label labConviveConFumadores;
+    @FXML
+    private Label labDiabetes;
+    @FXML
+    private Label labHipertension;
+    @FXML
+    private Label labConsumeLicor;
+    @FXML
+    private Label labInfartos;
+    @FXML
+    private Label labAFDiabetes;
+    @FXML
+    private Label labAFHipertension;
+    @FXML
+    private Label labAFInfartos;
+    @FXML
+    private Label labAFAC;
+    @FXML
+    private Label labTipoIdentificacion2;
+    @FXML
+    private Label labTelefonoFijo;
+    @FXML
+    private Label labTipoUsuario;
+    @FXML
+    private Label labDepartamento;
+    @FXML
+    private Label labIdentificacion2;
+    @FXML
+    private Label labCelular;
+    @FXML
+    private Label labGenero;
+    @FXML
+    private Label labMunicipio;
+    @FXML
+    private Label labDireccion;
+    @FXML
+    private Label labFechaNacimiento;
+    @FXML
+    private Label labZona;
     
     @FXML
     private void cerrarPrograma() {
@@ -534,7 +615,6 @@ private static final int Y_MAX_RESP = 3000;
     /**
      * Opción "acerca de" del menu.
      */
-    @FXML
     private void acercaDe() {
         popup = new Alert(AlertType.ERROR);
         popup.setTitle("Acerca de Registro de Estudiantes.");
@@ -784,8 +864,8 @@ private static final int Y_MAX_RESP = 3000;
     
         @FXML
     void iniciarLecturaSeñales(ActionEvent event) {
-         this.almacenarSenales();     
-        /* if (banderaInicio) {
+         
+         if (banderaInicio) {
                         pararLecturaECG();
                         executor.shutdown();
                         addToQueue=null;
@@ -809,7 +889,7 @@ private static final int Y_MAX_RESP = 3000;
                         prepareTimeline();
                         btnIniciarSeñales.setText("Parar");
                     }
-                    banderaInicio = !banderaInicio;*/
+                    banderaInicio = !banderaInicio;
 
     }
           

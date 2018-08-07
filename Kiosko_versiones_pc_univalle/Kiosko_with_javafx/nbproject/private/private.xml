@@ -4,14 +4,12 @@
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
             <file>file:/D:/Users/Documents/Personales/Universidad/GitHub/kiosko_univalle/Kiosko_versiones_pc_univalle/Kiosko_with_javafx/src/BD/Medicion.java</file>
-            <file>file:/D:/Users/Documents/Personales/Universidad/GitHub/kiosko_univalle/Kiosko_versiones_pc_univalle/Kiosko_with_javafx/src/BD/Pacientes.java</file>
             <file>file:/D:/Users/Documents/Personales/Universidad/GitHub/kiosko_univalle/Kiosko_versiones_pc_univalle/Kiosko_with_javafx/src/vista/Kiosko.java</file>
             <file>file:/D:/Users/Documents/Personales/Universidad/GitHub/kiosko_univalle/Kiosko_versiones_pc_univalle/Kiosko_with_javafx/src/vista/MenuController.java</file>
             <file>file:/D:/Users/Documents/Personales/Universidad/GitHub/kiosko_univalle/Kiosko_versiones_pc_univalle/Kiosko_with_javafx/src/BD/Historial_afinamiento.java</file>
-            <file>file:/D:/Users/Documents/Personales/Universidad/GitHub/kiosko_univalle/Kiosko_versiones_pc_univalle/Kiosko_with_javafx/src/BD/ConexionDBs.java</file>
-            <file>file:/D:/Users/Documents/Personales/Universidad/GitHub/kiosko_univalle/Kiosko_versiones_pc_univalle/Kiosko_with_javafx/src/BD/Examenfisico.java</file>
             <file>file:/D:/Users/Documents/Personales/Universidad/GitHub/kiosko_univalle/Kiosko_versiones_pc_univalle/Kiosko_with_javafx/src/BD/Antecedentesfamiliares.java</file>
-            <file>file:/D:/Users/Documents/Personales/Universidad/GitHub/kiosko_univalle/Kiosko_versiones_pc_univalle/Kiosko_with_javafx/src/BD/PacientesPK.java</file>
+            <file>file:/D:/Users/Documents/Personales/Universidad/GitHub/kiosko_univalle/Kiosko_versiones_pc_univalle/Kiosko_with_javafx/src/vista/Menu.fxml</file>
+            <file>file:/D:/Users/Documents/Personales/Universidad/GitHub/kiosko_univalle/Kiosko_versiones_pc_univalle/Kiosko_with_javafx/src/vista/BusquedaMedicion.fxml</file>
         </group>
     </open-files>
 </project-private>

@@ -139,7 +139,7 @@
                         <AnchorPane>
                            <children>
                               <Canvas fx:id="pintarKiosko" height="615.0" width="1980.0" />
-                              <LineChart fx:id="lc1" alternativeRowFillVisible="false" createSymbols="false" horizontalGridLinesVisible="false" horizontalZeroLineVisible="false" layoutY="14.0" legendVisible="false" prefHeight="320.0" prefWidth="600.0" verticalGridLinesVisible="false" verticalZeroLineVisible="false">
+                              <LineChart fx:id="lc1" alternativeRowFillVisible="false" createSymbols="false" horizontalGridLinesVisible="false" horizontalZeroLineVisible="false" layoutY="7.0" legendVisible="false" prefHeight="320.0" prefWidth="600.0" verticalGridLinesVisible="false" verticalZeroLineVisible="false">
                                 <xAxis>
                                   <NumberAxis side="BOTTOM" fx:id="xAxis" />
                                 </xAxis>
@@ -211,16 +211,16 @@
                                     <Font size="30.0" />
                                  </font>
                               </Text>
-                              <Button fx:id="btnIniciarSeñales" layoutX="1334.0" layoutY="21.0" mnemonicParsing="false" onAction="#iniciarLecturaSeñales" prefHeight="44.0" prefWidth="239.0" text="Iniciar medición simple" />
+                              <Button fx:id="btnIniciarSeñales" layoutX="1334.0" layoutY="21.0" mnemonicParsing="false" onAction="#iniciarLecturaSeñales" prefHeight="64.0" prefWidth="239.0" text="Iniciar medición simple" />
                               <TextField layoutX="1335.0" layoutY="416.0" prefHeight="157.0" prefWidth="240.0" />
                               <Label layoutX="1335.0" layoutY="384.0" prefHeight="23.0" prefWidth="150.0" text="Detalles medición:" />
-                              <Button layoutX="1334.0" layoutY="585.0" mnemonicParsing="false" prefHeight="44.0" prefWidth="242.0" text="Iniciar medición personalizada" />
-                              <ChoiceBox fx:id="intervalo" layoutX="1335.0" layoutY="132.0" prefWidth="150.0" />
+                              <Button layoutX="1334.0" layoutY="585.0" mnemonicParsing="false" prefHeight="73.0" prefWidth="242.0" text="Iniciar medición personalizada" />
+                              <ChoiceBox fx:id="intervalo" layoutX="1335.0" layoutY="132.0" prefHeight="45.0" prefWidth="150.0" />
                               <Label layoutX="1335.0" layoutY="105.0" prefHeight="17.0" prefWidth="204.0" text="Intérvalo entre muestras:" />
                               <Label layoutX="1335.0" layoutY="183.0" prefHeight="17.0" prefWidth="187.0" text="Duracion de cada muestra:" />
-                              <ChoiceBox fx:id="duracionMuestra" layoutX="1335.0" layoutY="209.0" prefWidth="150.0" />
+                              <ChoiceBox fx:id="duracionMuestra" layoutX="1335.0" layoutY="209.0" prefHeight="50.0" prefWidth="150.0" />
                               <Label layoutX="1335.0" layoutY="264.0" prefHeight="17.0" prefWidth="167.0" text="Duración examen:" />
-                              <ChoiceBox fx:id="duracionExamen" layoutX="1335.0" layoutY="295.0" prefWidth="150.0" />
+                              <ChoiceBox fx:id="duracionExamen" layoutX="1335.0" layoutY="295.0" prefHeight="54.0" prefWidth="150.0" />
                               
                            </children>
                         </AnchorPane>
@@ -337,12 +337,12 @@
                                     </AnchorPane>
                                 </content>
                               </ScrollPane>
-                              <Button layoutX="42.0" layoutY="467.0" mnemonicParsing="false" text="Tomar Peso">
+                              <Button layoutX="42.0" layoutY="467.0" mnemonicParsing="false" prefHeight="64.0" prefWidth="132.0" text="Tomar Peso">
                                  <font>
                                     <Font size="20.0" />
                                  </font>
                               </Button>
-                              <Button layoutX="42.0" layoutY="566.0" mnemonicParsing="false" text="Tomar Presión Arterial">
+                              <Button layoutX="42.0" layoutY="545.0" mnemonicParsing="false" prefHeight="65.0" prefWidth="225.0" text="Tomar Presión Arterial">
                                  <font>
                                     <Font size="20.0" />
                                  </font>
@@ -353,36 +353,38 @@
                                   <ColumnConstraints hgrow="SOMETIMES" maxWidth="202.0" minWidth="10.0" prefWidth="119.0" />
                                 </columnConstraints>
                                 <rowConstraints>
-                                  <RowConstraints maxHeight="37.0" minHeight="10.0" prefHeight="27.0" vgrow="SOMETIMES" />
-                                  <RowConstraints maxHeight="33.0" minHeight="10.0" prefHeight="33.0" vgrow="SOMETIMES" />
-                                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                  <RowConstraints />
+                                  <RowConstraints maxHeight="0.0" minHeight="0.0" prefHeight="0.0" />
+                                  <RowConstraints maxHeight="37.0" minHeight="10.0" prefHeight="37.0" vgrow="SOMETIMES" />
+                                    <RowConstraints maxHeight="33.0" minHeight="10.0" prefHeight="33.0" vgrow="SOMETIMES" />
+                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                                     <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                                 </rowConstraints>
                                  <children>
-                                    <Label prefHeight="24.0" prefWidth="81.0" text="Brazo:">
+                                    <Label prefHeight="24.0" prefWidth="81.0" text="Brazo:" GridPane.rowIndex="2">
                                        <font>
                                           <Font size="20.0" />
                                        </font>
                                     </Label>
-                                    <Label text="Posición:" GridPane.rowIndex="1">
+                                    <Label text="Posición:" GridPane.rowIndex="3">
                                        <font>
                                           <Font size="20.0" />
                                        </font>
                                     </Label>
-                                    <Label text="Jornada:" GridPane.rowIndex="2">
+                                    <Label text="Jornada:" GridPane.rowIndex="4">
                                        <font>
                                           <Font size="20.0" />
                                        </font>
                                     </Label>
-                                    <Label text="Estado Inicial:" GridPane.rowIndex="3">
+                                    <Label text="Estado Inicial:" GridPane.rowIndex="5">
                                        <font>
                                           <Font size="20.0" />
                                        </font>
                                     </Label>
-                                    <ComboBox prefWidth="150.0" promptText="Izquierdo" GridPane.columnIndex="1" />
-                                    <ComboBox prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                                    <ComboBox prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                                    <TextField prefHeight="25.0" prefWidth="145.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                                    <ComboBox prefHeight="48.0" prefWidth="149.0" promptText="Izquierdo" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                                    <ComboBox prefHeight="41.0" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                                    <ComboBox prefHeight="46.0" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                                    <TextField prefHeight="38.0" prefWidth="151.0" GridPane.columnIndex="1" GridPane.rowIndex="5" />
                                  </children>
                               </GridPane>
                               <Label layoutX="699.0" layoutY="467.0" prefHeight="17.0" prefWidth="96.0" text="Detalles: " />

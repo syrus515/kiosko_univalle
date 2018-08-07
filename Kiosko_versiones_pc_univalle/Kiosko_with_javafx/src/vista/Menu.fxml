@@ -171,56 +171,57 @@
                                   <NumberAxis fx:id="yAxis_4" side="LEFT" />
                                 </yAxis>
                               </LineChart>
-                              <Text fill="#171717" layoutX="1693.0" layoutY="283.0" strokeType="OUTSIDE" strokeWidth="0.0" text="ECG">
+                              <Text fill="#171717" layoutX="1694.0" layoutY="247.0" strokeType="OUTSIDE" strokeWidth="0.0" text="ECG">
                                  <font>
                                     <Font size="45.0" />
                                  </font>
                               </Text>
-                              <Text fx:id="ecgTextField" fill="#171616" fontSmoothingType="LCD" layoutX="1692.0" layoutY="351.0" strokeType="OUTSIDE" strokeWidth="0.0" text="000">
+                              <Text fx:id="ecgTextField" fill="#171616" fontSmoothingType="LCD" layoutX="1693.0" layoutY="315.0" strokeType="OUTSIDE" strokeWidth="0.0" text="000">
                                  <font>
                                     <Font size="53.0" />
                                  </font>
                               </Text>
-                              <Text fx:id="spo2OxiTextField" fill="#141414" fontSmoothingType="LCD" layoutX="1664.0" layoutY="455.0" strokeType="OUTSIDE" strokeWidth="0.0" text="000">
+                              <Text fx:id="spo2OxiTextField" fill="#141414" fontSmoothingType="LCD" layoutX="1674.0" layoutY="412.0" strokeType="OUTSIDE" strokeWidth="0.0" text="000">
                                  <font>
                                     <Font size="30.0" />
                                  </font>
                               </Text>
-                              <Text fill="#141414" layoutX="1640.0" layoutY="408.0" strokeType="OUTSIDE" strokeWidth="0.0" text="\%SPO2">
+                              <Text fill="#141414" layoutX="1650.0" layoutY="365.0" strokeType="OUTSIDE" strokeWidth="0.0" text="\%SPO2">
                                  <font>
                                     <Font size="30.0" />
                                  </font>
                               </Text>
-                              <Text fill="#141414" layoutX="1688.0" layoutY="541.0" strokeType="OUTSIDE" strokeWidth="0.0" text="RESP">
+                              <Text fill="#141414" layoutX="1698.0" layoutY="498.0" strokeType="OUTSIDE" strokeWidth="0.0" text="RESP">
                                  <font>
                                     <Font size="45.0" />
                                  </font>
                               </Text>
-                              <Text fx:id="respTextField" fill="#141414" fontSmoothingType="LCD" layoutX="1686.0" layoutY="607.0" strokeType="OUTSIDE" strokeWidth="0.0" text="000">
+                              <Text fx:id="respTextField" fill="#141414" fontSmoothingType="LCD" layoutX="1696.0" layoutY="564.0" strokeType="OUTSIDE" strokeWidth="0.0" text="000">
                                  <font>
                                     <Font size="53.0" />
                                  </font>
                               </Text>
-                              <Text fill="#141414" layoutX="1768.0" layoutY="408.0" strokeType="OUTSIDE" strokeWidth="0.0" text="HR">
+                              <Text fill="#141414" layoutX="1778.0" layoutY="365.0" strokeType="OUTSIDE" strokeWidth="0.0" text="HR">
                                  <font>
                                     <Font size="30.0" />
                                  </font>
                               </Text>
-                              <Text fx:id="spo2HrTextField" fill="#141414" fontSmoothingType="LCD" layoutX="1761.0" layoutY="454.0" strokeType="OUTSIDE" strokeWidth="0.0" text="000">
+                              <Text fx:id="spo2HrTextField" fill="#141414" fontSmoothingType="LCD" layoutX="1771.0" layoutY="411.0" strokeType="OUTSIDE" strokeWidth="0.0" text="000">
                                  <font>
                                     <Font size="30.0" />
                                  </font>
                               </Text>
-                              <Button fx:id="btnIniciarSeñales" layoutX="1334.0" layoutY="21.0" mnemonicParsing="false" onAction="#iniciarLecturaSeñales" prefHeight="64.0" prefWidth="239.0" text="Iniciar medición simple" />
-                              <TextField layoutX="1335.0" layoutY="416.0" prefHeight="157.0" prefWidth="240.0" />
-                              <Label layoutX="1335.0" layoutY="384.0" prefHeight="23.0" prefWidth="150.0" text="Detalles medición:" />
-                              <Button layoutX="1334.0" layoutY="585.0" mnemonicParsing="false" prefHeight="73.0" prefWidth="242.0" text="Iniciar medición personalizada" />
-                              <ChoiceBox fx:id="intervalo" layoutX="1335.0" layoutY="132.0" prefHeight="45.0" prefWidth="150.0" />
-                              <Label layoutX="1335.0" layoutY="105.0" prefHeight="17.0" prefWidth="204.0" text="Intérvalo entre muestras:" />
-                              <Label layoutX="1335.0" layoutY="183.0" prefHeight="17.0" prefWidth="187.0" text="Duracion de cada muestra:" />
-                              <ChoiceBox fx:id="duracionMuestra" layoutX="1335.0" layoutY="209.0" prefHeight="50.0" prefWidth="150.0" />
-                              <Label layoutX="1335.0" layoutY="264.0" prefHeight="17.0" prefWidth="167.0" text="Duración examen:" />
-                              <ChoiceBox fx:id="duracionExamen" layoutX="1335.0" layoutY="295.0" prefHeight="54.0" prefWidth="150.0" />
+                              <Button fx:id="btnIniciarSeñales" layoutX="1317.0" layoutY="232.0" mnemonicParsing="false" onAction="#iniciarLecturaSeñales" prefHeight="64.0" prefWidth="239.0" text="Iniciar medición simple" />
+                              <Label layoutX="1316.0" layoutY="14.0" prefHeight="23.0" prefWidth="150.0" text="Detalles medición:" />
+                              <Button layoutX="1319.0" layoutY="585.0" mnemonicParsing="false" prefHeight="73.0" prefWidth="242.0" text="Iniciar medición personalizada" />
+                              <ChoiceBox fx:id="intervalo" layoutX="1319.0" layoutY="354.0" prefHeight="45.0" prefWidth="150.0" />
+                              <Label layoutX="1319.0" layoutY="327.0" prefHeight="17.0" prefWidth="204.0" text="Intérvalo entre muestras:" />
+                              <Label layoutX="1319.0" layoutY="405.0" prefHeight="17.0" prefWidth="187.0" text="Duracion de cada muestra:" />
+                              <ChoiceBox fx:id="duracionMuestra" layoutX="1319.0" layoutY="431.0" prefHeight="50.0" prefWidth="150.0" />
+                              <Label layoutX="1319.0" layoutY="486.0" prefHeight="17.0" prefWidth="167.0" text="Duración examen:" />
+                              <ChoiceBox fx:id="duracionExamen" layoutX="1319.0" layoutY="517.0" prefHeight="54.0" prefWidth="150.0" />
+                              <TextArea layoutX="1317.0" layoutY="37.0" prefHeight="175.0" prefWidth="240.0" />
+                              <Button layoutX="1648.0" layoutY="585.0" mnemonicParsing="false" prefHeight="72.0" prefWidth="229.0" text="Buscar mediciones anteriores" />
                               
                            </children>
                         </AnchorPane>
@@ -354,36 +355,37 @@
                                 </columnConstraints>
                                 <rowConstraints>
                                   <RowConstraints />
-                                  <RowConstraints maxHeight="37.0" minHeight="10.0" prefHeight="27.0" vgrow="SOMETIMES" />
-                                  <RowConstraints maxHeight="33.0" minHeight="10.0" prefHeight="33.0" vgrow="SOMETIMES" />
+                                  <RowConstraints maxHeight="0.0" minHeight="0.0" prefHeight="0.0" />
+                                  <RowConstraints maxHeight="37.0" minHeight="10.0" prefHeight="37.0" vgrow="SOMETIMES" />
+                                    <RowConstraints maxHeight="33.0" minHeight="10.0" prefHeight="33.0" vgrow="SOMETIMES" />
                                     <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                                     <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                                 </rowConstraints>
                                  <children>
-                                    <Label prefHeight="24.0" prefWidth="81.0" text="Brazo:" GridPane.rowIndex="1">
+                                    <Label prefHeight="24.0" prefWidth="81.0" text="Brazo:" GridPane.rowIndex="2">
                                        <font>
                                           <Font size="20.0" />
                                        </font>
                                     </Label>
-                                    <Label text="Posición:" GridPane.rowIndex="2">
+                                    <Label text="Posición:" GridPane.rowIndex="3">
                                        <font>
                                           <Font size="20.0" />
                                        </font>
                                     </Label>
-                                    <Label text="Jornada:" GridPane.rowIndex="3">
+                                    <Label text="Jornada:" GridPane.rowIndex="4">
                                        <font>
                                           <Font size="20.0" />
                                        </font>
                                     </Label>
-                                    <Label text="Estado Inicial:" GridPane.rowIndex="4">
+                                    <Label text="Estado Inicial:" GridPane.rowIndex="5">
                                        <font>
                                           <Font size="20.0" />
                                        </font>
                                     </Label>
-                                    <ComboBox prefHeight="39.0" prefWidth="150.0" promptText="Izquierdo" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                                    <ComboBox prefHeight="41.0" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                                    <ComboBox prefHeight="46.0" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-                                    <TextField prefHeight="38.0" prefWidth="151.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                                    <ComboBox prefHeight="48.0" prefWidth="149.0" promptText="Izquierdo" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                                    <ComboBox prefHeight="41.0" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                                    <ComboBox prefHeight="46.0" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                                    <TextField prefHeight="38.0" prefWidth="151.0" GridPane.columnIndex="1" GridPane.rowIndex="5" />
                                  </children>
                               </GridPane>
                               <Label layoutX="699.0" layoutY="467.0" prefHeight="17.0" prefWidth="96.0" text="Detalles: " />
