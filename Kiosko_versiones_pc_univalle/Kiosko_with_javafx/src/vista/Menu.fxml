@@ -221,7 +221,7 @@
                               <Label layoutX="1319.0" layoutY="486.0" prefHeight="17.0" prefWidth="167.0" text="Duración examen:" />
                               <ChoiceBox fx:id="duracionExamen" layoutX="1319.0" layoutY="517.0" prefHeight="54.0" prefWidth="150.0" />
                               <TextArea layoutX="1317.0" layoutY="37.0" prefHeight="175.0" prefWidth="240.0" />
-                              <Button layoutX="1648.0" layoutY="585.0" mnemonicParsing="false" prefHeight="72.0" prefWidth="229.0" text="Buscar mediciones anteriores" />
+                              <Button layoutX="1648.0" layoutY="585.0" mnemonicParsing="false" onAction="#buscarMedicion" prefHeight="72.0" prefWidth="229.0" text="Buscar mediciones anteriores" />
                               
                            </children>
                         </AnchorPane>

@@ -1,5 +1,7 @@
 package vista;
 import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.application.Application;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
@@ -7,11 +9,16 @@ import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.VBox;
+import javafx.stage.Modality;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
+import javax.swing.JFrame;
 import org.controlsfx.dialog.Dialogs;
 public class Kiosko extends Application {
+    
+    private Stage ventanaPrincipal; //Stage principal para poder derivar ventanas
     
     private Stage primaryStage;
     private BorderPane rootLayout;
@@ -59,23 +66,24 @@ public class Kiosko extends Application {
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(Kiosko.class.getResource("/vista/Menu.fxml"));
             AnchorPane menu = (AnchorPane) loader.load();
-            Stage ventana = new Stage();
-            ventana.setTitle("Menú principal");
+            ventanaPrincipal = new Stage();
+            ventanaPrincipal.initModality(Modality.APPLICATION_MODAL);
+            ventanaPrincipal.setTitle("Menú principal");
             
             Scene scene = new Scene(menu);
             scene.getStylesheets().add("/vista/menu.css");
-            ventana.setScene(scene);
+            ventanaPrincipal.setScene(scene);
             MenuController controller = loader.getController();
             controller.setProgramaPrincipal(this, usuario, nombre, rol);
-            ventana.show();
-            ventana.setResizable(false);
+            ventanaPrincipal.show();
+            ventanaPrincipal.setResizable(false);
             Rectangle2D ventanaPrimariaLimites = Screen.getPrimary().getVisualBounds();
-            ventana.setX(ventanaPrimariaLimites.getMinX());
-            ventana.setY(ventanaPrimariaLimites.getMinY());
-            ventana.setWidth(ventanaPrimariaLimites.getWidth());
-            ventana.setHeight(ventanaPrimariaLimites.getHeight());
+            ventanaPrincipal.setX(ventanaPrimariaLimites.getMinX());
+            ventanaPrincipal.setY(ventanaPrimariaLimites.getMinY());
+            ventanaPrincipal.setWidth(ventanaPrimariaLimites.getWidth());
+            ventanaPrincipal.setHeight(ventanaPrimariaLimites.getHeight());
             primaryStage.close();
-            primaryStage = ventana;
+            primaryStage = ventanaPrincipal;
             primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>(){
             @Override public void handle(WindowEvent event) {
                 //event.consume(); //Consumar el evento
@@ -86,6 +94,47 @@ public class Kiosko extends Application {
             System.out.println("Error del sistema: " + ex.toString());
         }
     }
+    
+    public void mostrarVentanaReproduccion() //Método para mostrar la ventana donde se buscan las mediciones almacenadas del paciente
+    {
+        try {
+            this.usuario = usuario;
+            this.nombre = nombre;
+            this.rol = rol;
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(Kiosko.class.getResource("/vista/BusquedaMedicion.fxml"));
+            VBox menu = (VBox) loader.load();
+            Stage ventana = new Stage();
+            ventana.initOwner(ventanaPrincipal);
+            ventana.setTitle("Busqueda medicones");
+            
+            
+            Scene scene = new Scene(menu);
+            scene.getStylesheets().add("/vista/menu.css");
+            ventana.setScene(scene);
+            BusquedaMedicionController controller = loader.getController();
+            //controller.setProgramaPrincipal(this, usuario, nombre, rol);
+            ventana.show();
+            ventana.setResizable(false);
+            Rectangle2D ventanaPrimariaLimites = new Rectangle2D(640, 300, 640, 420);
+            ventana.setX(ventanaPrimariaLimites.getMinX());
+            ventana.setY(ventanaPrimariaLimites.getMinY());
+            ventana.setWidth(ventanaPrimariaLimites.getWidth());
+            ventana.setHeight(ventanaPrimariaLimites.getHeight());
+            //primaryStage.close();
+            ventana.setOnCloseRequest(new EventHandler<WindowEvent>(){            
+            @Override public void handle(WindowEvent event) {
+                //event.consume(); //Consumar el evento
+                ventana.close();
+                
+            }  
+        });
+        } catch (Exception ex) {
+            System.out.println("Error del sistema: " + ex.toString());
+        }        
+
+    }
+    
     
     public void mostrarVentanaFoto(MenuController refController) {
         if (refController.openFoto) {

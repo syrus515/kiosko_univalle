@@ -375,6 +375,12 @@ private static final int Y_MAX_RESP = 3000;
     private void cerrarPrograma() {
         System.exit(0);
     }
+    
+    @FXML
+    private void buscarMedicion()
+    {
+        programaPrincipal.mostrarVentanaReproduccion();
+    }
 
     @FXML
     private void buscarPaciente() {
