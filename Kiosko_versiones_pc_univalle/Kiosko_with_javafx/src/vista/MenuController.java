@@ -1,11 +1,14 @@
 package vista;
 
+
+import BD.Medicion;
 import BD.Pacientes;
 import BD.PacientesPK;
 import BD.Antecedentesfamiliares;
 import BD.AntecedentesfamiliaresPK;
 import BD.Antecedentespersonales;
 import BD.AntecedentespersonalesPK;
+import BD.ConexionDBs;
 import com.digitalpersona.onetouch.DPFPGlobal;
 import com.digitalpersona.onetouch.DPFPTemplate;
 import java.awt.image.BufferedImage;
@@ -39,8 +42,14 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 
 import cliente.AdminDevice;
+import java.sql.ResultSet;
+import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
+import java.util.Vector;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -50,14 +59,19 @@ import java.util.logging.Logger;
 import javafx.animation.AnimationTimer;
 import javafx.animation.Timeline;
 import javafx.application.Platform;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
+import javafx.scene.control.Accordion;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ChoiceDialog;
+import javafx.scene.control.MenuItem;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.input.MouseEvent;
@@ -65,9 +79,11 @@ import javafx.scene.layout.FlowPane;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
+import javax.persistence.Query;
 
 public class MenuController implements Initializable {
 
+   
     // Datos personales.
     @FXML
     private ComboBox cboxTipoIdentificacion;
@@ -160,9 +176,6 @@ public class MenuController implements Initializable {
     private Text respTextField;
 
 
-    // ECG, Foto y Huella dactilar.
-    @FXML
-    private Button iniciarLectura;
     @FXML
     private Button btnIniciarSeñales;
     @FXML
@@ -187,6 +200,13 @@ public class MenuController implements Initializable {
     private Button btonCancelar;
     @FXML
     private TableView<?> tableAfinamiento;
+    
+    // Listas desplegables de valores para las mediciones    
+    @FXML ChoiceBox<String> intervalo;
+    
+    @FXML ChoiceBox<String> duracionMuestra;
+    
+    @FXML ChoiceBox<String> duracionExamen;
 
     // Otros atributos necesarios para la interfaz.
     Kiosko programaPrincipal;
@@ -207,6 +227,16 @@ public class MenuController implements Initializable {
     AdminDevice admin;
     private int banderaImg = 1;
     private boolean banderaInicio=false;
+    
+    //vectores para guardar datos de la medicion
+    Vector<Integer> vSPO2 = new Vector(0,1);
+    Vector<Integer> vECG1 = new Vector(0,1);;
+    Vector<Integer> vECG2 = new Vector(0,1);;
+    Vector<Integer> vRESP = new Vector(0,1);;
+    Vector<Integer> vsistolica = new Vector(0,1);;
+    Vector<Integer> vdiastolica = new Vector(0,1);;
+    Vector<Integer> vpulso = new Vector(0,1);;
+    Vector<Integer> vmed = new Vector(0,1);;
     
     
     private static final int MAX_DATA_POINTS_SPO2 = 500;
@@ -258,10 +288,98 @@ private static final int Y_MAX_RESP = 3000;
     LineChart<Number, Number> lc3;
     @FXML
     LineChart<Number, Number> lc4;
+    @FXML
+    private MenuItem mnuCerrarPrograma;
+    @FXML
+    private Label labIdentificacion1;
+    @FXML
+    private Label labNombre1;
+    @FXML
+    private Label labApellido1;
+    @FXML
+    private Label labAdministradora;
+    @FXML
+    private Label labNombre2;
+    @FXML
+    private Label labApellido2;
+    @FXML
+    private Label labTipoIdentificacion1;
+    @FXML
+    private Accordion siguiente;
+    @FXML
+    private Label labMedicamentosPermanentes1;
+    @FXML
+    private Label labMedicamentosPermanentes2;
+    @FXML
+    private Label labMedicamentosPermanentes3;
+    @FXML
+    private Label labMedicamentosPermanentes4;
+    @FXML
+    private Label labMedicamentosPermanentes5;
+    @FXML
+    private Label labOtrasSustancias1;
+    @FXML
+    private Label labOtrasSustancias2;
+    @FXML
+    private Label labOtrasSustancias3;
+    @FXML
+    private Label labOtrasSustancias4;
+    @FXML
+    private Label labOtrasSustancias5;
+    @FXML
+    private Label labActividadFisicaMinutos;
+    @FXML
+    private Label labSumaDias;
+    @FXML
+    private Label labConviveConFumadores;
+    @FXML
+    private Label labDiabetes;
+    @FXML
+    private Label labHipertension;
+    @FXML
+    private Label labConsumeLicor;
+    @FXML
+    private Label labInfartos;
+    @FXML
+    private Label labAFDiabetes;
+    @FXML
+    private Label labAFHipertension;
+    @FXML
+    private Label labAFInfartos;
+    @FXML
+    private Label labAFAC;
+    @FXML
+    private Label labTipoIdentificacion2;
+    @FXML
+    private Label labTelefonoFijo;
+    @FXML
+    private Label labTipoUsuario;
+    @FXML
+    private Label labDepartamento;
+    @FXML
+    private Label labIdentificacion2;
+    @FXML
+    private Label labCelular;
+    @FXML
+    private Label labGenero;
+    @FXML
+    private Label labMunicipio;
+    @FXML
+    private Label labDireccion;
+    @FXML
+    private Label labFechaNacimiento;
+    @FXML
+    private Label labZona;
     
     @FXML
     private void cerrarPrograma() {
         System.exit(0);
+    }
+    
+    @FXML
+    private void buscarMedicion()
+    {
+        programaPrincipal.mostrarVentanaReproduccion();
     }
 
     @FXML
@@ -503,7 +621,6 @@ private static final int Y_MAX_RESP = 3000;
     /**
      * Opción "acerca de" del menu.
      */
-    @FXML
     private void acercaDe() {
         popup = new Alert(AlertType.ERROR);
         popup.setTitle("Acerca de Registro de Estudiantes.");
@@ -753,12 +870,16 @@ private static final int Y_MAX_RESP = 3000;
     
         @FXML
     void iniciarLecturaSeñales(ActionEvent event) {
-              if (banderaInicio) {
+         
+         if (banderaInicio) {
                         pararLecturaECG();
                         executor.shutdown();
                         addToQueue=null;
                         queueParam=null;
                         btnIniciarSeñales.setText("Iniciar");
+                        //Guardar en la base de datos
+                        this.almacenarSenales();
+                        
                     } else {
                         graficarECG1();
                         graficarECG2();
@@ -777,6 +898,63 @@ private static final int Y_MAX_RESP = 3000;
                     banderaInicio = !banderaInicio;
 
     }
+          
+    public void almacenarSenales()
+    {
+        
+        /*Map properties = new HashMap();
+        properties.put("identificacion", "1111111");
+
+                    
+        em = Persistence.createEntityManagerFactory("KioskoPU").createEntityManager(properties);
+        em.getTransaction().begin();*/
+        
+            em = Persistence.createEntityManagerFactory("KioskoPU").createEntityManager();
+            em.getTransaction().begin();
+            List<Pacientes> list = em.createNamedQuery("Pacientes.findAll", Pacientes.class).getResultList();
+            for (int i = 0; i < list.size(); i++) 
+            {
+                Pacientes obj = list.get(i);
+                if (obj.getPacientesPK().getIdentificacion().equals(textIdentificacion1.getText()))
+                {
+                    
+                    try
+                    {
+                        Medicion med= new Medicion();
+                        med.setId(1);
+                        med.setIdentificacion(obj); 
+                        med.setTipoid(obj);
+                        med.setTipo("1");
+                        med.setIntervalo(0);
+                        med.setDuracionMuestra(1);
+                        med.setDuracionExamen(1);
+                        med.setDetalles("Medicion de prueba, señal importante");
+                        Date today = Calendar.getInstance().getTime();
+                        med.setFecha(today);
+                        med.setOndaSPO2(vSPO2.toString());
+                        med.setOndaECG1(vECG1.toString());
+                        med.setOndaECG2(vECG2.toString());
+                        med.setOndaRESP(vRESP.toString());
+                        med.setPresionSistolica("235");
+                        med.setPresionDiastolica("236");
+                        med.setPulso("237");
+                        med.setMed("238");
+                        
+                        em.persist(med);
+                    }catch(Exception e)
+                    {
+                        System.out.println(e);
+                    } 
+                }
+            }
+            
+            em.getTransaction().commit();
+        
+        //Pacientes pacienteReferenciado= em.createNamedQuery("Pacientes.findByIdentificacion", Pacientes.class).getSingleResult();
+        
+        
+
+    }
     public void graficar() {
         // INICIAL
         gc = pintarKiosko.getGraphicsContext2D();
@@ -784,7 +962,7 @@ private static final int Y_MAX_RESP = 3000;
         altoGC = pintarKiosko.getHeight();
         
         gc.clearRect(0, 0, anchoGC, altoGC);
-        gc.setFill(Color.BLUE);
+        gc.setFill(Color.ALICEBLUE);
         gc.fillRect(0, 0, anchoGC, altoGC);
         
 //        pintarKiosko.addEventHandler(MouseEvent.MOUSE_PRESSED, new EventHandler<MouseEvent>() {
@@ -916,9 +1094,21 @@ private static final int Y_MAX_RESP = 3000;
     }
     
     public void parametros() {
+        
+        // Asignación de parámetros para desplegables
+        
+        ObservableList<String> availableChoices = FXCollections.observableArrayList("5 minutos", "10 minutos", "15 minutos", "20 minutos", "25 minutos", "30 minutos"); 
+        intervalo.setItems(availableChoices);
+        
+        availableChoices = FXCollections.observableArrayList("15 segundos", "30 segundos", "45 segundos", "60 segundos"); 
+        duracionMuestra.setItems(availableChoices);
+        
+        availableChoices = FXCollections.observableArrayList("30 minutos", "1 hora", "1 hora, 30 minutos", "2 horas"); 
+        duracionExamen.setItems(availableChoices);
+        
         // INICIAL
         gc.clearRect(1280+1, 0+1, 600-2, 615-2);
-        gc.setFill(Color.BLUE);
+        gc.setFill(Color.ALICEBLUE);
         gc.fillRect(1280, 0, 600, 615);
         
         gc.clearRect(1580+1, 0+1, 5-2, 615-2);
@@ -926,11 +1116,12 @@ private static final int Y_MAX_RESP = 3000;
         gc.fillRect(1580, 0, 5, 615);
         Image eje = null;
         eje = new Image(getClass().getResource("/imagenes/spo22.png").toString(), 100, 100, true, true);
-        gc.drawImage(eje, 1480, 335);
+        gc.drawImage(eje, 1800, 350);
         eje = new Image(getClass().getResource("/imagenes/co2.png").toString(), 60, 60, true, true);
-        gc.drawImage(eje, 1500, 490);
+        gc.drawImage(eje, 1800, 500);
         
-        Image inicio = new Image(getClass().getResource("/imagenes/botonIniciar.png").toString(), 100, 100, true, true);
+        //Graficación de los botones estáticos
+        /*Image inicio = new Image(getClass().getResource("/imagenes/botonIniciar.png").toString(), 100, 100, true, true);
         gc.drawImage(inicio, 1375, 10);
         
         Image manual = new Image(getClass().getResource("/imagenes/manual.png").toString(), 100, 100, true, true);
@@ -939,7 +1130,7 @@ private static final int Y_MAX_RESP = 3000;
         gc.drawImage(automatico, 1780, 190);
         
         Image pesar = new Image(getClass().getResource("/imagenes/pesar.png").toString(), 100, 100, true, true);
-        gc.drawImage(pesar, 1700, 550);
+        gc.drawImage(pesar, 1700, 550);*/
         
         
         pintarHR(0);
@@ -963,11 +1154,13 @@ private static final int Y_MAX_RESP = 3000;
 //        System.out.println("PresDiast: "+presDias);
 //        System.out.println("PresMed: "+presMed);
 //        System.out.println("PresSist: "+presSist);
-    }
+        
+    }        
+        
     
     public void pintarHR(int hr) {
            if (hr < 1 || hr > 999) {
-               ecgTextField.setText("000");
+               ecgTextField.setText("000");               
            }else{
                ecgTextField.setText(Integer.toString(hr));
            }
@@ -1063,9 +1256,9 @@ private static final int Y_MAX_RESP = 3000;
     }
     public void pintarPresion(int presRate, int presDias, int presMed, int presSist) {
         gc.clearRect(1595+1, 60+1, 300-2, 110-2);
-        gc.setFill(Color.BLUE);
+        gc.setFill(Color.ALICEBLUE);
         gc.fillRect(1595, 60, 300, 110);        
-        gc.setFill(Color.GREENYELLOW);
+        gc.setFill(Color.BLACK);
         Font fontLarge = Font.font("Verdana", FontWeight.BOLD, 20);
         gc.setFont(fontLarge);
         gc.fillText("PRESIÓN", 1700, 50);
@@ -1282,23 +1475,31 @@ private static final int Y_MAX_RESP = 3000;
             try {
 
                 if (!admin.ecg1Signal.isEmpty()){
-                     dataECG1.add(admin.ecg1Signal.readWave());
+                    int auxEcg1= admin.ecg1Signal.readWave();
+                    vECG1.add(auxEcg1);
+                     dataECG1.add(auxEcg1);
                     // System.out.println(ecg1); 
                  } else{
                      //monitor.getData();
                   }
                  if (!admin.ecg2Signal.isEmpty()){
-                     dataECG2.add(admin.ecg2Signal.readWave());
+                     int auxEcg2= admin.ecg2Signal.readWave();
+                     vECG2.add(auxEcg2);
+                     dataECG2.add(auxEcg2);
                  } else{
                      //monitor.getData();
                  }
                  if (!admin.respSignal.isEmpty()){
-                     dataRESP.add(admin.respSignal.readWave());
+                     int auxResp= admin.respSignal.readWave();
+                     vRESP.add(auxResp);
+                     dataRESP.add(auxResp);
                  }  else{
                      //monitor.getData();
                  }
                   if (!admin.spo2Signal.isEmpty()){
-                     dataSPO2.add(admin.spo2Signal.readWave()); 
+                     int auxSpo2= admin.spo2Signal.readWave();
+                     vSPO2.add(auxSpo2);
+                     dataSPO2.add(auxSpo2); 
                  }else{
                       //monitor.getData();
                   }

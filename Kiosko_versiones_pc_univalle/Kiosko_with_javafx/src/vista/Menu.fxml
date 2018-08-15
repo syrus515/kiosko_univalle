@@ -1,21 +1,35 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.chart.*?>
-<?import javafx.scene.shape.*?>
-<?import javafx.scene.paint.*?>
-<?import javafx.scene.effect.*?>
-<?import javafx.scene.text.*?>
-<?import javafx.scene.canvas.*?>
-<?import javafx.geometry.*?>
-<?import javafx.scene.image.*?>
-<?import java.lang.*?>
-<?import java.net.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import java.net.URL?>
+<?import javafx.scene.canvas.Canvas?>
+<?import javafx.scene.chart.LineChart?>
+<?import javafx.scene.chart.NumberAxis?>
+<?import javafx.scene.control.Accordion?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.TitledPane?>
+<?import javafx.scene.control.ToolBar?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
 
-<AnchorPane id="AnchorPane" prefHeight="1052.0" prefWidth="1792.0" styleClass="mainFxmlClass" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="vista.MenuController">
+<AnchorPane id="AnchorPane" prefHeight="1052.0" prefWidth="1792.0" styleClass="mainFxmlClass" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="vista.MenuController">
     <stylesheets>
         <URL value="@menu.css" />
     </stylesheets>
@@ -157,99 +171,62 @@
                                   <NumberAxis fx:id="yAxis_4" side="LEFT" />
                                 </yAxis>
                               </LineChart>
-                              <Text fill="#f0f0f0" layoutX="1370.0" layoutY="98.0" strokeType="OUTSIDE" strokeWidth="0.0" text="ECG">
+                              <Text fill="#171717" layoutX="1694.0" layoutY="247.0" strokeType="OUTSIDE" strokeWidth="0.0" text="ECG">
                                  <font>
                                     <Font size="45.0" />
                                  </font>
                               </Text>
-                              <Text fx:id="ecgTextField" fill="WHITE" fontSmoothingType="LCD" layoutX="1368.0" layoutY="174.0" strokeType="OUTSIDE" strokeWidth="0.0" text="000">
+                              <Text fx:id="ecgTextField" fill="#171616" fontSmoothingType="LCD" layoutX="1693.0" layoutY="315.0" strokeType="OUTSIDE" strokeWidth="0.0" text="000">
                                  <font>
                                     <Font size="53.0" />
                                  </font>
                               </Text>
-                              <Text fx:id="spo2OxiTextField" fill="WHITE" fontSmoothingType="LCD" layoutX="1328.0" layoutY="423.0" strokeType="OUTSIDE" strokeWidth="0.0" text="000">
+                              <Text fx:id="spo2OxiTextField" fill="#141414" fontSmoothingType="LCD" layoutX="1674.0" layoutY="412.0" strokeType="OUTSIDE" strokeWidth="0.0" text="000">
                                  <font>
                                     <Font size="30.0" />
                                  </font>
                               </Text>
-                              <Text fill="WHITE" layoutX="1304.0" layoutY="376.0" strokeType="OUTSIDE" strokeWidth="0.0" text="\%SPO2">
+                              <Text fill="#141414" layoutX="1650.0" layoutY="365.0" strokeType="OUTSIDE" strokeWidth="0.0" text="\%SPO2">
                                  <font>
                                     <Font size="30.0" />
                                  </font>
                               </Text>
-                              <Text fill="WHITE" layoutX="1371.0" layoutY="541.0" strokeType="OUTSIDE" strokeWidth="0.0" text="RESP">
+                              <Text fill="#141414" layoutX="1698.0" layoutY="498.0" strokeType="OUTSIDE" strokeWidth="0.0" text="RESP">
                                  <font>
                                     <Font size="45.0" />
                                  </font>
                               </Text>
-                              <Text fx:id="respTextField" fill="WHITE" fontSmoothingType="LCD" layoutX="1369.0" layoutY="607.0" strokeType="OUTSIDE" strokeWidth="0.0" text="000">
+                              <Text fx:id="respTextField" fill="#141414" fontSmoothingType="LCD" layoutX="1696.0" layoutY="564.0" strokeType="OUTSIDE" strokeWidth="0.0" text="000">
                                  <font>
                                     <Font size="53.0" />
                                  </font>
                               </Text>
-                              <Text fill="WHITE" layoutX="1432.0" layoutY="376.0" strokeType="OUTSIDE" strokeWidth="0.0" text="HR">
+                              <Text fill="#141414" layoutX="1778.0" layoutY="365.0" strokeType="OUTSIDE" strokeWidth="0.0" text="HR">
                                  <font>
                                     <Font size="30.0" />
                                  </font>
                               </Text>
-                              <Text fx:id="spo2HrTextField" fill="WHITE" fontSmoothingType="LCD" layoutX="1425.0" layoutY="422.0" strokeType="OUTSIDE" strokeWidth="0.0" text="000">
+                              <Text fx:id="spo2HrTextField" fill="#141414" fontSmoothingType="LCD" layoutX="1771.0" layoutY="411.0" strokeType="OUTSIDE" strokeWidth="0.0" text="000">
                                  <font>
                                     <Font size="30.0" />
                                  </font>
                               </Text>
-                              <Button fx:id="btnIniciarSeñales" layoutX="1444.0" layoutY="14.0" mnemonicParsing="false" onAction="#iniciarLecturaSeñales" prefHeight="25.0" prefWidth="118.0" text="Iniciar" />
+                              <Button fx:id="btnIniciarSeñales" layoutX="1317.0" layoutY="232.0" mnemonicParsing="false" onAction="#iniciarLecturaSeñales" prefHeight="64.0" prefWidth="239.0" text="Iniciar medición simple" />
+                              <Label layoutX="1316.0" layoutY="14.0" prefHeight="23.0" prefWidth="150.0" text="Detalles medición:" />
+                              <Button layoutX="1319.0" layoutY="585.0" mnemonicParsing="false" prefHeight="73.0" prefWidth="242.0" text="Iniciar medición personalizada" />
+                              <ChoiceBox fx:id="intervalo" layoutX="1319.0" layoutY="354.0" prefHeight="45.0" prefWidth="150.0" />
+                              <Label layoutX="1319.0" layoutY="327.0" prefHeight="17.0" prefWidth="204.0" text="Intérvalo entre muestras:" />
+                              <Label layoutX="1319.0" layoutY="405.0" prefHeight="17.0" prefWidth="187.0" text="Duracion de cada muestra:" />
+                              <ChoiceBox fx:id="duracionMuestra" layoutX="1319.0" layoutY="431.0" prefHeight="50.0" prefWidth="150.0" />
+                              <Label layoutX="1319.0" layoutY="486.0" prefHeight="17.0" prefWidth="167.0" text="Duración examen:" />
+                              <ChoiceBox fx:id="duracionExamen" layoutX="1319.0" layoutY="517.0" prefHeight="54.0" prefWidth="150.0" />
+                              <TextArea layoutX="1317.0" layoutY="37.0" prefHeight="175.0" prefWidth="240.0" />
+                              <Button layoutX="1648.0" layoutY="585.0" mnemonicParsing="false" onAction="#buscarMedicion" prefHeight="72.0" prefWidth="229.0" text="Buscar mediciones anteriores" />
                               
                            </children>
                         </AnchorPane>
                      </content>
                   </TitledPane>
-                <TitledPane animated="false" text="Datos personales">
-                  <content>
-                    <AnchorPane>
-                           <children>
-                              <GridPane id="datosPacientes" alignment="CENTER" prefHeight="120.0" prefWidth="943.0">
-                                <columnConstraints>
-                                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="139.0" minWidth="10.0" prefWidth="114.0" />
-                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="235.0" minWidth="10.0" prefWidth="142.0" />
-                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="182.0" minWidth="10.0" prefWidth="92.0" />
-                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="270.0" minWidth="10.0" prefWidth="195.0" />
-                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="169.0" minWidth="0.0" prefWidth="112.0" />
-                                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="283.0" minWidth="10.0" prefWidth="283.0" />
-                                </columnConstraints>
-                                <rowConstraints>
-                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                </rowConstraints>
-                                 <children>
-                                    <Label fx:id="labTipoIdentificacion2" text="Tipo identificación " GridPane.halignment="RIGHT" />
-                                    <Label fx:id="labTelefonoFijo" text="Teléfono Fijo " GridPane.halignment="RIGHT" GridPane.rowIndex="1" />
-                                    <Label fx:id="labTipoUsuario" text="Tipo Usuario " GridPane.halignment="RIGHT" GridPane.rowIndex="2" />
-                                    <Label fx:id="labDepartamento" text="Departamento " GridPane.halignment="RIGHT" GridPane.rowIndex="3" />
-                                    <Label fx:id="labIdentificacion2" text="Identificación " GridPane.columnIndex="2" GridPane.halignment="RIGHT" />
-                                    <Label fx:id="labCelular" text="Celular " GridPane.columnIndex="2" GridPane.halignment="RIGHT" GridPane.rowIndex="1" />
-                                    <Label fx:id="labGenero" text="Genero " GridPane.columnIndex="2" GridPane.halignment="RIGHT" GridPane.rowIndex="2" />
-                                    <Label fx:id="labMunicipio" text="Municipio " GridPane.columnIndex="2" GridPane.halignment="RIGHT" GridPane.rowIndex="3" />
-                                    <Label fx:id="labDireccion" text="Dirección " GridPane.columnIndex="4" GridPane.halignment="RIGHT" GridPane.rowIndex="1" />
-                                    <Label fx:id="labFechaNacimiento" text="Fecha nacimiento " GridPane.columnIndex="4" GridPane.halignment="RIGHT" GridPane.rowIndex="2" />
-                                    <Label fx:id="labZona" text="Zona " GridPane.columnIndex="4" GridPane.halignment="RIGHT" GridPane.rowIndex="3" />
-                                    <TextField fx:id="textTipoIdentificacion2" editable="false" prefHeight="25.0" prefWidth="155.0" GridPane.columnIndex="1" />
-                                    <TextField fx:id="textIdentificacion2" editable="false" GridPane.columnIndex="3" />
-                                    <TextField fx:id="textTipoUsuario" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                                    <TextField fx:id="textGenero" GridPane.columnIndex="3" GridPane.rowIndex="2" />
-                                    <TextField fx:id="textDepartamento" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-                                    <TextField fx:id="textMunicipio" GridPane.columnIndex="3" GridPane.rowIndex="3" />
-                                    <TextField fx:id="textZona" GridPane.columnIndex="5" GridPane.rowIndex="3" />
-                                    <TextField fx:id="textTelefonoFijo" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                                    <TextField fx:id="textCelular" GridPane.columnIndex="3" GridPane.rowIndex="1" />
-                                    <TextField fx:id="textDireccion" GridPane.columnIndex="5" GridPane.rowIndex="1" />
-                                    <DatePicker fx:id="datePickerFechaNacimiento" nodeOrientation="LEFT_TO_RIGHT" prefHeight="25.0" prefWidth="284.0" GridPane.columnIndex="5" GridPane.rowIndex="2" />
-                                 </children>
-                              </GridPane>
-                           </children></AnchorPane>
-                  </content>
-                </TitledPane>
                 <TitledPane animated="false" prefHeight="82132.0" prefWidth="1937.0" text="Antecedentes personales">
                   <content>
                     <AnchorPane>
@@ -361,12 +338,12 @@
                                     </AnchorPane>
                                 </content>
                               </ScrollPane>
-                              <Button layoutX="42.0" layoutY="467.0" mnemonicParsing="false" text="Tomar Peso">
+                              <Button layoutX="42.0" layoutY="467.0" mnemonicParsing="false" prefHeight="64.0" prefWidth="132.0" text="Tomar Peso">
                                  <font>
                                     <Font size="20.0" />
                                  </font>
                               </Button>
-                              <Button layoutX="42.0" layoutY="566.0" mnemonicParsing="false" text="Tomar Presión Arterial">
+                              <Button layoutX="42.0" layoutY="545.0" mnemonicParsing="false" prefHeight="65.0" prefWidth="225.0" text="Tomar Presión Arterial">
                                  <font>
                                     <Font size="20.0" />
                                  </font>
@@ -377,38 +354,42 @@
                                   <ColumnConstraints hgrow="SOMETIMES" maxWidth="202.0" minWidth="10.0" prefWidth="119.0" />
                                 </columnConstraints>
                                 <rowConstraints>
-                                  <RowConstraints maxHeight="37.0" minHeight="10.0" prefHeight="27.0" vgrow="SOMETIMES" />
-                                  <RowConstraints maxHeight="33.0" minHeight="10.0" prefHeight="33.0" vgrow="SOMETIMES" />
-                                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                  <RowConstraints />
+                                  <RowConstraints maxHeight="0.0" minHeight="0.0" prefHeight="0.0" />
+                                  <RowConstraints maxHeight="37.0" minHeight="10.0" prefHeight="37.0" vgrow="SOMETIMES" />
+                                    <RowConstraints maxHeight="33.0" minHeight="10.0" prefHeight="33.0" vgrow="SOMETIMES" />
+                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                                     <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                                 </rowConstraints>
                                  <children>
-                                    <Label prefHeight="24.0" prefWidth="81.0" text="Brazo:">
+                                    <Label prefHeight="24.0" prefWidth="81.0" text="Brazo:" GridPane.rowIndex="2">
                                        <font>
                                           <Font size="20.0" />
                                        </font>
                                     </Label>
-                                    <Label text="Posición:" GridPane.rowIndex="1">
+                                    <Label text="Posición:" GridPane.rowIndex="3">
                                        <font>
                                           <Font size="20.0" />
                                        </font>
                                     </Label>
-                                    <Label text="Jornada:" GridPane.rowIndex="2">
+                                    <Label text="Jornada:" GridPane.rowIndex="4">
                                        <font>
                                           <Font size="20.0" />
                                        </font>
                                     </Label>
-                                    <Label text="Estado Inicial:" GridPane.rowIndex="3">
+                                    <Label text="Estado Inicial:" GridPane.rowIndex="5">
                                        <font>
                                           <Font size="20.0" />
                                        </font>
                                     </Label>
-                                    <ComboBox prefWidth="150.0" promptText="Izquierdo" GridPane.columnIndex="1" />
-                                    <ComboBox prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                                    <ComboBox prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                                    <TextField prefHeight="25.0" prefWidth="145.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                                    <ComboBox prefHeight="48.0" prefWidth="149.0" promptText="Izquierdo" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                                    <ComboBox prefHeight="41.0" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                                    <ComboBox prefHeight="46.0" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                                    <TextField prefHeight="38.0" prefWidth="151.0" GridPane.columnIndex="1" GridPane.rowIndex="5" />
                                  </children>
                               </GridPane>
+                              <Label layoutX="699.0" layoutY="467.0" prefHeight="17.0" prefWidth="96.0" text="Detalles: " />
+                              <TextArea layoutX="695.0" layoutY="488.0" prefHeight="123.0" prefWidth="579.0" />
                            </children></AnchorPane>
                      </content>
                   </TitledPane>
@@ -417,6 +398,53 @@
                         <AnchorPane minHeight="0.0" minWidth="0.0" />
                      </content>
                   </TitledPane>
+                <TitledPane animated="false" text="Datos personales">
+                  <content>
+                    <AnchorPane>
+                           <children>
+                              <GridPane id="datosPacientes" alignment="CENTER" prefHeight="120.0" prefWidth="943.0">
+                                <columnConstraints>
+                                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="139.0" minWidth="10.0" prefWidth="114.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="235.0" minWidth="10.0" prefWidth="142.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="182.0" minWidth="10.0" prefWidth="92.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="270.0" minWidth="10.0" prefWidth="195.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="169.0" minWidth="0.0" prefWidth="112.0" />
+                                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="283.0" minWidth="10.0" prefWidth="283.0" />
+                                </columnConstraints>
+                                <rowConstraints>
+                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                </rowConstraints>
+                                 <children>
+                                    <Label fx:id="labTipoIdentificacion2" text="Tipo identificación " GridPane.halignment="RIGHT" />
+                                    <Label fx:id="labTelefonoFijo" text="Teléfono Fijo " GridPane.halignment="RIGHT" GridPane.rowIndex="1" />
+                                    <Label fx:id="labTipoUsuario" text="Tipo Usuario " GridPane.halignment="RIGHT" GridPane.rowIndex="2" />
+                                    <Label fx:id="labDepartamento" text="Departamento " GridPane.halignment="RIGHT" GridPane.rowIndex="3" />
+                                    <Label fx:id="labIdentificacion2" text="Identificación " GridPane.columnIndex="2" GridPane.halignment="RIGHT" />
+                                    <Label fx:id="labCelular" text="Celular " GridPane.columnIndex="2" GridPane.halignment="RIGHT" GridPane.rowIndex="1" />
+                                    <Label fx:id="labGenero" text="Genero " GridPane.columnIndex="2" GridPane.halignment="RIGHT" GridPane.rowIndex="2" />
+                                    <Label fx:id="labMunicipio" text="Municipio " GridPane.columnIndex="2" GridPane.halignment="RIGHT" GridPane.rowIndex="3" />
+                                    <Label fx:id="labDireccion" text="Dirección " GridPane.columnIndex="4" GridPane.halignment="RIGHT" GridPane.rowIndex="1" />
+                                    <Label fx:id="labFechaNacimiento" text="Fecha nacimiento " GridPane.columnIndex="4" GridPane.halignment="RIGHT" GridPane.rowIndex="2" />
+                                    <Label fx:id="labZona" text="Zona " GridPane.columnIndex="4" GridPane.halignment="RIGHT" GridPane.rowIndex="3" />
+                                    <TextField fx:id="textTipoIdentificacion2" editable="false" prefHeight="25.0" prefWidth="155.0" GridPane.columnIndex="1" />
+                                    <TextField fx:id="textIdentificacion2" editable="false" GridPane.columnIndex="3" />
+                                    <TextField fx:id="textTipoUsuario" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                                    <TextField fx:id="textGenero" GridPane.columnIndex="3" GridPane.rowIndex="2" />
+                                    <TextField fx:id="textDepartamento" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                                    <TextField fx:id="textMunicipio" GridPane.columnIndex="3" GridPane.rowIndex="3" />
+                                    <TextField fx:id="textZona" GridPane.columnIndex="5" GridPane.rowIndex="3" />
+                                    <TextField fx:id="textTelefonoFijo" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                                    <TextField fx:id="textCelular" GridPane.columnIndex="3" GridPane.rowIndex="1" />
+                                    <TextField fx:id="textDireccion" GridPane.columnIndex="5" GridPane.rowIndex="1" />
+                                    <DatePicker fx:id="datePickerFechaNacimiento" nodeOrientation="LEFT_TO_RIGHT" prefHeight="25.0" prefWidth="284.0" GridPane.columnIndex="5" GridPane.rowIndex="2" />
+                                 </children>
+                              </GridPane>
+                           </children></AnchorPane>
+                  </content>
+                </TitledPane>
               </panes>
             </Accordion>
          </center>

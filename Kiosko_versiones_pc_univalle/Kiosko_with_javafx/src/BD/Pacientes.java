@@ -21,75 +21,79 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author Familia
+ * @author migma
  */
 @Entity
-@Table(catalog = "kiosko", schema = "")
+@Table(name = "pacientes")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Pacientes.findAll", query = "SELECT p FROM Pacientes p"),
-    @NamedQuery(name = "Pacientes.findByTipoid", query = "SELECT p FROM Pacientes p WHERE p.pacientesPK.tipoid = :tipoid"),
-    @NamedQuery(name = "Pacientes.findByIdentificacion", query = "SELECT p FROM Pacientes p WHERE p.pacientesPK.identificacion = :identificacion"),
-    @NamedQuery(name = "Pacientes.findByNombre1", query = "SELECT p FROM Pacientes p WHERE p.nombre1 = :nombre1"),
-    @NamedQuery(name = "Pacientes.findByNombre2", query = "SELECT p FROM Pacientes p WHERE p.nombre2 = :nombre2"),
-    @NamedQuery(name = "Pacientes.findByApellido1", query = "SELECT p FROM Pacientes p WHERE p.apellido1 = :apellido1"),
-    @NamedQuery(name = "Pacientes.findByApellido2", query = "SELECT p FROM Pacientes p WHERE p.apellido2 = :apellido2"),
-    @NamedQuery(name = "Pacientes.findByDireccion", query = "SELECT p FROM Pacientes p WHERE p.direccion = :direccion"),
-    @NamedQuery(name = "Pacientes.findByTelFijo", query = "SELECT p FROM Pacientes p WHERE p.telFijo = :telFijo"),
-    @NamedQuery(name = "Pacientes.findByCelular", query = "SELECT p FROM Pacientes p WHERE p.celular = :celular"),
-    @NamedQuery(name = "Pacientes.findByAdministradora", query = "SELECT p FROM Pacientes p WHERE p.administradora = :administradora"),
-    @NamedQuery(name = "Pacientes.findByTipousuario", query = "SELECT p FROM Pacientes p WHERE p.tipousuario = :tipousuario"),
-    @NamedQuery(name = "Pacientes.findByGenero", query = "SELECT p FROM Pacientes p WHERE p.genero = :genero"),
-    @NamedQuery(name = "Pacientes.findByFNacimiento", query = "SELECT p FROM Pacientes p WHERE p.fNacimiento = :fNacimiento"),
-    @NamedQuery(name = "Pacientes.findByDepartamento", query = "SELECT p FROM Pacientes p WHERE p.departamento = :departamento"),
-    @NamedQuery(name = "Pacientes.findByMunicipio", query = "SELECT p FROM Pacientes p WHERE p.municipio = :municipio"),
-    @NamedQuery(name = "Pacientes.findByZona", query = "SELECT p FROM Pacientes p WHERE p.zona = :zona"),
-    @NamedQuery(name = "Pacientes.findByEstado", query = "SELECT p FROM Pacientes p WHERE p.estado = :estado"),
-    @NamedQuery(name = "Pacientes.findByFModificacion", query = "SELECT p FROM Pacientes p WHERE p.fModificacion = :fModificacion"),
-    @NamedQuery(name = "Pacientes.findByFCreacion", query = "SELECT p FROM Pacientes p WHERE p.fCreacion = :fCreacion")})
+    @NamedQuery(name = "Pacientes.findAll", query = "SELECT p FROM Pacientes p")
+    , @NamedQuery(name = "Pacientes.findByTipoid", query = "SELECT p FROM Pacientes p WHERE p.pacientesPK.tipoid = :tipoid")
+    , @NamedQuery(name = "Pacientes.findByIdentificacion", query = "SELECT p FROM Pacientes p WHERE p.pacientesPK.identificacion = :identificacion")
+    , @NamedQuery(name = "Pacientes.findByNombre1", query = "SELECT p FROM Pacientes p WHERE p.nombre1 = :nombre1")
+    , @NamedQuery(name = "Pacientes.findByNombre2", query = "SELECT p FROM Pacientes p WHERE p.nombre2 = :nombre2")
+    , @NamedQuery(name = "Pacientes.findByApellido1", query = "SELECT p FROM Pacientes p WHERE p.apellido1 = :apellido1")
+    , @NamedQuery(name = "Pacientes.findByApellido2", query = "SELECT p FROM Pacientes p WHERE p.apellido2 = :apellido2")
+    , @NamedQuery(name = "Pacientes.findByDireccion", query = "SELECT p FROM Pacientes p WHERE p.direccion = :direccion")
+    , @NamedQuery(name = "Pacientes.findByTelFijo", query = "SELECT p FROM Pacientes p WHERE p.telFijo = :telFijo")
+    , @NamedQuery(name = "Pacientes.findByCelular", query = "SELECT p FROM Pacientes p WHERE p.celular = :celular")
+    , @NamedQuery(name = "Pacientes.findByAdministradora", query = "SELECT p FROM Pacientes p WHERE p.administradora = :administradora")
+    , @NamedQuery(name = "Pacientes.findByTipousuario", query = "SELECT p FROM Pacientes p WHERE p.tipousuario = :tipousuario")
+    , @NamedQuery(name = "Pacientes.findByGenero", query = "SELECT p FROM Pacientes p WHERE p.genero = :genero")
+    , @NamedQuery(name = "Pacientes.findByFNacimiento", query = "SELECT p FROM Pacientes p WHERE p.fNacimiento = :fNacimiento")
+    , @NamedQuery(name = "Pacientes.findByDepartamento", query = "SELECT p FROM Pacientes p WHERE p.departamento = :departamento")
+    , @NamedQuery(name = "Pacientes.findByMunicipio", query = "SELECT p FROM Pacientes p WHERE p.municipio = :municipio")
+    , @NamedQuery(name = "Pacientes.findByZona", query = "SELECT p FROM Pacientes p WHERE p.zona = :zona")
+    , @NamedQuery(name = "Pacientes.findByEstado", query = "SELECT p FROM Pacientes p WHERE p.estado = :estado")
+    , @NamedQuery(name = "Pacientes.findByFModificacion", query = "SELECT p FROM Pacientes p WHERE p.fModificacion = :fModificacion")
+    , @NamedQuery(name = "Pacientes.findByFCreacion", query = "SELECT p FROM Pacientes p WHERE p.fCreacion = :fCreacion")})
 public class Pacientes implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @EmbeddedId
     protected PacientesPK pacientesPK;
-    @Column(length = 30)
+    @Column(name = "nombre1")
     private String nombre1;
-    @Column(length = 30)
+    @Column(name = "nombre2")
     private String nombre2;
-    @Column(length = 30)
+    @Column(name = "apellido1")
     private String apellido1;
-    @Column(length = 30)
+    @Column(name = "apellido2")
     private String apellido2;
-    @Column(length = 100)
+    @Column(name = "direccion")
     private String direccion;
-    @Column(name = "tel_fijo", length = 20)
+    @Column(name = "tel_fijo")
     private String telFijo;
-    @Column(length = 20)
+    @Column(name = "celular")
     private String celular;
     @Basic(optional = false)
-    @Column(nullable = false, length = 6)
+    @Column(name = "administradora")
     private String administradora;
+    @Column(name = "tipousuario")
     private Integer tipousuario;
-    @Column(length = 1)
+    @Column(name = "genero")
     private String genero;
     @Column(name = "f_nacimiento")
     @Temporal(TemporalType.DATE)
     private Date fNacimiento;
     @Basic(optional = false)
-    @Column(nullable = false, length = 2)
+    @Column(name = "departamento")
     private String departamento;
     @Basic(optional = false)
-    @Column(nullable = false, length = 5)
+    @Column(name = "municipio")
     private String municipio;
-    @Column(length = 1)
+    @Column(name = "zona")
     private String zona;
     @Lob
+    @Column(name = "foto")
     private byte[] foto;
     @Lob
+    @Column(name = "huella")
     private byte[] huella;
     @Lob
+    @Column(name = "huella2")
     private byte[] huella2;
-    @Column(length = 1)
+    @Column(name = "estado")
     private String estado;
     @Column(name = "f_modificacion")
     @Temporal(TemporalType.TIMESTAMP)
