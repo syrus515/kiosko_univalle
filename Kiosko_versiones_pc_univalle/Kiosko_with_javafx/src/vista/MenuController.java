@@ -379,6 +379,7 @@ private static final int Y_MAX_RESP = 3000;
     @FXML
     private void buscarMedicion()
     {
+        programaPrincipal.setUsuarioABuscar(textIdentificacion1.getText());
         programaPrincipal.mostrarVentanaReproduccion();
     }
 

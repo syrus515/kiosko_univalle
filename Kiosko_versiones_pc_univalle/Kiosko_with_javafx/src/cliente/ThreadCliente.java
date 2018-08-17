@@ -60,7 +60,7 @@ public class ThreadCliente extends Thread {
             //socketCliente = new Socket("181.142.112.79", PUERTO); // puerto del servidor por omisiÃ³n
             //socketCliente = new Socket("192.168.43.110", PUERTO); // puerto del servidor por omisiÃ³n
             System.out.println("Arrancando el cliente."); 
-            socketCliente = new Socket("181.206.10.190", PUERTO); // puerto del servidor por omisiÃ³n, 192.168.43.115
+            socketCliente = new Socket("169.254.212.48", PUERTO); // puerto del servidor por omisiÃ³n, 192.168.43.115 - 181.206.10.190
             connectionState.tcpSetState(true);
         } catch (java.lang.NumberFormatException e1) {
             // No se puede arrancar el cliente porque se introdujo un nÃºmero de puerto que no es entero.

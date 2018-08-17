@@ -10,7 +10,7 @@
 
 <VBox prefHeight="400.0" prefWidth="640.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="vista.BusquedaMedicionController">
   <children>
-    <AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="400.0" prefWidth="575.0" VBox.vgrow="ALWAYS">
+    <AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="408.0" prefWidth="640.0" VBox.vgrow="ALWAYS">
          <children>
             <DatePicker fx:id="desdeReproduccion" layoutX="59.0" layoutY="37.0" prefHeight="51.0" prefWidth="192.0" />
             <DatePicker fx:id="hastaReproduccion" layoutX="394.0" layoutY="38.0" prefHeight="51.0" prefWidth="192.0" />

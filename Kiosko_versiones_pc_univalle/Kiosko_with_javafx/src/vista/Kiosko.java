@@ -28,6 +28,19 @@ public class Kiosko extends Application {
     WebCam webCam = null;
     String usuario=null, nombre=null, rol=null;
     
+    String usuarioABuscar;
+    
+    public void setUsuarioABuscar(String usuario)
+    {
+        this.usuarioABuscar= usuario;    
+    }
+    
+    public String getUsuarioABuscar()
+    {
+        return this.usuarioABuscar;
+    }
+   
+    
     @Override
     public void start(Stage stage) throws Exception {
         primaryStage = stage;
@@ -106,14 +119,16 @@ public class Kiosko extends Application {
             VBox menu = (VBox) loader.load();
             Stage ventana = new Stage();
             ventana.initOwner(ventanaPrincipal);
-            ventana.setTitle("Busqueda medicones");
+            ventana.setTitle("Busqueda mediciones");
             
             
             Scene scene = new Scene(menu);
             scene.getStylesheets().add("/vista/menu.css");
             ventana.setScene(scene);
             BusquedaMedicionController controller = loader.getController();
-            //controller.setProgramaPrincipal(this, usuario, nombre, rol);
+            
+            controller.setProgramaPrincipal(this);
+            controller.llenarTabla();;
             ventana.show();
             ventana.setResizable(false);
             Rectangle2D ventanaPrimariaLimites = new Rectangle2D(640, 300, 640, 420);
@@ -122,6 +137,8 @@ public class Kiosko extends Application {
             ventana.setWidth(ventanaPrimariaLimites.getWidth());
             ventana.setHeight(ventanaPrimariaLimites.getHeight());
             //primaryStage.close();
+            
+            //controller.setProgramaPrincipal(this);
             ventana.setOnCloseRequest(new EventHandler<WindowEvent>(){            
             @Override public void handle(WindowEvent event) {
                 //event.consume(); //Consumar el evento
