@@ -1,4 +1,5 @@
 package vista;
+import BD.Medicion;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -28,7 +29,18 @@ public class Kiosko extends Application {
     WebCam webCam = null;
     String usuario=null, nombre=null, rol=null;
     
-    String usuarioABuscar;
+    private String usuarioABuscar;
+    private Medicion medicionReproducir;
+    
+    public void setMedicionReproducir(Medicion medicion)
+    {
+        this.medicionReproducir= medicion;    
+    }
+    
+    public Medicion getMedicionReproducir()
+    {
+        return this.medicionReproducir;
+    }
     
     public void setUsuarioABuscar(String usuario)
     {
@@ -128,7 +140,8 @@ public class Kiosko extends Application {
             BusquedaMedicionController controller = loader.getController();
             
             controller.setProgramaPrincipal(this);
-            controller.llenarTabla();;
+            controller.setStage(ventana);
+            controller.llenarTabla();
             ventana.show();
             ventana.setResizable(false);
             Rectangle2D ventanaPrimariaLimites = new Rectangle2D(640, 300, 640, 420);

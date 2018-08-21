@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox prefHeight="400.0" prefWidth="640.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="vista.BusquedaMedicionController">
+<VBox prefHeight="400.0" prefWidth="640.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="vista.BusquedaMedicionController">
   <children>
     <AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="408.0" prefWidth="640.0" VBox.vgrow="ALWAYS">
          <children>
@@ -18,11 +18,14 @@
             <Label layoutX="394.0" layoutY="12.0" text="Hasta" />
             <TableView fx:id="tablaReproduccion" layoutX="59.0" layoutY="104.0" prefHeight="213.0" prefWidth="528.0">
               <columns>
-                <TableColumn prefWidth="75.0" text="C1" />
-                <TableColumn prefWidth="75.0" text="C2" />
+                <TableColumn id="columnaFecha" fx:id="columnaFecha" prefWidth="66.0" text="Fecha" />
+                <TableColumn id="columnaDetalles" fx:id="columnaDetalles" prefWidth="175.0" text="Detalles" />
+                  <TableColumn id="columnaIntervalo" fx:id="columnaIntervalo" minWidth="0.0" prefWidth="63.0" text="Intervalo" />
+                  <TableColumn id="ColumnaMuestra" fx:id="ColumnaMuestra" prefWidth="116.0" text="Duracion Muestra" />
+                  <TableColumn id="ColumnaExamen" fx:id="ColumnaExamen" prefWidth="107.0" text="Duracion Examen" />
               </columns>
             </TableView>
-            <Button fx:id="reproducir" layoutX="434.0" layoutY="328.0" mnemonicParsing="false" prefHeight="51.0" prefWidth="153.0" text="Reproducir" />
+            <Button fx:id="reproducir" layoutX="434.0" layoutY="328.0" mnemonicParsing="false" onAction="#cerrarYReproducir" prefHeight="51.0" prefWidth="153.0" text="Reproducir" />
          </children>
     </AnchorPane>
   </children>

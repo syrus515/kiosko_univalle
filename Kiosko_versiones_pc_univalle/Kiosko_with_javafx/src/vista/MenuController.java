@@ -44,11 +44,13 @@ import javafx.scene.control.Alert.AlertType;
 import cliente.AdminDevice;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
+import java.util.StringTokenizer;
 import java.util.Vector;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.ExecutorService;
@@ -370,6 +372,8 @@ private static final int Y_MAX_RESP = 3000;
     private Label labFechaNacimiento;
     @FXML
     private Label labZona;
+    @FXML
+    private Button botonReproducir;
     
     @FXML
     private void cerrarPrograma() {
@@ -381,6 +385,25 @@ private static final int Y_MAX_RESP = 3000;
     {
         programaPrincipal.setUsuarioABuscar(textIdentificacion1.getText());
         programaPrincipal.mostrarVentanaReproduccion();
+    }
+    
+    @FXML
+    private void reproducirMedicion()
+    {
+        Vector<Integer> reproSPO2= new Vector<Integer>(0,1);
+        
+        Medicion med= this.programaPrincipal.getMedicionReproducir();
+        System.out.println(med.getOndaSPO2());
+        String SPO2= med.getOndaSPO2().substring(1, med.getOndaSPO2().length()-1);
+        StringTokenizer tokens= new StringTokenizer(SPO2, ", ");
+        while(tokens.hasMoreTokens())
+        {
+            reproSPO2.add(Integer.parseInt(tokens.nextToken()));
+        }
+        System.out.println(reproSPO2.toString());
+                
+        //Vector<Integer> repSPO2=  med.getOndaSPO2();
+    
     }
 
     @FXML
@@ -903,13 +926,7 @@ private static final int Y_MAX_RESP = 3000;
     public void almacenarSenales()
     {
         
-        /*Map properties = new HashMap();
-        properties.put("identificacion", "1111111");
-
-                    
-        em = Persistence.createEntityManagerFactory("KioskoPU").createEntityManager(properties);
-        em.getTransaction().begin();*/
-        
+       
             em = Persistence.createEntityManagerFactory("KioskoPU").createEntityManager();
             em.getTransaction().begin();
             List<Pacientes> list = em.createNamedQuery("Pacientes.findAll", Pacientes.class).getResultList();
@@ -917,8 +934,7 @@ private static final int Y_MAX_RESP = 3000;
             {
                 Pacientes obj = list.get(i);
                 if (obj.getPacientesPK().getIdentificacion().equals(textIdentificacion1.getText()))
-                {
-                    
+                {                    
                     try
                     {
                         Medicion med= new Medicion();
@@ -930,7 +946,13 @@ private static final int Y_MAX_RESP = 3000;
                         med.setDuracionMuestra(1);
                         med.setDuracionExamen(1);
                         med.setDetalles("Medicion de prueba, señal importante");
-                        Date today = Calendar.getInstance().getTime();
+                        
+                        java.util.Date d = new java.util.Date();  
+                        SimpleDateFormat plantilla = new SimpleDateFormat("dd/MM/yyyy H:mm");
+                        String tiempo = plantilla.format(d);
+                        java.sql.Date today = new java.sql.Date(d.getTime());
+                        //Date today = Calendar.getInstance().getTime();
+                        
                         med.setFecha(today);
                         med.setOndaSPO2(vSPO2.toString());
                         med.setOndaECG1(vECG1.toString());
@@ -940,7 +962,7 @@ private static final int Y_MAX_RESP = 3000;
                         med.setPresionDiastolica("236");
                         med.setPulso("237");
                         med.setMed("238");
-                        
+                                                
                         em.persist(med);
                     }catch(Exception e)
                     {
@@ -949,9 +971,8 @@ private static final int Y_MAX_RESP = 3000;
                 }
             }
             
-            em.getTransaction().commit();
+            em.getTransaction().commit();       
         
-        //Pacientes pacienteReferenciado= em.createNamedQuery("Pacientes.findByIdentificacion", Pacientes.class).getSingleResult();
         
         
 
