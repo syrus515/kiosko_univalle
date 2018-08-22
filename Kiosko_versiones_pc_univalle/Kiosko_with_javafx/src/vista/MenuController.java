@@ -1182,7 +1182,7 @@ private static final int Y_MAX_RESP = 3000;
     
     public void pintarHR(int hr) {
            if (hr < 1 || hr > 999) {
-               ecgTextField.setText("000");               
+               ecgTextField.setText("---");               
            }else{
                ecgTextField.setText(Integer.toString(hr));
            }
@@ -1211,12 +1211,12 @@ private static final int Y_MAX_RESP = 3000;
     }
     public void pintarSPO2(int spo2Oxi, int spo2Hr) {
         if (spo2Oxi < 1 || spo2Oxi > 150) {
-            spo2OxiTextField.setText("000");
+            spo2OxiTextField.setText("---");
         } else {
             spo2OxiTextField.setText(Integer.toString(spo2Oxi));
         }
         if (spo2Hr < 1 || spo2Hr > 999) {
-            spo2HrTextField.setText("000");
+            spo2HrTextField.setText("---");
         } else {
             spo2HrTextField.setText(Integer.toString(spo2Hr));
         }
@@ -1254,7 +1254,15 @@ private static final int Y_MAX_RESP = 3000;
 //        gc.setStroke(Color.BLACK);
     }
     public void pintarRespiracion(int respRate) {
-        respTextField.setText(Integer.toString(respRate));
+        if (respRate== 0)
+        {
+            respTextField.setText("---");              
+            
+        }else
+        {
+            respTextField.setText(Integer.toString(respRate));
+        }
+        
         
 //        gc.clearRect(1285+1, 460+1, 205-2, 140-2);
 //        gc.setFill(Color.BLUE);
@@ -1294,25 +1302,25 @@ private static final int Y_MAX_RESP = 3000;
         gc.setFont(fontLarge);
         if (presSist < 1 || presSist > 999) {
 //            gc.fillText("000", 1800, 160);
-            gc.fillText("000", 1660, 100);
+            gc.fillText("---", 1660, 100);
         } else {
             gc.fillText(Integer.toString(presSist), 1660, 100);
         }
         if (presDias < 1 || presDias > 999) {
 //            gc.fillText("000", 1800, 100);
-            gc.fillText("000", 1660, 160);
+            gc.fillText("---", 1660, 160);
         } else {
             gc.fillText(Integer.toString(presDias), 1660, 160);
         }
         if (presRate < 1 || presRate > 999) {
 //            gc.fillText("000", 1660, 100);
-            gc.fillText("000", 1800, 100);
+            gc.fillText("---", 1800, 100);
         } else {
             gc.fillText(Integer.toString(presRate), 1800, 100);
         }
         if (presMed < 1 || presMed > 999) {
 //            gc.fillText("000", 1660, 160);
-            gc.fillText("000", 1800, 160);
+            gc.fillText("---", 1800, 160);
         } else {
             gc.fillText(Integer.toString(presMed), 1800, 160);
         }
