@@ -261,6 +261,9 @@ private static final int Y_MAX_RESP = 3000;
     private ConcurrentLinkedQueue<Number> dataECG2 = new ConcurrentLinkedQueue<Number>();
     private ConcurrentLinkedQueue<Number> dataSPO2 = new ConcurrentLinkedQueue<Number>();
     private ConcurrentLinkedQueue<Number> dataRESP = new ConcurrentLinkedQueue<Number>();
+    
+    private ConcurrentLinkedQueue<Number> reprodSPO2 = new ConcurrentLinkedQueue<Number>();
+    
     private ExecutorService executor;
     private AddToQueue addToQueue;
     private QueueParametros queueParam;
@@ -387,24 +390,6 @@ private static final int Y_MAX_RESP = 3000;
         programaPrincipal.mostrarVentanaReproduccion();
     }
     
-    @FXML
-    private void reproducirMedicion()
-    {
-        Vector<Integer> reproSPO2= new Vector<Integer>(0,1);
-        
-        Medicion med= this.programaPrincipal.getMedicionReproducir();
-        System.out.println(med.getOndaSPO2());
-        String SPO2= med.getOndaSPO2().substring(1, med.getOndaSPO2().length()-1);
-        StringTokenizer tokens= new StringTokenizer(SPO2, ", ");
-        while(tokens.hasMoreTokens())
-        {
-            reproSPO2.add(Integer.parseInt(tokens.nextToken()));
-        }
-        System.out.println(reproSPO2.toString());
-                
-        //Vector<Integer> repSPO2=  med.getOndaSPO2();
-    
-    }
 
     @FXML
     private void buscarPaciente() {
@@ -1809,6 +1794,62 @@ public void customResize(TableView<?> view) {
                 col.setPrefWidth(col.getWidth()+((tableWidth-width.get())/view.getColumns().size()));
             });
         }
+    }
+
+
+public void reproducirSPO2()
+{
+    
+         try {
+                    Thread.sleep(100);
+                } catch (InterruptedException ex) {
+                    Logger.getLogger(MenuController.class.getName()).log(Level.SEVERE, null, ex);
+                }
+        for (int i = 0; i < 20; i++) { //-- add 20 numbers to the plot+
+           
+            
+            if (reprodSPO2.isEmpty()) break;
+            series1.getData().add(new XYChart.Data<>(xSeriesData_spo2++, reprodSPO2.remove()));
+        }
+        // remove points to keep us at no more than MAX_DATA_POINTS
+        if (series1.getData().size() > MAX_DATA_POINTS_SPO2) {
+            series1.getData().remove(0, series1.getData().size() - MAX_DATA_POINTS_SPO2);
+        }
+        // update 
+        xAxis.setLowerBound(xSeriesData_spo2-MAX_DATA_POINTS_SPO2);
+        xAxis.setUpperBound(xSeriesData_spo2-1);
+    
+}
+
+    @FXML
+    private void reproducirMedicion()
+    {
+        
+        Medicion med= this.programaPrincipal.getMedicionReproducir();
+        System.out.println(med.getOndaSPO2());
+        String SPO2= med.getOndaSPO2().substring(1, med.getOndaSPO2().length()-1);
+        StringTokenizer tokens= new StringTokenizer(SPO2, ", ");
+        while(tokens.hasMoreTokens())
+        {
+            reprodSPO2.add(Integer.parseInt(tokens.nextToken()));
+        }
+        
+        // Every frame to take any data from queue and add to chart
+        new AnimationTimer() {
+            @Override public void handle(long now) {
+                
+                
+                reproducirSPO2();
+
+            }
+        }.start();
+        
+                
+        
+        
+                
+        //Vector<Integer> repSPO2=  med.getOndaSPO2();
+    
     }
     
 //    public void datos() {
