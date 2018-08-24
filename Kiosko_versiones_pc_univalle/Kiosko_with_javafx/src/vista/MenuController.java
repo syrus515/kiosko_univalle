@@ -51,6 +51,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 import java.util.StringTokenizer;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.Vector;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.ExecutorService;
@@ -1800,14 +1802,8 @@ public void customResize(TableView<?> view) {
 public void reproducirSPO2()
 {
     
-         try {
-                    Thread.sleep(100);
-                } catch (InterruptedException ex) {
-                    Logger.getLogger(MenuController.class.getName()).log(Level.SEVERE, null, ex);
-                }
-        for (int i = 0; i < 20; i++) { //-- add 20 numbers to the plot+
+        for (int i = 0; i < 3; i++) { //-- add 20 numbers to the plot+
            
-            
             if (reprodSPO2.isEmpty()) break;
             series1.getData().add(new XYChart.Data<>(xSeriesData_spo2++, reprodSPO2.remove()));
         }
@@ -1835,21 +1831,56 @@ public void reproducirSPO2()
         }
         
         // Every frame to take any data from queue and add to chart
-        new AnimationTimer() {
-            @Override public void handle(long now) {
-                
+        /*new AnimationTimer() {
+            @Override public void handle(long now) {                
                 
                 reproducirSPO2();
 
             }
-        }.start();
+        }.start();*/
+        //AddToQueueRepro hilo= new AddToQueueRepro();
+        //hilo.run();
         
+        Timer timer;
+        timer = new Timer();
+
+        TimerTask task = new TimerTask() {
+        
+        @Override
+        public void run()
+        {
+            reproducirSPO2();
+             try {
+               if(reprodSPO2.isEmpty())
+               {
+                   this.finalize();
+               }
+            } catch (Throwable ex) {
+                Logger.getLogger(MenuController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        };
+        // Empezamos dentro de 10ms y luego lanzamos la tarea cada 1000ms
+        timer.schedule(task, 0, 30);
+    }
                 
         
         
                 
         //Vector<Integer> repSPO2=  med.getOndaSPO2();
     
+    
+    
+    
+    private class AddToQueueRepro extends Thread {
+        public void run() {
+                while(!reprodSPO2.isEmpty())
+                {
+                    reproducirSPO2();                
+                
+
+                }
+        }
     }
     
 //    public void datos() {
