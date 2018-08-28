@@ -14,6 +14,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinColumns;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
@@ -25,7 +26,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author Miguel Askar
+ * @author migma
  */
 @Entity
 @Table(name = "medicion")
@@ -43,7 +44,7 @@ public class Medicion implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Basic(optional = false)
     @Column(name = "id")
     private Integer id;
@@ -96,27 +97,22 @@ public class Medicion implements Serializable {
     @Lob
     @Column(name = "med")
     private String med;
-    @Basic(optional = false)
-    @Lob
-    @Column(name = "ECG")
-    private String ecg;
-    @Basic(optional = false)
-    @Lob
-    @Column(name = "SPO2")
-    private String spo2;
-    @Basic(optional = false)
-    @Lob
-    @Column(name = "HR")
-    private String hr;
-    @Basic(optional = false)
-    @Lob
-    @Column(name = "RESP")
-    private String resp;
-    @JoinColumn(name = "identificacion", referencedColumnName = "identificacion")
-    @ManyToOne(optional = false)
+    @JoinColumns({
+    @JoinColumn(name = "identificacion", referencedColumnName = "identificacion", nullable = false),
+    @JoinColumn(name = "identificacion", referencedColumnName = "identificacion", insertable = false, updatable = false)
+  })
+    
+    /*@JoinColumn(name = "identificacion", referencedColumnName = "identificacion", updatable=false)
+    @ManyToOne(optional = false)*/
     private Pacientes identificacion;
-    @JoinColumn(name = "tipoid", referencedColumnName = "tipoid")
-    @ManyToOne(optional = false)
+    
+    
+    /*@JoinColumn(name = "tipoid", referencedColumnName = "tipoid", updatable=false)
+    @ManyToOne(optional = false)*/
+    @JoinColumns({
+    @JoinColumn(name = "tipoid", referencedColumnName = "tipoid", nullable = false),
+    @JoinColumn(name = "tipoid", referencedColumnName = "tipoid", insertable = false, updatable = false)
+  })
     private Pacientes tipoid;
 
     public Medicion() {
@@ -126,7 +122,7 @@ public class Medicion implements Serializable {
         this.id = id;
     }
 
-    public Medicion(Integer id, String tipo, int intervalo, int duracionMuestra, int duracionExamen, String ondaSPO2, String ondaECG1, String ondaECG2, String ondaRESP, String presionSistolica, String presionDiastolica, String pulso, String med, String ecg, String spo2, String hr, String resp) {
+    public Medicion(Integer id, String tipo, int intervalo, int duracionMuestra, int duracionExamen, String ondaSPO2, String ondaECG1, String ondaECG2, String ondaRESP, String presionSistolica, String presionDiastolica, String pulso, String med) {
         this.id = id;
         this.tipo = tipo;
         this.intervalo = intervalo;
@@ -140,10 +136,6 @@ public class Medicion implements Serializable {
         this.presionDiastolica = presionDiastolica;
         this.pulso = pulso;
         this.med = med;
-        this.ecg = ecg;
-        this.spo2 = spo2;
-        this.hr = hr;
-        this.resp = resp;
     }
 
     public Integer getId() {
@@ -264,38 +256,6 @@ public class Medicion implements Serializable {
 
     public void setMed(String med) {
         this.med = med;
-    }
-
-    public String getEcg() {
-        return ecg;
-    }
-
-    public void setEcg(String ecg) {
-        this.ecg = ecg;
-    }
-
-    public String getSpo2() {
-        return spo2;
-    }
-
-    public void setSpo2(String spo2) {
-        this.spo2 = spo2;
-    }
-
-    public String getHr() {
-        return hr;
-    }
-
-    public void setHr(String hr) {
-        this.hr = hr;
-    }
-
-    public String getResp() {
-        return resp;
-    }
-
-    public void setResp(String resp) {
-        this.resp = resp;
     }
 
     public Pacientes getIdentificacion() {
