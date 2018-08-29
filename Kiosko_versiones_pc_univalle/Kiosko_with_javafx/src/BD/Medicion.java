@@ -14,6 +14,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinColumns;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
@@ -112,11 +113,22 @@ public class Medicion implements Serializable {
     @Lob
     @Column(name = "RESP")
     private String resp;
-    @JoinColumn(name = "identificacion", referencedColumnName = "identificacion")
-    @ManyToOne(optional = false)
+    @JoinColumns({
+    @JoinColumn(name = "identificacion", referencedColumnName = "identificacion", nullable = false),
+    @JoinColumn(name = "identificacion", referencedColumnName = "identificacion", insertable = false, updatable = false)
+  })
+    
+    /*@JoinColumn(name = "identificacion", referencedColumnName = "identificacion", updatable=false)
+    @ManyToOne(optional = false)*/
     private Pacientes identificacion;
-    @JoinColumn(name = "tipoid", referencedColumnName = "tipoid")
-    @ManyToOne(optional = false)
+    
+    
+    /*@JoinColumn(name = "tipoid", referencedColumnName = "tipoid", updatable=false)
+    @ManyToOne(optional = false)*/
+    @JoinColumns({
+    @JoinColumn(name = "tipoid", referencedColumnName = "tipoid", nullable = false),
+    @JoinColumn(name = "tipoid", referencedColumnName = "tipoid", insertable = false, updatable = false)
+  })
     private Pacientes tipoid;
 
     public Medicion() {

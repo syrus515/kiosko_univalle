@@ -44,6 +44,7 @@ import javafx.scene.control.Alert.AlertType;
 import cliente.AdminDevice;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -941,13 +942,13 @@ private static final int Y_MAX_RESP = 3000;
                         med.setDuracionExamen(1);
                         med.setDetalles(detallesMedicion.getText());
                         
-                        java.util.Date d = new java.util.Date();  
-                        SimpleDateFormat plantilla = new SimpleDateFormat("dd/MM/yyyy H:mm");
-                        String tiempo = plantilla.format(d);
-                        java.sql.Date today = new java.sql.Date(d.getTime());
-                        //Date today = Calendar.getInstance().getTime();
                         
-                        med.setFecha(today);
+                        //Aquí colocas tu objeto tipo Date
+                        Date date= new Date();
+                        date =  new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(date));                        
+                        java.sql.Timestamp fechaGuardar = new java.sql.Timestamp(date.getTime());                       
+                        
+                        med.setFecha(fechaGuardar); 
                         med.setOndaSPO2(vSPO2.toString());
                         med.setOndaECG1(vECG1.toString());
                         med.setOndaECG2(vECG2.toString());
@@ -1848,49 +1849,53 @@ public void reproducirSPO2()
 
     @FXML
     private void reproducirMedicion()
-    {
-        
-        Medicion med= this.programaPrincipal.getMedicionReproducir();
-        System.out.println(med.getOndaSPO2());
-        String SPO2= med.getOndaSPO2().substring(1, med.getOndaSPO2().length()-1);
-        StringTokenizer tokens= new StringTokenizer(SPO2, ", ");
-        while(tokens.hasMoreTokens())
-        {
+    {            
+            Medicion med= this.programaPrincipal.getMedicionReproducir();
+            System.out.println(med.getOndaSPO2());
+            String SPO2= med.getOndaSPO2().substring(1, med.getOndaSPO2().length()-1);
+            StringTokenizer tokens= new StringTokenizer(SPO2, ", ");
+            while(tokens.hasMoreTokens())
+            {
             reprodSPO2.add(Integer.parseInt(tokens.nextToken()));
-        }
-        
-        // Every frame to take any data from queue and add to chart
-        /*new AnimationTimer() {
-            @Override public void handle(long now) {                
-                
-                reproducirSPO2();
-
             }
-        }.start();*/
-        //AddToQueueRepro hilo= new AddToQueueRepro();
-        //hilo.run();
-        
-        Timer timer;
-        timer = new Timer();
-
-        TimerTask task = new TimerTask() {
-        
-        @Override
-        public void run()
-        {
+            
+            // Every frame to take any data from queue and add to chart
+            /*new AnimationTimer() {
+            @Override public void handle(long now) {
+            
             reproducirSPO2();
-             try {
-               if(reprodSPO2.isEmpty())
-               {
-                   this.finalize();
-               }
-            } catch (Throwable ex) {
-                Logger.getLogger(MenuController.class.getName()).log(Level.SEVERE, null, ex);
+            
             }
-        }
-        };
-        // Empezamos dentro de 0ms y luego lanzamos la tarea cada 30ms
-        timer.schedule(task, 0, 30);
+            }.start();*/
+            //AddToQueueRepro hilo= new AddToQueueRepro();
+            //hilo.run();
+            
+            Timer timer;
+            timer = new Timer();
+            
+            TimerTask task = new TimerTask() 
+            {
+            
+                @Override
+                public void run()
+                {
+                    reproducirSPO2();
+                    try 
+                    {
+                        if(reprodSPO2.isEmpty())
+                        {
+                            this.finalize();
+                        }
+                    } catch (Throwable ex) 
+                    {
+                        Logger.getLogger(MenuController.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+            };
+            // Empezamos dentro de 0ms y luego lanzamos la tarea cada 30ms
+            timer.schedule(task, 0, 30);
+  
+ 
     }
                 
         
