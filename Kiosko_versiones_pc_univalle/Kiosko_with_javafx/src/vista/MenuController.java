@@ -78,6 +78,7 @@ import javafx.scene.control.ChoiceDialog;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextArea;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.text.Font;
@@ -234,13 +235,17 @@ public class MenuController implements Initializable {
     
     //vectores para guardar datos de la medicion
     Vector<Integer> vSPO2 = new Vector(0,1);
-    Vector<Integer> vECG1 = new Vector(0,1);;
-    Vector<Integer> vECG2 = new Vector(0,1);;
-    Vector<Integer> vRESP = new Vector(0,1);;
-    Vector<Integer> vsistolica = new Vector(0,1);;
-    Vector<Integer> vdiastolica = new Vector(0,1);;
-    Vector<Integer> vpulso = new Vector(0,1);;
-    Vector<Integer> vmed = new Vector(0,1);;
+    Vector<Integer> vECG1 = new Vector(0,1);
+    Vector<Integer> vECG2 = new Vector(0,1);
+    Vector<Integer> vRESP = new Vector(0,1);
+    Vector<Integer> vsistolica = new Vector(0,1);
+    Vector<Integer> vdiastolica = new Vector(0,1);
+    Vector<Integer> vpulso = new Vector(0,1);
+    Vector<Integer> vmed = new Vector(0,1);
+    Vector<Integer> vECG = new Vector(0,1);
+    Vector<Integer> vSPO2text = new Vector(0,1);
+    Vector<Integer> vHR = new Vector(0,1);
+    Vector<Integer> vRESPtext = new Vector(0,1);
     
     
     private static final int MAX_DATA_POINTS_SPO2 = 500;
@@ -379,6 +384,8 @@ private static final int Y_MAX_RESP = 3000;
     private Label labZona;
     @FXML
     private Button botonReproducir;
+    @FXML
+    private TextArea detallesMedicion;
     
     @FXML
     private void cerrarPrograma() {
@@ -932,7 +939,7 @@ private static final int Y_MAX_RESP = 3000;
                         med.setIntervalo(0);
                         med.setDuracionMuestra(1);
                         med.setDuracionExamen(1);
-                        med.setDetalles("Medicion de prueba, señal importante");
+                        med.setDetalles(detallesMedicion.getText());
                         
                         java.util.Date d = new java.util.Date();  
                         SimpleDateFormat plantilla = new SimpleDateFormat("dd/MM/yyyy H:mm");
@@ -945,10 +952,14 @@ private static final int Y_MAX_RESP = 3000;
                         med.setOndaECG1(vECG1.toString());
                         med.setOndaECG2(vECG2.toString());
                         med.setOndaRESP(vRESP.toString());
-                        med.setPresionSistolica("235");
-                        med.setPresionDiastolica("236");
-                        med.setPulso("237");
-                        med.setMed("238");
+                        med.setPresionSistolica(vsistolica.toString());
+                        med.setPresionDiastolica(vdiastolica.toString());
+                        med.setPulso(vpulso.toString());
+                        med.setMed(vmed.toString());
+                        med.setEcg(vECG.toString());
+                        med.setSpo2(vSPO2text.toString());
+                        med.setHr(vHR.toString());
+                        med.setResp(vRESPtext.toString());
                                                 
                         em.persist(med);
                     }catch(Exception e)
@@ -1150,11 +1161,25 @@ private static final int Y_MAX_RESP = 3000;
         pintarPesa(0, 0, 0, 0);
     }
         public void asignarStaticParameters(int hr, int respRate, int spo2Oxi, int spo2Hr, int presRate, int presDias, int presMed, int presSist) {       
+        
+        //Se guardan los datos en el vector para luego ser almacenados en BD    
+        vsistolica.add(presSist);
+        vdiastolica.add(presDias);
+        vpulso.add(presRate);
+        vmed.add(presMed);
+        vSPO2text.add(spo2Oxi);
+        vHR.add(spo2Hr);
+        vRESPtext.add(respRate);
+        vECG.add(hr);
+        //Se pintan los datos    
         pintarHR(hr);
         pintarSPO2(spo2Oxi, spo2Hr);
         pintarRespiracion(respRate);
         //pintarImagenes();
         pintarPresion(presRate, presDias, presMed, presSist);
+        
+        
+        
 //        System.out.println("HR: "+hr);
 //        System.out.println("RR: "+respRate);
 //        System.out.println("SpO2: "+spo2Oxi);
@@ -1514,9 +1539,13 @@ private static final int Y_MAX_RESP = 3000;
                      //monitor.getData();
                  }
                   if (!admin.spo2Signal.isEmpty()){
+                     //Con la ayuda de esta sección se guardarán los datos mostrados en pantalla dentro de los vectores.
+                     //vsistolica.add(Y_MAX_ECG)
+                      
                      int auxSpo2= admin.spo2Signal.readWave();
                      vSPO2.add(auxSpo2);
-                     dataSPO2.add(auxSpo2); 
+                     dataSPO2.add(auxSpo2);
+                     
                  }else{
                       //monitor.getData();
                   }
@@ -1860,7 +1889,7 @@ public void reproducirSPO2()
             }
         }
         };
-        // Empezamos dentro de 10ms y luego lanzamos la tarea cada 1000ms
+        // Empezamos dentro de 0ms y luego lanzamos la tarea cada 30ms
         timer.schedule(task, 0, 30);
     }
                 
