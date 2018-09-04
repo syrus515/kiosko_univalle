@@ -203,9 +203,7 @@ public class MenuController implements Initializable {
     @FXML
     private Button btonNuevo;
     @FXML
-    private Button btonCancelar;
-    @FXML
-    private TableView<?> tableAfinamiento;
+    private Button btonCancelar;    
     
     // Listas desplegables de valores para las mediciones    
     @FXML ChoiceBox<String> intervalo;
@@ -681,8 +679,7 @@ private static final int Y_MAX_RESP = 3000;
     }
 
     public void initialize(URL url, ResourceBundle rb) {
-        iniciarGrafica();
-        setTableAfinamiento();
+        iniciarGrafica();        
     }
     
     public void iniciarGrafica () {
@@ -1797,22 +1794,6 @@ try {
         }
     }
 
-private void setTableAfinamiento(){
-    tableAfinamiento.setEditable(false);
-    TableColumn fechaCol = new TableColumn("Fecha");
-    TableColumn horaCol = new TableColumn("Hora");
-    TableColumn pesoCol = new TableColumn("Peso");
-    TableColumn presionCol = new TableColumn("Presión[mmHg]");
-    TableColumn brazoCol = new TableColumn("Brazo");
-    TableColumn posicionCol = new TableColumn("Posición");
-    TableColumn jornadaCol = new TableColumn("Jornada");
-    TableColumn estadoIniCol = new TableColumn(" Estado Inicial ");
-        
-    tableAfinamiento.getColumns().addAll(fechaCol, horaCol, pesoCol, presionCol, brazoCol, posicionCol, jornadaCol, estadoIniCol);
-    
-    //tableAfinamiento.setColumnResizePolicy((param) -> true );
-    //Platform.runLater(() -> customResize(tableAfinamiento));
-}
 public void customResize(TableView<?> view) {
 
         AtomicLong width = new AtomicLong();
@@ -1850,7 +1831,8 @@ public void reproducirSPO2()
     @FXML
     private void reproducirMedicion()
     {            
-            Medicion med= this.programaPrincipal.getMedicionReproducir();
+        System.out.println("Holaaaa")    ;
+        Medicion med= this.programaPrincipal.getMedicionReproducir();
             System.out.println(med.getOndaSPO2());
             String SPO2= med.getOndaSPO2().substring(1, med.getOndaSPO2().length()-1);
             StringTokenizer tokens= new StringTokenizer(SPO2, ", ");
@@ -1915,6 +1897,13 @@ public void reproducirSPO2()
 
                 }
         }
+    }
+    
+    public void tomarPeso()
+    {
+        admin.solicitarTanita("20", "masculino", "27", "175", "regular");//ID:17-65534, genero: masculino-femenino, edad , estatura: en cm, actividad: sedentario, regular o deportista.
+        
+        admin.staticParameters.readWeight();
     }
     
 //    public void datos() {

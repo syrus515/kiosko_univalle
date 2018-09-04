@@ -15,6 +15,7 @@
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
@@ -322,75 +323,81 @@
                            </children></AnchorPane>
                   </content>
                 </TitledPane>
-                  <TitledPane animated="false" layoutX="10.0" layoutY="85.0" text="Historial Afinamientos">
+                  <TitledPane animated="false" layoutX="10.0" layoutY="85.0" prefHeight="668.0" prefWidth="2002.0" text="Historial Afinamientos">
                      <content>
-                        <AnchorPane minHeight="0.0" minWidth="0.0">
+                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="568.0" prefWidth="2000.0">
                            <children>
-                              <ScrollPane layoutX="14.0" layoutY="14.0" prefHeight="404.0" prefWidth="1256.0">
-                                <content>
-                                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="399.0" prefWidth="1252.0">
-                                       <children>
-                                          <TableView fx:id="tableAfinamiento" fixedCellSize="100.0" prefHeight="400.0" prefWidth="1253.0">
-                                             <columnResizePolicy>
-                                                <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
-                                             </columnResizePolicy>
-                                          </TableView>
-                                       </children>
-                                    </AnchorPane>
-                                </content>
-                              </ScrollPane>
-                              <Button layoutX="42.0" layoutY="467.0" mnemonicParsing="false" prefHeight="64.0" prefWidth="132.0" text="Tomar Peso">
+                              <TableView layoutX="44.0" layoutY="34.0" prefHeight="440.0" prefWidth="1035.0">
+                                <columns>
+                                  <TableColumn prefWidth="75.0" text="C1" />
+                                  <TableColumn prefWidth="75.0" text="C2" />
+                                </columns>
+                              </TableView>
+                              <Label layoutX="1130.0" layoutY="33.0" text="Brazo:">
                                  <font>
-                                    <Font size="20.0" />
+                                    <Font size="24.0" />
+                                 </font>
+                              </Label>
+                              <ChoiceBox layoutX="1291.0" layoutY="33.0" prefHeight="35.0" prefWidth="208.0" />
+                              <Label layoutX="1130.0" layoutY="104.0" text="Posición:">
+                                 <font>
+                                    <Font size="24.0" />
+                                 </font>
+                              </Label>
+                              <ChoiceBox layoutX="1291.0" layoutY="104.0" prefHeight="35.0" prefWidth="208.0" />
+                              <Label layoutX="1133.0" layoutY="173.0" text="Jornada:">
+                                 <font>
+                                    <Font size="24.0" />
+                                 </font>
+                              </Label>
+                              <ChoiceBox layoutX="1291.0" layoutY="173.0" prefHeight="35.0" prefWidth="208.0" />
+                              <Label layoutX="1130.0" layoutY="236.0" prefHeight="35.0" prefWidth="152.0" text="Estado inicial:">
+                                 <font>
+                                    <Font size="24.0" />
+                                 </font>
+                              </Label>
+                              <TextField layoutX="1291.0" layoutY="230.0" prefHeight="47.0" prefWidth="208.0" />
+                              <Label layoutX="1132.0" layoutY="304.0" text="Detalles:">
+                                 <font>
+                                    <Font size="24.0" />
+                                 </font>
+                              </Label>
+                              <TextArea layoutX="1133.0" layoutY="348.0" prefHeight="122.0" prefWidth="373.0" />
+                              <Button layoutX="1574.0" layoutY="33.0" mnemonicParsing="false" text="Tomar peso">
+                                 <font>
+                                    <Font size="18.0" />
                                  </font>
                               </Button>
-                              <Button layoutX="42.0" layoutY="545.0" mnemonicParsing="false" prefHeight="65.0" prefWidth="225.0" text="Tomar Presión Arterial">
+                              <Button layoutX="1758.0" layoutY="33.0" mnemonicParsing="false" text="Tomar presión">
                                  <font>
-                                    <Font size="20.0" />
+                                    <Font size="18.0" />
                                  </font>
                               </Button>
-                              <GridPane layoutX="352.0" layoutY="467.0" prefHeight="150.0" prefWidth="310.0">
-                                <columnConstraints>
-                                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="159.0" minWidth="10.0" prefWidth="155.0" />
-                                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="202.0" minWidth="10.0" prefWidth="119.0" />
-                                </columnConstraints>
-                                <rowConstraints>
-                                  <RowConstraints />
-                                  <RowConstraints maxHeight="0.0" minHeight="0.0" prefHeight="0.0" />
-                                  <RowConstraints maxHeight="37.0" minHeight="10.0" prefHeight="37.0" vgrow="SOMETIMES" />
-                                    <RowConstraints maxHeight="33.0" minHeight="10.0" prefHeight="33.0" vgrow="SOMETIMES" />
-                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                </rowConstraints>
-                                 <children>
-                                    <Label prefHeight="24.0" prefWidth="81.0" text="Brazo:" GridPane.rowIndex="2">
-                                       <font>
-                                          <Font size="20.0" />
-                                       </font>
-                                    </Label>
-                                    <Label text="Posición:" GridPane.rowIndex="3">
-                                       <font>
-                                          <Font size="20.0" />
-                                       </font>
-                                    </Label>
-                                    <Label text="Jornada:" GridPane.rowIndex="4">
-                                       <font>
-                                          <Font size="20.0" />
-                                       </font>
-                                    </Label>
-                                    <Label text="Estado Inicial:" GridPane.rowIndex="5">
-                                       <font>
-                                          <Font size="20.0" />
-                                       </font>
-                                    </Label>
-                                    <ComboBox prefHeight="48.0" prefWidth="149.0" promptText="Izquierdo" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                                    <ComboBox prefHeight="41.0" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-                                    <ComboBox prefHeight="46.0" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
-                                    <TextField prefHeight="38.0" prefWidth="151.0" GridPane.columnIndex="1" GridPane.rowIndex="5" />
-                                 </children>
-                              </GridPane>
-                              <Label layoutX="699.0" layoutY="467.0" prefHeight="17.0" prefWidth="96.0" text="Detalles: " />
-                              <TextArea layoutX="695.0" layoutY="488.0" prefHeight="123.0" prefWidth="579.0" />
+                              <Label layoutX="1568.0" layoutY="121.0" text="Peso:">
+                                 <font>
+                                    <Font size="15.0" />
+                                 </font>
+                              </Label>
+                              <Label layoutX="1568.0" layoutY="160.0" prefHeight="47.0" prefWidth="65.0" text="---" textAlignment="CENTER">
+                                 <font>
+                                    <Font size="32.0" />
+                                 </font>
+                              </Label>
+                              <Label layoutX="1759.0" layoutY="121.0" text="Presión:">
+                                 <font>
+                                    <Font size="15.0" />
+                                 </font>
+                              </Label>
+                              <Label layoutX="1759.0" layoutY="160.0" prefHeight="47.0" prefWidth="94.0" text="---/---" textAlignment="CENTER">
+                                 <font>
+                                    <Font size="32.0" />
+                                 </font>
+                              </Label>
+                              <Button layoutX="1665.0" layoutY="239.0" mnemonicParsing="false" prefWidth="128.0" text="Guardar">
+                                 <font>
+                                    <Font size="22.0" />
+                                 </font>
+                              </Button>
                            </children></AnchorPane>
                      </content>
                   </TitledPane>

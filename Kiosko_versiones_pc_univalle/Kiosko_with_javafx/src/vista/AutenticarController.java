@@ -69,7 +69,9 @@ public class AutenticarController {
                     String rol = rs1.getString("rol");
                     // Abrir la nueva ventana y cerrar la ventana de autenticar.
                     // programaPrincipal.mostrarVentanaRegPacientes(usuario, nombre, rol);
+                    
                     programaPrincipal.mostrarMenu(usuario, nombre, rol);
+                    
                 } else {
                     popup = new Alert(AlertType.ERROR);
                     popup.setTitle("Usuario");
