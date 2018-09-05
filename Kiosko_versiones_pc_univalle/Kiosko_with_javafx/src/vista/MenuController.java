@@ -385,6 +385,14 @@ private static final int Y_MAX_RESP = 3000;
     private Button botonReproducir;
     @FXML
     private TextArea detallesMedicion;
+    @FXML
+    private Button tomarPeso;
+    @FXML
+    private Button tomarPresion;
+    @FXML
+    private Label pesoImprimir;
+    @FXML
+    private Label presionImprimir;
     
     @FXML
     private void cerrarPrograma() {
@@ -1830,15 +1838,13 @@ public void reproducirSPO2()
 
     @FXML
     private void reproducirMedicion()
-    {            
-        System.out.println("Holaaaa")    ;
-        Medicion med= this.programaPrincipal.getMedicionReproducir();
-            System.out.println(med.getOndaSPO2());
+    {                 
+            Medicion med= this.programaPrincipal.getMedicionReproducir();            
             String SPO2= med.getOndaSPO2().substring(1, med.getOndaSPO2().length()-1);
             StringTokenizer tokens= new StringTokenizer(SPO2, ", ");
             while(tokens.hasMoreTokens())
             {
-            reprodSPO2.add(Integer.parseInt(tokens.nextToken()));
+                reprodSPO2.add(Integer.parseInt(tokens.nextToken()));
             }
             
             // Every frame to take any data from queue and add to chart
@@ -1866,7 +1872,8 @@ public void reproducirSPO2()
                     {
                         if(reprodSPO2.isEmpty())
                         {
-                            this.finalize();
+                            timer.cancel();
+                            timer.purge();
                         }
                     } catch (Throwable ex) 
                     {
@@ -1899,11 +1906,68 @@ public void reproducirSPO2()
         }
     }
     
+    //Variable necesaria para este método
+    private static int contadorTomaPeso;
+    
     public void tomarPeso()
     {
+        //Cambiar los siguientes datos para que se tomen de la base de datos.
         admin.solicitarTanita("20", "masculino", "27", "175", "regular");//ID:17-65534, genero: masculino-femenino, edad , estatura: en cm, actividad: sedentario, regular o deportista.
         
-        admin.staticParameters.readWeight();
+        float weight= admin.staticParameters.readWeight();
+        
+        Timer timer;
+        timer = new Timer();
+        contadorTomaPeso= 0;
+
+        TimerTask task = new TimerTask() 
+        {
+
+            @Override
+            public void run()
+            {   
+                contadorTomaPeso++;
+                pesoImprimir.setText(String.valueOf(weight));
+                if(contadorTomaPeso >= 7)
+                {
+                    timer.cancel();
+                    timer.purge();                    
+                }
+            }
+        };
+        // Empezamos dentro de 10s 
+        timer.schedule(task, 0, 500);
+                
+        
+    }
+    
+    public void tomarPresion()
+    {
+        admin.enviarComando("manualPressure", 0);
+        
+        admin.enviarComando("stopPressure", 0);
+        
+        admin.enviarComando("startPressure", 0);
+        
+        Timer timer;
+        timer = new Timer();
+
+        TimerTask task = new TimerTask() 
+        {
+
+            @Override
+            public void run()
+            {
+                int diastolica= admin.staticParameters.readPresDias();
+                int sistolica= admin.staticParameters.readPresSist();
+                presionImprimir.setText(diastolica + "/" + sistolica);
+                admin.enviarComando("stopPressure", 0);
+            }
+        };
+        // Empezamos dentro de 10s 
+        timer.schedule(task, 10000);
+        
+        
     }
     
 //    public void datos() {
