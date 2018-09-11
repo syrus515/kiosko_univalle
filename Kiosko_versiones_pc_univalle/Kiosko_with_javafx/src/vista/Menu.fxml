@@ -362,12 +362,12 @@
                                  </font>
                               </Label>
                               <TextArea layoutX="1133.0" layoutY="348.0" prefHeight="122.0" prefWidth="373.0" />
-                              <Button fx:id="tomarPeso" layoutX="1574.0" layoutY="33.0" mnemonicParsing="false" text="Tomar peso">
+                              <Button fx:id="tomarPeso" layoutX="1574.0" layoutY="33.0" mnemonicParsing="false" onAction="#tomarPeso" text="Tomar peso">
                                  <font>
                                     <Font size="18.0" />
                                  </font>
                               </Button>
-                              <Button fx:id="tomarPresion" layoutX="1758.0" layoutY="33.0" mnemonicParsing="false" text="Tomar presión">
+                              <Button fx:id="tomarPresion" layoutX="1758.0" layoutY="33.0" mnemonicParsing="false" onAction="#tomarPresion" text="Tomar presión">
                                  <font>
                                     <Font size="18.0" />
                                  </font>

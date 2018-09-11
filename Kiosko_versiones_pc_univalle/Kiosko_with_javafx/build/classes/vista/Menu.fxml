@@ -13,7 +13,6 @@
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
-<?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.SplitPane?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
@@ -363,12 +362,12 @@
                                  </font>
                               </Label>
                               <TextArea layoutX="1133.0" layoutY="348.0" prefHeight="122.0" prefWidth="373.0" />
-                              <Button layoutX="1574.0" layoutY="33.0" mnemonicParsing="false" text="Tomar peso">
+                              <Button fx:id="tomarPeso" layoutX="1574.0" layoutY="33.0" mnemonicParsing="false" onAction="#tomarPeso" text="Tomar peso">
                                  <font>
                                     <Font size="18.0" />
                                  </font>
                               </Button>
-                              <Button layoutX="1758.0" layoutY="33.0" mnemonicParsing="false" text="Tomar presión">
+                              <Button fx:id="tomarPresion" layoutX="1758.0" layoutY="33.0" mnemonicParsing="false" onAction="#tomarPresion" text="Tomar presión">
                                  <font>
                                     <Font size="18.0" />
                                  </font>
@@ -378,7 +377,7 @@
                                     <Font size="15.0" />
                                  </font>
                               </Label>
-                              <Label layoutX="1568.0" layoutY="160.0" prefHeight="47.0" prefWidth="65.0" text="---" textAlignment="CENTER">
+                              <Label fx:id="pesoImprimir" layoutX="1568.0" layoutY="160.0" prefHeight="47.0" prefWidth="65.0" text="---" textAlignment="CENTER">
                                  <font>
                                     <Font size="32.0" />
                                  </font>
@@ -388,7 +387,7 @@
                                     <Font size="15.0" />
                                  </font>
                               </Label>
-                              <Label layoutX="1759.0" layoutY="160.0" prefHeight="47.0" prefWidth="94.0" text="---/---" textAlignment="CENTER">
+                              <Label fx:id="presionImprimir" layoutX="1759.0" layoutY="160.0" prefHeight="47.0" prefWidth="94.0" text="---/---" textAlignment="CENTER">
                                  <font>
                                     <Font size="32.0" />
                                  </font>

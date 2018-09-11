@@ -604,27 +604,32 @@ private static final int Y_MAX_RESP = 3000;
     }
     
     private void pintarLecturaECG() {
-        admin = new AdminDevice(this);
+        admin = new AdminDevice(null);
         admin.dispositivoDesconectado();
         admin.ConectarTcp();
     }
 
     private void pararLecturaECG() {
-        admin.enviarComando("stopPressure",0);
-        //admin.dispositivoDesconectado();
+        //admin.enviarComando("stopPressure",0);
+        admin.dispositivoDesconectado();
         admin.desconectarCliente();
     }
     
-    private void iniciarPresionAutomatica(int minitos) {
+    private void iniciarPresionAutomatica(int minutos) {
+        
         admin.enviarComando("stopPressure",0);
-        admin.enviarComando("continousPressure", minitos);
+        admin.enviarComando("continousPressure", minutos);
         admin.enviarComando("startPressure",0);
     }
     
     private void iniciarPresionManual() {
-        admin.enviarComando("manualPressure", 0);
+        admin = new AdminDevice(this);        
+        admin.dispositivoDesconectado();
+        admin.ConectarTcp();
+        
+        admin.enviarComando("manualPressure", 0);        
         admin.enviarComando("stopPressure",0);
-        admin.enviarComando("startPressure",0);
+        admin.enviarComando("startPressure",0);        
     }
     
     /**
@@ -911,7 +916,7 @@ private static final int Y_MAX_RESP = 3000;
                         graficarRESP();
                         pintarLecturaECG();
                         
-                        executor = Executors.newFixedThreadPool(2);
+                        executor = Executors.newFixedThreadPool(2); //Cambiar para posiblemente solucionar el otro error.
                         addToQueue = new AddToQueue();
                         queueParam=new QueueParametros();
                         executor.execute(addToQueue);
@@ -965,8 +970,7 @@ private static final int Y_MAX_RESP = 3000;
                         med.setEcg(vECG.toString());
                         med.setSpo2(vSPO2text.toString());
                         med.setHr(vHR.toString());
-                        med.setResp(vRESPtext.toString());
-                                                
+                        med.setResp(vRESPtext.toString());                        
                         em.persist(med);
                     }catch(Exception e)
                     {
@@ -1584,7 +1588,7 @@ try {
             Thread.sleep(500);
             executor.execute(this);
             } catch (Exception e) {
-                System.out.println("Error JavaFX, parámetros");
+                System.out.println(e.toString());
             }
         }
 }
@@ -1909,6 +1913,7 @@ public void reproducirSPO2()
     //Variable necesaria para este método
     private static int contadorTomaPeso;
     
+    @FXML
     public void tomarPeso()
     {
         //Cambiar los siguientes datos para que se tomen de la base de datos.
@@ -1941,13 +1946,35 @@ public void reproducirSPO2()
         
     }
     
+    @FXML    
     public void tomarPresion()
-    {
+    {   
+        //iniciarPresionManual();
+        admin = new AdminDevice(null);        
+        admin.dispositivoDesconectado();
+        admin.ConectarTcp();        
+        
+        try {
+            Thread.sleep(500);
+        } catch (InterruptedException ex) {
+            Logger.getLogger(MenuController.class.getName()).log(Level.SEVERE, null, ex);
+        }
         admin.enviarComando("manualPressure", 0);
+        try {
+            Thread.sleep(500);
+        } catch (InterruptedException ex) {
+            Logger.getLogger(MenuController.class.getName()).log(Level.SEVERE, null, ex);
+        }
         
         admin.enviarComando("stopPressure", 0);
-        
+        try {
+            Thread.sleep(500);
+        } catch (InterruptedException ex) {
+            Logger.getLogger(MenuController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+            
         admin.enviarComando("startPressure", 0);
+        
         
         Timer timer;
         timer = new Timer();
@@ -1957,15 +1984,39 @@ public void reproducirSPO2()
 
             @Override
             public void run()
-            {
+            {   
+
+                int anteriorDiastolica= admin.staticParameters.readPresDias();
+                int anteriorSistolica= admin.staticParameters.readPresSist();               
+                //presionImprimir.setText(diastolica + "/" + sistolica);
+                while(anteriorDiastolica==admin.staticParameters.readPresDias() && anteriorSistolica==admin.staticParameters.readPresSist())
+                {   
+                    try {
+                        Thread.sleep(10);
+                    } catch (InterruptedException ex) {
+                        Logger.getLogger(MenuController.class.getName()).log(Level.SEVERE, null, ex);
+                    }                                        
+                }
+                anteriorDiastolica= admin.staticParameters.readPresDias();
+                //anteriorSistolica= admin.staticParameters.readPresSist();
+                while(anteriorDiastolica!=admin.staticParameters.readPresDias())
+                {
+                    try {
+                        Thread.sleep(5);
+                    } catch (InterruptedException ex) {
+                        Logger.getLogger(MenuController.class.getName()).log(Level.SEVERE, null, ex);
+                    } 
+                    anteriorDiastolica= admin.staticParameters.readPresDias();
+                }
                 int diastolica= admin.staticParameters.readPresDias();
                 int sistolica= admin.staticParameters.readPresSist();
-                presionImprimir.setText(diastolica + "/" + sistolica);
+                System.out.println(sistolica + "/" + diastolica);
                 admin.enviarComando("stopPressure", 0);
+                admin.desconectarCliente();
             }
         };
         // Empezamos dentro de 10s 
-        timer.schedule(task, 10000);
+        timer.schedule(task, 20000);
         
         
     }
