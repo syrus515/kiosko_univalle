@@ -95,6 +95,12 @@ public class AdminDevice {
             System.out.println("Thread successfully stopped.");
         }
     }
+    
+    public boolean isConnected()
+    {
+        return hiloConsumidor != null;
+    }
+    
     public void desconectarCliente(){
         if(tcpCliente!=null){
             dispositivoDesconectado();

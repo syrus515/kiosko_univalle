@@ -2030,6 +2030,8 @@ public void reproducirSPO2()
         
     }
     
+    
+    
     @FXML    
     public void tomarPresion()
     {   
@@ -2040,7 +2042,69 @@ public void reproducirSPO2()
         
         Timer timerIniciar;
         timerIniciar = new Timer();
+        
+        TimerTask taskIniciar = new TimerTask() 
+        {
 
+            @Override
+            public void run()
+            {   
+
+                try {
+                    Thread.sleep(10);
+                } catch (InterruptedException ex) {
+                    Logger.getLogger(MenuController.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                admin.enviarComando("manualPressure", 0);
+                try {
+                    Thread.sleep(1);
+                } catch (InterruptedException ex) {
+                    Logger.getLogger(MenuController.class.getName()).log(Level.SEVERE, null, ex);
+                }
+
+                admin.enviarComando("stopPressure", 0);
+                try {
+                    Thread.sleep(1);
+                } catch (InterruptedException ex) {
+                    Logger.getLogger(MenuController.class.getName()).log(Level.SEVERE, null, ex);
+                }
+
+                admin.enviarComando("startPressure", 0);
+                
+                try {
+                    Thread.sleep(2000);
+                } catch (InterruptedException ex) {
+                    Logger.getLogger(MenuController.class.getName()).log(Level.SEVERE, null, ex);
+                }        
+                
+                
+            }
+        };
+        // Empezamos dentro de 10s 
+        timerIniciar.schedule(taskIniciar, 0);
+        
+        
+        Timer timer;
+        timer = new Timer();
+
+        TimerTask task = new TimerTask() 
+        {
+
+            @Override
+            public void run()
+            {   
+
+               int anterior= admin.staticParameters.readPresDias();
+                while(admin.staticParameters.readPresDias()== anterior)
+                {
+                    System.out.println(admin.staticParameters.readPresDias());
+                }
+                System.out.println("---------- Definitivo: " + admin.staticParameters.readPresDias()); 
+            }
+        };
+        // Empezamos dentro de 10s 
+        timer.schedule(task, 20000);
+/*
         TimerTask taskIniciar = new TimerTask() 
         {
 
@@ -2115,7 +2179,7 @@ public void reproducirSPO2()
             }
         };
         // Empezamos dentro de 10s 
-        timer.schedule(task, 20000);
+        timer.schedule(task, 20000);*/
         
         
     }

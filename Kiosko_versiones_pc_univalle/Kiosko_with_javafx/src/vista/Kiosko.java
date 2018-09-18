@@ -98,8 +98,9 @@ public class Kiosko extends Application {
             Scene scene = new Scene(menu);
             scene.getStylesheets().add("/vista/menu.css");
             ventanaPrincipal.setScene(scene);
-            MenuController controller = loader.getController();
+            MenuController controller = loader.getController();           
             controller.setProgramaPrincipal(this, usuario, nombre, rol);
+            
             ventanaPrincipal.show();
             ventanaPrincipal.setResizable(false);
             Rectangle2D ventanaPrimariaLimites = Screen.getPrimary().getVisualBounds();
