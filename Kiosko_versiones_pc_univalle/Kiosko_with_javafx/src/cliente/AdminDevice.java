@@ -96,9 +96,9 @@ public class AdminDevice {
         }
     }
     
-    public boolean isConnected()
+    public boolean isConnectedTCP()
     {
-        return hiloConsumidor != null;
+        return connectionState.tcpReadState();
     }
     
     public void desconectarCliente(){

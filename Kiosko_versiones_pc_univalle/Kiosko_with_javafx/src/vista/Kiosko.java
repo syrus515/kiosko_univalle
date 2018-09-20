@@ -99,7 +99,9 @@ public class Kiosko extends Application {
             scene.getStylesheets().add("/vista/menu.css");
             ventanaPrincipal.setScene(scene);
             MenuController controller = loader.getController();           
+            
             controller.setProgramaPrincipal(this, usuario, nombre, rol);
+            controller.iniciarAdmin();
             
             ventanaPrincipal.show();
             ventanaPrincipal.setResizable(false);
@@ -113,6 +115,7 @@ public class Kiosko extends Application {
             primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>(){
             @Override public void handle(WindowEvent event) {
                 //event.consume(); //Consumar el evento
+                controller.cerrarPrograma();
                 System.exit(0);
             }  
         });

@@ -395,8 +395,16 @@ private static final int Y_MAX_RESP = 3000;
     private Label presionImprimir;
     
     @FXML
-    private void cerrarPrograma() {
+    public void cerrarPrograma() {
+        admin.desconectarCliente();
+        System.out.println("Se cerró el programa");        
         System.exit(0);
+    }
+    
+    public void iniciarAdmin()
+    {
+        admin= new AdminDevice(null);
+        admin.ConectarTcp();
     }
     
     @FXML
@@ -604,9 +612,9 @@ private static final int Y_MAX_RESP = 3000;
     }
     
     private void pintarLecturaECG() {
-        admin = new AdminDevice(this);
-        admin.dispositivoDesconectado();
-        admin.ConectarTcp();
+        //admin = new AdminDevice(null);
+        //admin.dispositivoDesconectado();
+        //admin.ConectarTcp();
     }
 
     private void pararLecturaECG() {
@@ -897,8 +905,8 @@ private static final int Y_MAX_RESP = 3000;
     boolean primeraVez= true;
     
         @FXML
-    void iniciarLecturaSeñales(ActionEvent event) {
-         
+    void iniciarLecturaSeñales(ActionEvent event) 
+    {  
         Timer timerIniciar;
         timerIniciar = new Timer();        
         
@@ -912,19 +920,19 @@ private static final int Y_MAX_RESP = 3000;
 
             executor = Executors.newFixedThreadPool(2);
 
-            pararLecturaECG();
+            //pararLecturaECG(); //Este método no está cumpliendo función alguna
 
 
             addToQueue=null;
             queueParam=null;
-            btnIniciarSeñales.setText("Iniciar");
+           btnIniciarSeñales.setText("Iniciar");
             
             
             //Guardar en la base de datos
             almacenarSenales();
                         
         } else 
-        { 
+        {            
             if(primeraVez)
             {
                primeraVez= false;
@@ -965,53 +973,51 @@ private static final int Y_MAX_RESP = 3000;
     private void hiloPrimeraVez()
     {
         graficarECG1();
-                            graficarECG2();
-                            graficarSPO2();
-                            graficarRESP();
-                            pintarLecturaECG();
+        graficarECG2();
+        graficarSPO2();
+        graficarRESP();
+        pintarLecturaECG();
 
-                            executor = Executors.newFixedThreadPool(2); //Cambiar para posiblemente solucionar el otro error.                       
+        executor = Executors.newFixedThreadPool(2); //Cambiar para posiblemente solucionar el otro error.                       
 
-                            addToQueue = new AddToQueue();
-                            queueParam= new QueueParametros();
+        addToQueue = new AddToQueue();
+        queueParam= new QueueParametros();
 
-                            //addToQueue.run();
-                            //queueParam.run(); //Mirar si esto soluciona el error de concurrencia.
+        //addToQueue.run();
+        //queueParam.run(); //Mirar si esto soluciona el error de concurrencia.
 
-                            executor.execute(addToQueue);
-                            executor.execute(queueParam);
-                            prepareTimeline();
-                            //btnIniciarSeñales.setText("Parar");        
+        executor.execute(addToQueue);
+        executor.execute(queueParam);
+        prepareTimeline();
+        //btnIniciarSeñales.setText("Parar");        
     }
     
     private void hiloSegundaVez()
     {
         graficarECG1();
-                            graficarECG2();
-                            graficarSPO2();
-                            graficarRESP();
-                            pintarLecturaECG();
+        graficarECG2();
+        graficarSPO2();
+        graficarRESP();
+        pintarLecturaECG();
 
-                            //executor = Executors.newFixedThreadPool(2); //Cambiar para posiblemente solucionar el otro error.                       
+        //executor = Executors.newFixedThreadPool(2); //Cambiar para posiblemente solucionar el otro error.                       
 
-                            addToQueue = new AddToQueue();
-                            queueParam= new QueueParametros();
+        addToQueue = new AddToQueue();
+        queueParam= new QueueParametros();
 
-                            //addToQueue.run();
-                            //queueParam.run(); //Mirar si esto soluciona el error de concurrencia.
+        //addToQueue.run();
+        //queueParam.run(); //Mirar si esto soluciona el error de concurrencia.
 
-                            executor.execute(addToQueue);
-                            executor.execute(queueParam);
-                            prepareTimeline();
-                            //btnIniciarSeñales.setText("Parar");        
+        executor.execute(addToQueue);
+        executor.execute(queueParam);
+        prepareTimeline();
+        //btnIniciarSeñales.setText("Parar");        
     }
     
     
           
     public void almacenarSenales()
     {
-        
-       
             em = Persistence.createEntityManagerFactory("KioskoPU").createEntityManager();
             em.getTransaction().begin();
             List<Pacientes> list = em.createNamedQuery("Pacientes.findAll", Pacientes.class).getResultList();
@@ -1060,10 +1066,7 @@ private static final int Y_MAX_RESP = 3000;
             }
             
             em.getTransaction().commit();       
-        
-        
-        
-
+  
     }
     public void graficar() {
         // INICIAL
@@ -2036,9 +2039,11 @@ public void reproducirSPO2()
     public void tomarPresion()
     {   
         //iniciarPresionManual();
-        admin = new AdminDevice(null);        
-        admin.dispositivoDesconectado();
-        admin.ConectarTcp();        
+        
+        //Se verifica si la conexión TCP ya está abierta.
+        //admin = new AdminDevice(null);        
+        //admin.dispositivoDesconectado();
+        //admin.ConectarTcp();        
         
         Timer timerIniciar;
         timerIniciar = new Timer();
@@ -2102,85 +2107,8 @@ public void reproducirSPO2()
                 System.out.println("---------- Definitivo: " + admin.staticParameters.readPresDias()); 
             }
         };
-        // Empezamos dentro de 10s 
-        timer.schedule(task, 20000);
-/*
-        TimerTask taskIniciar = new TimerTask() 
-        {
-
-            @Override
-            public void run()
-            {   
-
-                try {
-                    Thread.sleep(10);
-                } catch (InterruptedException ex) {
-                    Logger.getLogger(MenuController.class.getName()).log(Level.SEVERE, null, ex);
-                }
-                admin.enviarComando("manualPressure", 0);
-                try {
-                    Thread.sleep(10);
-                } catch (InterruptedException ex) {
-                    Logger.getLogger(MenuController.class.getName()).log(Level.SEVERE, null, ex);
-                }
-
-                admin.enviarComando("stopPressure", 0);
-                try {
-                    Thread.sleep(10);
-                } catch (InterruptedException ex) {
-                    Logger.getLogger(MenuController.class.getName()).log(Level.SEVERE, null, ex);
-                }
-
-                admin.enviarComando("startPressure", 0);
-            }
-        };
-        // Empezamos dentro de 10s 
-        timerIniciar.schedule(taskIniciar, 0);      
-        
-        //-------------------------------------------------------------------
-        
-        Timer timer;
-        timer = new Timer();
-
-        TimerTask task = new TimerTask() 
-        {
-
-            @Override
-            public void run()
-            {   
-
-                int anteriorDiastolica= admin.staticParameters.readPresDias();
-                int anteriorSistolica= admin.staticParameters.readPresSist();               
-                //presionImprimir.setText(diastolica + "/" + sistolica);
-                while(anteriorDiastolica==admin.staticParameters.readPresDias() && anteriorSistolica==admin.staticParameters.readPresSist())
-                {   
-                    try {
-                        Thread.sleep(10);
-                    } catch (InterruptedException ex) {
-                        Logger.getLogger(MenuController.class.getName()).log(Level.SEVERE, null, ex);
-                    }                                        
-                }
-                anteriorDiastolica= admin.staticParameters.readPresDias();
-                //anteriorSistolica= admin.staticParameters.readPresSist();
-                while(anteriorDiastolica!=admin.staticParameters.readPresDias())
-                {
-                    try {
-                        Thread.sleep(5);
-                    } catch (InterruptedException ex) {
-                        Logger.getLogger(MenuController.class.getName()).log(Level.SEVERE, null, ex);
-                    } 
-                    anteriorDiastolica= admin.staticParameters.readPresDias();
-                }
-                int diastolica= admin.staticParameters.readPresDias();
-                int sistolica= admin.staticParameters.readPresSist();
-                System.out.println(sistolica + "/" + diastolica);
-                admin.enviarComando("stopPressure", 0);
-                admin.desconectarCliente();
-            }
-        };
-        // Empezamos dentro de 10s 
-        timer.schedule(task, 20000);*/
-        
+        // Empezamos dentro de 20s 
+        timer.schedule(task, 20000);        
         
     }
     

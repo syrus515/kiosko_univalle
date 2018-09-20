@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
-    <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="2">
+    <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="4">
         <file>
             <url>src/vista/MenuController.java</url>
-            <bookmark id="2">
+            <bookmark id="3">
                 <name/>
-                <line>956</line>
+                <line>975</line>
                 <key/>
             </bookmark>
         </file>
@@ -16,8 +16,10 @@
             <file>file:/C:/Users/Miguel%20Askar/Documents/GitHub/kiosko_univalle/Kiosko_versiones_pc_univalle/Kiosko_with_javafx/src/vista/MenuController.java</file>
             <file>file:/C:/Users/Miguel%20Askar/Documents/GitHub/kiosko_univalle/Kiosko_versiones_pc_univalle/Kiosko_with_javafx/src/BD/Medicion.java</file>
             <file>file:/C:/Users/Miguel%20Askar/Documents/GitHub/kiosko_univalle/Kiosko_versiones_pc_univalle/Kiosko_with_javafx/src/cliente/AdminDevice.java</file>
+            <file>file:/C:/Users/Miguel%20Askar/Documents/GitHub/kiosko_univalle/Kiosko_versiones_pc_univalle/Kiosko_with_javafx/src/cliente/Kiosko_client2.java</file>
             <file>file:/C:/Users/Miguel%20Askar/Documents/GitHub/kiosko_univalle/Kiosko_versiones_pc_univalle/Kiosko_with_javafx/src/vista/Menu.fxml</file>
             <file>file:/C:/Users/Miguel%20Askar/Documents/GitHub/kiosko_univalle/Kiosko_versiones_pc_univalle/Kiosko_with_javafx/src/vista/Kiosko.java</file>
+            <file>file:/C:/Users/Miguel%20Askar/Documents/GitHub/kiosko_univalle/Kiosko_versiones_pc_univalle/Kiosko_with_javafx/src/cliente/ConnectionState.java</file>
             <file>file:/C:/Users/Miguel%20Askar/Documents/GitHub/kiosko_univalle/Kiosko_versiones_pc_univalle/Kiosko_with_javafx/src/cliente/ThreadCliente.java</file>
         </group>
     </open-files>
