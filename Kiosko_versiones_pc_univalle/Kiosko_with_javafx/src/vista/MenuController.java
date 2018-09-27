@@ -271,6 +271,7 @@ private static final int Y_MAX_RESP = 3000;
     private ConcurrentLinkedQueue<Number> reprodSPO2 = new ConcurrentLinkedQueue<Number>();
     
     private ExecutorService executor;
+    private ExecutorService executorPresion;
     private AddToQueue addToQueue;
     private QueueParametros queueParam;
     private Timeline timeline2;
@@ -390,9 +391,9 @@ private static final int Y_MAX_RESP = 3000;
     @FXML
     private Button tomarPresion;
     @FXML
-    private Label pesoImprimir;
+    private Text pesoImprimir;
     @FXML
-    private Label presionImprimir;
+    private Text presionImprimir;   
     
     @FXML
     public void cerrarPrograma() {
@@ -1407,7 +1408,7 @@ private static final int Y_MAX_RESP = 3000;
         gc.setFont(fontLarge);
         if (presSist < 1 || presSist > 999) {
 //            gc.fillText("000", 1800, 160);
-            gc.fillText("---", 1660, 100);
+            gc.fillText("---", 1660, 100);            
         } else {
             gc.fillText(Integer.toString(presSist), 1660, 100);
         }
@@ -2033,11 +2034,40 @@ public void reproducirSPO2()
         
     }
     
+    public void actualizarPresion()
+    {
+        int diastolica= admin.staticParameters.readPresDias();
+        int sistolica= admin.staticParameters.readPresSist();
+        if(diastolica<=0)
+        {
+            presionImprimir.setText("---/---");
+        }else
+        {
+            presionImprimir.setText(diastolica +"/" + sistolica);
+        }
+        
+    }
+    
+    private class QueuPresionPeso implements Runnable {
+        public void run() {
+        try {
+            actualizarPresion();
+                    
+                
+            Thread.sleep(500);
+            executorPresion.execute(this);
+            } catch (Exception e) {
+                System.out.println(e.toString());
+            }
+        }
+    }
+    
     
     
     @FXML    
     public void tomarPresion()
-    {   
+    {
+                        
         //iniciarPresionManual();
         
         //Se verifica si la conexión TCP ya está abierta.
@@ -2088,7 +2118,7 @@ public void reproducirSPO2()
         // Empezamos dentro de 10s 
         timerIniciar.schedule(taskIniciar, 0);
         
-        
+        /*
         Timer timer;
         timer = new Timer();
 
@@ -2099,18 +2129,29 @@ public void reproducirSPO2()
             public void run()
             {   
 
-               int anterior= admin.staticParameters.readPresDias();
+                int anterior= admin.staticParameters.readPresDias();
                 while(admin.staticParameters.readPresDias()== anterior)
                 {
+                    //No haga nada mientras la presión no se haya actualizado
                     System.out.println(admin.staticParameters.readPresDias());
                 }
                 System.out.println("---------- Definitivo: " + admin.staticParameters.readPresDias()); 
+                //actualizarPresion(admin.staticParameters.readPresDias(), admin.staticParameters.readPresSist());                
             }
         };
         // Empezamos dentro de 20s 
-        timer.schedule(task, 20000);        
+        timer.schedule(task, 15000);   */
         
+        
+        AlterarInterfaz alterador= new AlterarInterfaz(admin, this);
+        alterador.setOpcion(1); //Para modificar presión
+        alterador.start();      
+        
+        
+
     }
+    
+    
     
 //    public void datos() {
 //        EntityManager em = Persistence.createEntityManagerFactory("KioskoPU").createEntityManager();

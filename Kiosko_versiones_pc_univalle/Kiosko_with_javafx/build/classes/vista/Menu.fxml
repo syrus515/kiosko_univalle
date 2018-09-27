@@ -377,19 +377,9 @@
                                     <Font size="15.0" />
                                  </font>
                               </Label>
-                              <Label fx:id="pesoImprimir" layoutX="1568.0" layoutY="160.0" prefHeight="47.0" prefWidth="65.0" text="---" textAlignment="CENTER">
-                                 <font>
-                                    <Font size="32.0" />
-                                 </font>
-                              </Label>
                               <Label layoutX="1759.0" layoutY="121.0" text="Presión:">
                                  <font>
                                     <Font size="15.0" />
-                                 </font>
-                              </Label>
-                              <Label fx:id="presionImprimir" layoutX="1759.0" layoutY="160.0" prefHeight="47.0" prefWidth="94.0" text="---/---" textAlignment="CENTER">
-                                 <font>
-                                    <Font size="32.0" />
                                  </font>
                               </Label>
                               <Button layoutX="1665.0" layoutY="239.0" mnemonicParsing="false" prefWidth="128.0" text="Guardar">
@@ -397,6 +387,16 @@
                                     <Font size="22.0" />
                                  </font>
                               </Button>
+                              <Text fx:id="presionImprimir" layoutX="1759.0" layoutY="199.0" strokeType="OUTSIDE" strokeWidth="0.0" text="---/---" wrappingWidth="160.13671875">
+                                 <font>
+                                    <Font size="35.0" />
+                                 </font>
+                              </Text>
+                              <Text fx:id="pesoImprimir" layoutX="1568.0" layoutY="199.0" strokeType="OUTSIDE" strokeWidth="0.0" text="---/---" wrappingWidth="160.13671875">
+                                 <font>
+                                    <Font size="35.0" />
+                                 </font>
+                              </Text>
                            </children></AnchorPane>
                      </content>
                   </TitledPane>
