@@ -44,9 +44,19 @@ public class AlterarInterfaz extends Thread
                 System.out.println("---------- Definitivo: " + admin.staticParameters.readPresDias()); 
                 menu.actualizarPresion();
                 
-                break;                
-                    
-                 
+                break;
+                
+            case 2:
+                float anteriorPeso= admin.staticParameters.readWeight();
+                while(admin.staticParameters.readWeight()== anteriorPeso)
+                {
+                    //No haga nada mientras la presión no se haya actualizado
+                    System.out.println(admin.staticParameters.readWeight());
+                }
+                System.out.println("---------- Definitivo: " + admin.staticParameters.readWeight()); 
+                menu.actualizarPeso();
+                
+                break;
         }
          
                 

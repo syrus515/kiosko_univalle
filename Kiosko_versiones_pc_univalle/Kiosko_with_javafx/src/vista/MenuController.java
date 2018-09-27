@@ -2001,6 +2001,19 @@ public void reproducirSPO2()
     //Variable necesaria para este método
     private static int contadorTomaPeso;
     
+    public void actualizarPeso()
+    {
+        float peso= admin.staticParameters.readWeight();
+        
+        if(peso<=0.0)
+        {
+            pesoImprimir.setText("---");
+        }else
+        {
+            pesoImprimir.setText(peso + "Kg");
+        }
+    }
+    
     @FXML
     public void tomarPeso()
     {
@@ -2009,7 +2022,12 @@ public void reproducirSPO2()
         
         float weight= admin.staticParameters.readWeight();
         
-        Timer timer;
+        AlterarInterfaz alterador= new AlterarInterfaz(admin, this);
+        alterador.setOpcion(2); //Para modificar presión
+        alterador.start();
+        
+        
+       /* Timer timer;
         timer = new Timer();
         contadorTomaPeso= 0;
 
@@ -2029,7 +2047,7 @@ public void reproducirSPO2()
             }
         };
         // Empezamos dentro de 10s 
-        timer.schedule(task, 0, 500);
+        timer.schedule(task, 0, 500);*/
                 
         
     }
