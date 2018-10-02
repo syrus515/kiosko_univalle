@@ -382,7 +382,7 @@
                                     <Font size="15.0" />
                                  </font>
                               </Label>
-                              <Button layoutX="1665.0" layoutY="239.0" mnemonicParsing="false" prefWidth="128.0" text="Guardar">
+                              <Button layoutX="1664.0" layoutY="422.0" mnemonicParsing="false" prefWidth="128.0" text="Guardar">
                                  <font>
                                     <Font size="22.0" />
                                  </font>
@@ -393,6 +393,46 @@
                                  </font>
                               </Text>
                               <Text fx:id="pesoImprimir" layoutX="1568.0" layoutY="199.0" strokeType="OUTSIDE" strokeWidth="0.0" text="---/---" wrappingWidth="160.13671875">
+                                 <font>
+                                    <Font size="35.0" />
+                                 </font>
+                              </Text>
+                              <Label layoutX="1568.0" layoutY="220.0" text="Grasa corporal:">
+                                 <font>
+                                    <Font size="15.0" />
+                                 </font>
+                              </Label>
+                              <Text fx:id="grasaImprimir" layoutX="1568.0" layoutY="284.0" strokeType="OUTSIDE" strokeWidth="0.0" text="---" wrappingWidth="184.13671875">
+                                 <font>
+                                    <Font size="35.0" />
+                                 </font>
+                              </Text>
+                              <Label layoutX="1568.0" layoutY="294.0" text="Masa muscular:">
+                                 <font>
+                                    <Font size="15.0" />
+                                 </font>
+                              </Label>
+                              <Text fx:id="masaImprimir" layoutX="1568.0" layoutY="352.0" strokeType="OUTSIDE" strokeWidth="0.0" text="---" wrappingWidth="184.13671875">
+                                 <font>
+                                    <Font size="35.0" />
+                                 </font>
+                              </Text>
+                              <Label layoutX="1758.0" layoutY="221.0" text="Porcentaje de agua:">
+                                 <font>
+                                    <Font size="15.0" />
+                                 </font>
+                              </Label>
+                              <Text fx:id="pAguaImprimir" layoutX="1758.0" layoutY="279.0" strokeType="OUTSIDE" strokeWidth="0.0" text="---" wrappingWidth="184.13671875">
+                                 <font>
+                                    <Font size="35.0" />
+                                 </font>
+                              </Text>
+                              <Label layoutX="1758.0" layoutY="295.0" text="IMC:">
+                                 <font>
+                                    <Font size="15.0" />
+                                 </font>
+                              </Label>
+                              <Text fx:id="iMCImprimir" layoutX="1758.0" layoutY="353.0" strokeType="OUTSIDE" strokeWidth="0.0" text="---" wrappingWidth="184.13671875">
                                  <font>
                                     <Font size="35.0" />
                                  </font>

@@ -269,6 +269,9 @@ private static final int Y_MAX_RESP = 3000;
     private ConcurrentLinkedQueue<Number> dataRESP = new ConcurrentLinkedQueue<Number>();
     
     private ConcurrentLinkedQueue<Number> reprodSPO2 = new ConcurrentLinkedQueue<Number>();
+    private ConcurrentLinkedQueue<Number> reprodECG1 = new ConcurrentLinkedQueue<Number>();
+    private ConcurrentLinkedQueue<Number> reprodECG2 = new ConcurrentLinkedQueue<Number>();
+    private ConcurrentLinkedQueue<Number> reprodRESP = new ConcurrentLinkedQueue<Number>();
     
     private ExecutorService executor;
     private ExecutorService executorPresion;
@@ -394,6 +397,14 @@ private static final int Y_MAX_RESP = 3000;
     private Text pesoImprimir;
     @FXML
     private Text presionImprimir;   
+    @FXML
+    private Text grasaImprimir;
+    @FXML
+    private Text masaImprimir;
+    @FXML
+    private Text pAguaImprimir;
+    @FXML
+    private Text iMCImprimir;
     
     @FXML
     public void cerrarPrograma() {
@@ -1928,6 +1939,25 @@ public void reproducirSPO2()
     
 }
 
+public void reproducirECG1()
+{
+    
+        for (int i = 0; i < 20; i++) { //-- add 20 numbers to the plot+
+            if (reprodECG1.isEmpty()) break;
+            series2.getData().add(new XYChart.Data<>(xSeriesData_ecg1++, reprodECG1.remove()));
+
+        }
+        // remove points to keep us at no more than MAX_DATA_POINTS
+        if (series2.getData().size() > MAX_DATA_POINTS_ECG) {
+            series2.getData().remove(0, series2.getData().size() - MAX_DATA_POINTS_ECG);
+        }
+        // update 
+        xAxis_2.setLowerBound(xSeriesData_ecg1-MAX_DATA_POINTS_ECG);
+        xAxis_2.setUpperBound(xSeriesData_ecg1-1);    
+}
+
+
+
     @FXML
     private void reproducirMedicion()
     {                 
@@ -1937,6 +1967,13 @@ public void reproducirSPO2()
             while(tokens.hasMoreTokens())
             {
                 reprodSPO2.add(Integer.parseInt(tokens.nextToken()));
+            }
+            //Ahora para ECG1
+            String ECG1= med.getOndaECG1().substring(1, med.getOndaECG1().length()-1);
+            tokens= new StringTokenizer(ECG1, ", ");
+            while(tokens.hasMoreTokens())
+            {
+                reprodECG1.add(Integer.parseInt(tokens.nextToken()));
             }
             
             // Every frame to take any data from queue and add to chart
@@ -1960,9 +1997,10 @@ public void reproducirSPO2()
                 public void run()
                 {
                     reproducirSPO2();
+                    reproducirECG1();
                     try 
                     {
-                        if(reprodSPO2.isEmpty())
+                        if(reprodSPO2.isEmpty() && reprodECG1.isEmpty())
                         {
                             timer.cancel();
                             timer.purge();
@@ -2003,14 +2041,22 @@ public void reproducirSPO2()
     
     public void actualizarPeso()
     {
-        float peso= admin.staticParameters.readWeight();
+        float peso= admin.staticParameters.readWeight();        
         
         if(peso<=0.0)
         {
             pesoImprimir.setText("---");
         }else
         {
+            float grasa= admin.staticParameters.readBodyFat();
+            float porcentajeAgua= admin.staticParameters.readWaterPercent();
+            float masaMuscular= admin.staticParameters.readMuscleMass();
+            //            //imc = peso/(Math.pow(estaturaCM/100, 2));            
             pesoImprimir.setText(peso + "Kg");
+            grasaImprimir.setText(grasa + "%");
+            pAguaImprimir.setText(porcentajeAgua + "%");
+            masaImprimir.setText("IMM= " + masaMuscular);            
+            
         }
     }
     
@@ -2066,20 +2112,7 @@ public void reproducirSPO2()
         
     }
     
-    private class QueuPresionPeso implements Runnable {
-        public void run() {
-        try {
-            actualizarPresion();
-                    
-                
-            Thread.sleep(500);
-            executorPresion.execute(this);
-            } catch (Exception e) {
-                System.out.println(e.toString());
-            }
-        }
-    }
-    
+   
     
     
     @FXML    
