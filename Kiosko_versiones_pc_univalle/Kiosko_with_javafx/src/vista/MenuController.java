@@ -231,6 +231,7 @@ public class MenuController implements Initializable {
     AdminDevice admin;
     private int banderaImg = 1;
     private boolean banderaInicio=false;
+    private Pacientes pacienteCargado;
     
     //vectores para guardar datos de la medicion
     Vector<Integer> vSPO2 = new Vector(0,1);
@@ -405,6 +406,8 @@ private static final int Y_MAX_RESP = 3000;
     private Text pAguaImprimir;
     @FXML
     private Text iMCImprimir;
+    @FXML
+    private TextField textEstatura;
     
     @FXML
     public void cerrarPrograma() {
@@ -445,6 +448,7 @@ private static final int Y_MAX_RESP = 3000;
                 String id = textIdentificacion1.getText();
                 if (id.equals(obj.getPacientesPK().getIdentificacion())) {
                     mostrarPaciente(obj);
+                    pacienteCargado= obj;
                     bandera = true;
                     opcionModificar(true);
                 }
@@ -558,6 +562,7 @@ private static final int Y_MAX_RESP = 3000;
             p.setDepartamento(textDepartamento.getText());
             p.setMunicipio(textMunicipio.getText());
             p.setZona(textZona.getText());
+            p.setEstatura(Float.parseFloat(textEstatura.getText()));
             // *************************************************
             p.setFoto(imageInByteFoto);
             p.setHuella(plantillaHuella.serialize());
@@ -1942,7 +1947,7 @@ public void reproducirSPO2()
 public void reproducirECG1()
 {
     
-        for (int i = 0; i < 20; i++) { //-- add 20 numbers to the plot+
+        for (int i = 0; i < 3; i++) { //-- add 20 numbers to the plot+
             if (reprodECG1.isEmpty()) break;
             series2.getData().add(new XYChart.Data<>(xSeriesData_ecg1++, reprodECG1.remove()));
 
@@ -1956,25 +1961,75 @@ public void reproducirECG1()
         xAxis_2.setUpperBound(xSeriesData_ecg1-1);    
 }
 
+public void reproducirECG2()
+{
+    
+        for (int i = 0; i < 3; i++) { //-- add 20 numbers to the plot+
+            if (reprodECG2.isEmpty()) break;
+            series3.getData().add(new XYChart.Data<>(xSeriesData_ecg2++, reprodECG2.remove()));
+
+        }
+        // remove points to keep us at no more than MAX_DATA_POINTS
+        if (series3.getData().size() > MAX_DATA_POINTS_ECG) {
+            series3.getData().remove(0, series3.getData().size() - MAX_DATA_POINTS_ECG);
+        }
+        // update 
+        xAxis_3.setLowerBound(xSeriesData_ecg2-MAX_DATA_POINTS_ECG);
+        xAxis_3.setUpperBound(xSeriesData_ecg2-1);   
+}
+
+public void reproducirRESP()
+{    
+        for (int i = 0; i < 3; i++) { //-- add 20 numbers to the plot+
+            if (reprodRESP.isEmpty()) break;
+            series4.getData().add(new XYChart.Data<>(xSeriesData_resp++, reprodRESP.remove()));
+
+        }
+        // remove points to keep us at no more than MAX_DATA_POINTS
+        if (series4.getData().size() > MAX_DATA_POINTS_RESP) {
+            series4.getData().remove(0, series4.getData().size() - MAX_DATA_POINTS_RESP);
+        }
+        // update 
+        xAxis_4.setLowerBound(xSeriesData_resp-MAX_DATA_POINTS_RESP);
+        xAxis_4.setUpperBound(xSeriesData_resp-1);  
+}
+
+
+
+
 
 
     @FXML
     private void reproducirMedicion()
     {                 
-            Medicion med= this.programaPrincipal.getMedicionReproducir();            
-            String SPO2= med.getOndaSPO2().substring(1, med.getOndaSPO2().length()-1);
+            Medicion medicionReproducir= this.programaPrincipal.getMedicionReproducir();            
+            String SPO2= medicionReproducir.getOndaSPO2().substring(1, medicionReproducir.getOndaSPO2().length()-1);
             StringTokenizer tokens= new StringTokenizer(SPO2, ", ");
             while(tokens.hasMoreTokens())
             {
                 reprodSPO2.add(Integer.parseInt(tokens.nextToken()));
             }
             //Ahora para ECG1
-            String ECG1= med.getOndaECG1().substring(1, med.getOndaECG1().length()-1);
+            String ECG1= medicionReproducir.getOndaECG1().substring(1, medicionReproducir.getOndaECG1().length()-1);
             tokens= new StringTokenizer(ECG1, ", ");
             while(tokens.hasMoreTokens())
             {
                 reprodECG1.add(Integer.parseInt(tokens.nextToken()));
             }
+            
+            String ECG2= medicionReproducir.getOndaECG2().substring(1, medicionReproducir.getOndaECG2().length()-1);
+            tokens= new StringTokenizer(ECG2, ", ");
+            while(tokens.hasMoreTokens())
+            {
+                reprodECG2.add(Integer.parseInt(tokens.nextToken()));
+            } 
+            
+            String RESP= medicionReproducir.getOndaRESP().substring(1, medicionReproducir.getOndaRESP().length()-1);
+            tokens= new StringTokenizer(RESP, ", ");
+            while(tokens.hasMoreTokens())
+            {
+                reprodRESP.add(Integer.parseInt(tokens.nextToken()));
+            } 
             
             // Every frame to take any data from queue and add to chart
             /*new AnimationTimer() {
@@ -1998,9 +2053,11 @@ public void reproducirECG1()
                 {
                     reproducirSPO2();
                     reproducirECG1();
+                    reproducirECG2();
+                    reproducirRESP();
                     try 
                     {
-                        if(reprodSPO2.isEmpty() && reprodECG1.isEmpty())
+                        if(reprodSPO2.isEmpty() && reprodECG1.isEmpty() && reprodECG2.isEmpty() && reprodRESP.isEmpty())
                         {
                             timer.cancel();
                             timer.purge();
@@ -2051,20 +2108,21 @@ public void reproducirECG1()
             float grasa= admin.staticParameters.readBodyFat();
             float porcentajeAgua= admin.staticParameters.readWaterPercent();
             float masaMuscular= admin.staticParameters.readMuscleMass();
-            //            //imc = peso/(Math.pow(estaturaCM/100, 2));            
+            float imc = (float) (peso/(Math.pow(pacienteCargado.getEstatura()/100, 2)));            
             pesoImprimir.setText(peso + "Kg");
             grasaImprimir.setText(grasa + "%");
             pAguaImprimir.setText(porcentajeAgua + "%");
-            masaImprimir.setText("IMM= " + masaMuscular);            
+            masaImprimir.setText("IMM= " + masaMuscular);  
+            iMCImprimir.setText(String.valueOf(imc));
             
         }
     }
     
     @FXML
     public void tomarPeso()
-    {
+    {        
         //Cambiar los siguientes datos para que se tomen de la base de datos.
-        admin.solicitarTanita("20", "masculino", "27", "175", "regular");//ID:17-65534, genero: masculino-femenino, edad , estatura: en cm, actividad: sedentario, regular o deportista.
+        admin.solicitarTanita("20", "masculino", "27", String.valueOf((int) pacienteCargado.getEstatura()), "regular");//ID:17-65534, genero: masculino-femenino, edad , estatura: en cm, actividad: sedentario, regular o deportista.
         
         float weight= admin.staticParameters.readWeight();
         
@@ -2196,10 +2254,8 @@ public void reproducirECG1()
         
         AlterarInterfaz alterador= new AlterarInterfaz(admin, this);
         alterador.setOpcion(1); //Para modificar presión
-        alterador.start();      
+        alterador.start(); 
         
-        
-
     }
     
     

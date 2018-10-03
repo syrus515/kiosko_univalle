@@ -285,6 +285,8 @@
                                     <Label fx:id="labHipertension" text="Hipertension " GridPane.columnIndex="4" GridPane.halignment="RIGHT" GridPane.rowIndex="1" />
                                     <Label fx:id="labConsumeLicor" text="Cosume licor " GridPane.columnIndex="6" GridPane.halignment="RIGHT" GridPane.rowIndex="1" />
                                     <Label fx:id="labInfartos" text="Infartos " GridPane.columnIndex="4" GridPane.halignment="RIGHT" GridPane.rowIndex="2" />
+                                    <Label text="Estatura" GridPane.columnIndex="6" GridPane.halignment="RIGHT" GridPane.rowIndex="2" />
+                                    <TextField fx:id="textEstatura" GridPane.columnIndex="7" GridPane.rowIndex="2" />
                                  </children>
                               </GridPane>
                            </children></AnchorPane>
