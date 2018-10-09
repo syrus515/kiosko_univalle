@@ -285,8 +285,6 @@
                                     <Label fx:id="labHipertension" text="Hipertension " GridPane.columnIndex="4" GridPane.halignment="RIGHT" GridPane.rowIndex="1" />
                                     <Label fx:id="labConsumeLicor" text="Cosume licor " GridPane.columnIndex="6" GridPane.halignment="RIGHT" GridPane.rowIndex="1" />
                                     <Label fx:id="labInfartos" text="Infartos " GridPane.columnIndex="4" GridPane.halignment="RIGHT" GridPane.rowIndex="2" />
-                                    <Label text="Estatura" GridPane.columnIndex="6" GridPane.halignment="RIGHT" GridPane.rowIndex="2" />
-                                    <TextField fx:id="textEstatura" GridPane.columnIndex="7" GridPane.rowIndex="2" />
                                  </children>
                               </GridPane>
                            </children></AnchorPane>
@@ -478,6 +476,7 @@
                                     <Label fx:id="labDireccion" text="Dirección " GridPane.columnIndex="4" GridPane.halignment="RIGHT" GridPane.rowIndex="1" />
                                     <Label fx:id="labFechaNacimiento" text="Fecha nacimiento " GridPane.columnIndex="4" GridPane.halignment="RIGHT" GridPane.rowIndex="2" />
                                     <Label fx:id="labZona" text="Zona " GridPane.columnIndex="4" GridPane.halignment="RIGHT" GridPane.rowIndex="3" />
+                                    <Label text="Estatura (cm)" GridPane.columnIndex="4" GridPane.halignment="RIGHT" />
                                     <TextField fx:id="textTipoIdentificacion2" editable="false" prefHeight="25.0" prefWidth="155.0" GridPane.columnIndex="1" />
                                     <TextField fx:id="textIdentificacion2" editable="false" GridPane.columnIndex="3" />
                                     <TextField fx:id="textTipoUsuario" GridPane.columnIndex="1" GridPane.rowIndex="2" />
@@ -488,6 +487,7 @@
                                     <TextField fx:id="textTelefonoFijo" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                                     <TextField fx:id="textCelular" GridPane.columnIndex="3" GridPane.rowIndex="1" />
                                     <TextField fx:id="textDireccion" GridPane.columnIndex="5" GridPane.rowIndex="1" />
+                                    <TextField fx:id="textEstatura" GridPane.columnIndex="5" />
                                     <DatePicker fx:id="datePickerFechaNacimiento" nodeOrientation="LEFT_TO_RIGHT" prefHeight="25.0" prefWidth="284.0" GridPane.columnIndex="5" GridPane.rowIndex="2" />
                                  </children>
                               </GridPane>

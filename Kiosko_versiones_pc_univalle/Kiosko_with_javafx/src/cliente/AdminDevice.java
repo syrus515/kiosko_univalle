@@ -70,7 +70,8 @@ public class AdminDevice {
         connectionState.connectByTCP();
         monitor=new Monitor();
         try {
-            tcpCliente=new ThreadCliente(ecg1Signal,ecg2Signal,spo2Signal,respSignal,staticParameters,commands,monitor,connectionState,this);
+            boolean leerSenales= false;
+            tcpCliente=new ThreadCliente(ecg1Signal,ecg2Signal,spo2Signal,respSignal,staticParameters,commands,monitor,connectionState,this, leerSenales);
             connectionState.reset();
             if(connectionState.tcpReadState()){
                 //consumidor=new ThreadConsumer(ecg1Signal, ecg2Signal, spo2Signal, respSignal, staticParameters,monitor,connectionState, mc);
@@ -80,7 +81,13 @@ public class AdminDevice {
         } catch (IOException ex) {
             Logger.getLogger(Kiosko_client2.class.getName()).log(Level.SEVERE, null, ex);
         }
-    }    
+    }  
+    
+    public void switchLectura()
+    {
+        tcpCliente.switchLectura();        
+    }
+    
     public void dispositivoDesconectado(){
         if (hiloConsumidor != null) {
 //            try {

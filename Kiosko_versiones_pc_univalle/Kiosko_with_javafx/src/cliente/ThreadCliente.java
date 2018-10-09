@@ -37,10 +37,11 @@ public class ThreadCliente extends Thread {
     Monitor monitor;
     ConnectionState connectionState;
     AdminDevice admin;
+    boolean leerSenales;
 
     public ThreadCliente(Ecg1Signal ecg1Signal,
             Ecg2Signal ecg2Signal, Spo2Signal spo2Signal, RespSignal respSignal, StaticParameters staticParameter,
-            CommandsToRaspberry commands, Monitor monitor, ConnectionState connectionState, AdminDevice admin) throws IOException {
+            CommandsToRaspberry commands, Monitor monitor, ConnectionState connectionState, AdminDevice admin, boolean leerSenales) throws IOException {
         this.ecg1Signal = ecg1Signal;
         this.ecg2Signal = ecg2Signal;
         this.spo2Signal = spo2Signal;
@@ -52,6 +53,11 @@ public class ThreadCliente extends Thread {
         this.admin = admin;
         arrancarCliente();
         start(); // Se arranca el hilo.
+    }
+    
+    public void switchLectura()
+    {
+        leerSenales= !leerSenales;        
     }
 
     private void arrancarCliente() {
@@ -133,7 +139,7 @@ public class ThreadCliente extends Thread {
                                     }
                                 }
                             }
-                        } else if (dato[1].equals("onda")) {
+                        } else if (dato[1].equals("onda") && leerSenales) {
 
                             if (dato[2].equals("ecg1")) {
 //      

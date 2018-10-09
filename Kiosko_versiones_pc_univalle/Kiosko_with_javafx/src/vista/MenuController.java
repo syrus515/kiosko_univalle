@@ -925,7 +925,8 @@ private static final int Y_MAX_RESP = 3000;
     void iniciarLecturaSeñales(ActionEvent event) 
     {  
         Timer timerIniciar;
-        timerIniciar = new Timer();        
+        timerIniciar = new Timer();  
+        admin.switchLectura();
         
         
         if (banderaInicio)         
