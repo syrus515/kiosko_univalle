@@ -28,13 +28,13 @@ import javax.xml.bind.annotation.XmlRootElement;
     , @NamedQuery(name = "HistorialAfinamiento.findByTipoid", query = "SELECT h FROM HistorialAfinamiento h WHERE h.historialAfinamientoPK.tipoid = :tipoid")
     , @NamedQuery(name = "HistorialAfinamiento.findByIdentificacion", query = "SELECT h FROM HistorialAfinamiento h WHERE h.historialAfinamientoPK.identificacion = :identificacion")
     , @NamedQuery(name = "HistorialAfinamiento.findByFecha", query = "SELECT h FROM HistorialAfinamiento h WHERE h.historialAfinamientoPK.fecha = :fecha")
-    , @NamedQuery(name = "HistorialAfinamiento.findByHora", query = "SELECT h FROM HistorialAfinamiento h WHERE h.hora = :hora")
     , @NamedQuery(name = "HistorialAfinamiento.findByPeso", query = "SELECT h FROM HistorialAfinamiento h WHERE h.peso = :peso")
-    , @NamedQuery(name = "HistorialAfinamiento.findByPresion", query = "SELECT h FROM HistorialAfinamiento h WHERE h.presion = :presion")
     , @NamedQuery(name = "HistorialAfinamiento.findByBrazo", query = "SELECT h FROM HistorialAfinamiento h WHERE h.brazo = :brazo")
     , @NamedQuery(name = "HistorialAfinamiento.findByPosicion", query = "SELECT h FROM HistorialAfinamiento h WHERE h.posicion = :posicion")
     , @NamedQuery(name = "HistorialAfinamiento.findByJornada", query = "SELECT h FROM HistorialAfinamiento h WHERE h.jornada = :jornada")
     , @NamedQuery(name = "HistorialAfinamiento.findByEstadoInicial", query = "SELECT h FROM HistorialAfinamiento h WHERE h.estadoInicial = :estadoInicial")
+    , @NamedQuery(name = "HistorialAfinamiento.findByPresDiastolica", query = "SELECT h FROM HistorialAfinamiento h WHERE h.presDiastolica = :presDiastolica")
+    , @NamedQuery(name = "HistorialAfinamiento.findByPresSistolica", query = "SELECT h FROM HistorialAfinamiento h WHERE h.presSistolica = :presSistolica")
     , @NamedQuery(name = "HistorialAfinamiento.findByDetalles", query = "SELECT h FROM HistorialAfinamiento h WHERE h.detalles = :detalles")
     , @NamedQuery(name = "HistorialAfinamiento.findByGrasaCorporal", query = "SELECT h FROM HistorialAfinamiento h WHERE h.grasaCorporal = :grasaCorporal")
     , @NamedQuery(name = "HistorialAfinamiento.findByPorcentajeAgua", query = "SELECT h FROM HistorialAfinamiento h WHERE h.porcentajeAgua = :porcentajeAgua")
@@ -46,14 +46,8 @@ public class HistorialAfinamiento implements Serializable {
     @EmbeddedId
     protected HistorialAfinamientoPK historialAfinamientoPK;
     @Basic(optional = false)
-    @Column(name = "hora")
-    private double hora;
-    @Basic(optional = false)
     @Column(name = "peso")
     private double peso;
-    @Basic(optional = false)
-    @Column(name = "presion")
-    private String presion;
     @Basic(optional = false)
     @Column(name = "brazo")
     private String brazo;
@@ -66,6 +60,12 @@ public class HistorialAfinamiento implements Serializable {
     @Basic(optional = false)
     @Column(name = "estadoInicial")
     private String estadoInicial;
+    @Basic(optional = false)
+    @Column(name = "presDiastolica")
+    private int presDiastolica;
+    @Basic(optional = false)
+    @Column(name = "presSistolica")
+    private int presSistolica;
     @Basic(optional = false)
     @Column(name = "Detalles")
     private String detalles;
@@ -89,15 +89,15 @@ public class HistorialAfinamiento implements Serializable {
         this.historialAfinamientoPK = historialAfinamientoPK;
     }
 
-    public HistorialAfinamiento(HistorialAfinamientoPK historialAfinamientoPK, double hora, double peso, String presion, String brazo, String posicion, String jornada, String estadoInicial, String detalles, float grasaCorporal, float porcentajeAgua, float masaMuscular, float imc) {
+    public HistorialAfinamiento(HistorialAfinamientoPK historialAfinamientoPK, double peso, String brazo, String posicion, String jornada, String estadoInicial, int presDiastolica, int presSistolica, String detalles, float grasaCorporal, float porcentajeAgua, float masaMuscular, float imc) {
         this.historialAfinamientoPK = historialAfinamientoPK;
-        this.hora = hora;
         this.peso = peso;
-        this.presion = presion;
         this.brazo = brazo;
         this.posicion = posicion;
         this.jornada = jornada;
         this.estadoInicial = estadoInicial;
+        this.presDiastolica = presDiastolica;
+        this.presSistolica = presSistolica;
         this.detalles = detalles;
         this.grasaCorporal = grasaCorporal;
         this.porcentajeAgua = porcentajeAgua;
@@ -117,28 +117,12 @@ public class HistorialAfinamiento implements Serializable {
         this.historialAfinamientoPK = historialAfinamientoPK;
     }
 
-    public double getHora() {
-        return hora;
-    }
-
-    public void setHora(double hora) {
-        this.hora = hora;
-    }
-
     public double getPeso() {
         return peso;
     }
 
     public void setPeso(double peso) {
         this.peso = peso;
-    }
-
-    public String getPresion() {
-        return presion;
-    }
-
-    public void setPresion(String presion) {
-        this.presion = presion;
     }
 
     public String getBrazo() {
@@ -171,6 +155,22 @@ public class HistorialAfinamiento implements Serializable {
 
     public void setEstadoInicial(String estadoInicial) {
         this.estadoInicial = estadoInicial;
+    }
+
+    public int getPresDiastolica() {
+        return presDiastolica;
+    }
+
+    public void setPresDiastolica(int presDiastolica) {
+        this.presDiastolica = presDiastolica;
+    }
+
+    public int getPresSistolica() {
+        return presSistolica;
+    }
+
+    public void setPresSistolica(int presSistolica) {
+        this.presSistolica = presSistolica;
     }
 
     public String getDetalles() {

@@ -9,6 +9,8 @@ import BD.AntecedentesfamiliaresPK;
 import BD.Antecedentespersonales;
 import BD.AntecedentespersonalesPK;
 import BD.ConexionDBs;
+import BD.HistorialAfinamiento;
+import BD.HistorialAfinamientoPK;
 import com.digitalpersona.onetouch.DPFPGlobal;
 import com.digitalpersona.onetouch.DPFPTemplate;
 import java.awt.image.BufferedImage;
@@ -408,6 +410,20 @@ private static final int Y_MAX_RESP = 3000;
     private Text iMCImprimir;
     @FXML
     private TextField textEstatura;
+    @FXML
+    private ChoiceBox<String> brazoAfinamiento;
+    @FXML
+    private ChoiceBox<String> posicionAfinamiento;
+    @FXML
+    private ChoiceBox<String> jornadaAfinamiento;
+    @FXML
+    private TextField estadoAfinamiento;
+    @FXML
+    private TextArea detallesAfinamiento;
+    @FXML
+    private Button guardarAfinamiento;
+    @FXML
+    private TableView<HistorialAfinamiento> tablaAfinamientos;
     
     @FXML
     public void cerrarPrograma() {
@@ -451,6 +467,8 @@ private static final int Y_MAX_RESP = 3000;
                     pacienteCargado= obj;
                     bandera = true;
                     opcionModificar(true);
+                    llenarTablaAfinamientos();
+                    break;
                 }
             }
         }
@@ -1032,58 +1050,104 @@ private static final int Y_MAX_RESP = 3000;
         //btnIniciarSeñales.setText("Parar");        
     }
     
+    private double peso;
     
-          
-    public void almacenarSenales()
+    @FXML
+    public void almacenarAfinamiento()
     {
-            em = Persistence.createEntityManagerFactory("KioskoPU").createEntityManager();
-            em.getTransaction().begin();
-            List<Pacientes> list = em.createNamedQuery("Pacientes.findAll", Pacientes.class).getResultList();
-            for (int i = 0; i < list.size(); i++) 
-            {
-                Pacientes obj = list.get(i);
-                if (obj.getPacientesPK().getIdentificacion().equals(textIdentificacion1.getText()))
-                {                    
-                    try
-                    {
-                        Medicion med= new Medicion();
-                        med.setId(1);
-                        med.setIdentificacion(obj); 
-                        med.setTipoid(obj);
-                        med.setTipo("1");
-                        med.setIntervalo(0);
-                        med.setDuracionMuestra(1);
-                        med.setDuracionExamen(1);
-                        med.setDetalles(detallesMedicion.getText());
-                        
-                        
-                        //Aquí colocas tu objeto tipo Date
-                        Date date= new Date();
-                        date =  new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(date));                        
-                        java.sql.Timestamp fechaGuardar = new java.sql.Timestamp(date.getTime());                       
-                        
-                        med.setFecha(fechaGuardar); 
-                        med.setOndaSPO2(vSPO2.toString());
-                        med.setOndaECG1(vECG1.toString());
-                        med.setOndaECG2(vECG2.toString());
-                        med.setOndaRESP(vRESP.toString());
-                        med.setPresionSistolica(vsistolica.toString());
-                        med.setPresionDiastolica(vdiastolica.toString());
-                        med.setPulso(vpulso.toString());
-                        med.setMed(vmed.toString());
-                        med.setEcg(vECG.toString());
-                        med.setSpo2(vSPO2text.toString());
-                        med.setHr(vHR.toString());
-                        med.setResp(vRESPtext.toString());                        
-                        em.persist(med);
-                    }catch(Exception e)
-                    {
-                        System.out.println(e);
-                    } 
-                }
+        em = Persistence.createEntityManagerFactory("KioskoPU").createEntityManager();
+        em.getTransaction().begin();
+        List<Pacientes> list = em.createNamedQuery("Pacientes.findAll", Pacientes.class).getResultList();
+        for (int i = 0; i < list.size(); i++) 
+        {
+            Pacientes obj = list.get(i);
+            if (obj.getPacientesPK().getIdentificacion().equals(textIdentificacion1.getText()))
+            {                    
+                try
+                {
+                    //Aquí colocas tu objeto tipo Date
+                    Date date= new Date();
+                    date =  new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(date));                        
+                    java.sql.Timestamp fechaGuardar = new java.sql.Timestamp(date.getTime()); 
+                    
+                    HistorialAfinamiento afi= new HistorialAfinamiento();
+                    HistorialAfinamientoPK afiPK= new HistorialAfinamientoPK(cboxTipoIdentificacion.getValue().toString().substring(0, 2), textIdentificacion1.getText(), fechaGuardar);
+                    afi.setHistorialAfinamientoPK(afiPK);
+                    afi.setPeso(pesoAlmacenar);
+                    afi.setBrazo(brazoAfinamiento.getSelectionModel().getSelectedItem());
+                    afi.setPosicion(posicionAfinamiento.getSelectionModel().getSelectedItem());
+                    afi.setJornada(jornadaAfinamiento.getSelectionModel().getSelectedItem());
+                    afi.setEstadoInicial(estadoAfinamiento.getText());
+                    afi.setPresDiastolica(this.presDiastolica);
+                    afi.setPresSistolica(this.presSistolica);
+                    afi.setDetalles(detallesAfinamiento.getText());
+                    afi.setGrasaCorporal(this.grasa);
+                    afi.setPorcentajeAgua(this.porcentajeAgua);
+                    afi.setMasaMuscular(this.masaMuscular);
+                    afi.setImc(this.imc);
+                                           
+                    em.persist(afi);
+                }catch(Exception e)
+                {
+                    System.out.println(e);
+                } 
             }
-            
-            em.getTransaction().commit();       
+        }
+
+        em.getTransaction().commit();
+        guardarAfinamiento.setDisable(true);
+}
+
+public void almacenarSenales()
+{
+        em = Persistence.createEntityManagerFactory("KioskoPU").createEntityManager();
+        em.getTransaction().begin();
+        List<Pacientes> list = em.createNamedQuery("Pacientes.findAll", Pacientes.class).getResultList();
+        for (int i = 0; i < list.size(); i++) 
+        {
+            Pacientes obj = list.get(i);
+            if (obj.getPacientesPK().getIdentificacion().equals(textIdentificacion1.getText()))
+            {                    
+                try
+                {
+                    Medicion med= new Medicion();
+                    med.setId(1);
+                    med.setIdentificacion(obj); 
+                    med.setTipoid(obj);
+                    med.setTipo("1");
+                    med.setIntervalo(0);
+                    med.setDuracionMuestra(1);
+                    med.setDuracionExamen(1);
+                    med.setDetalles(detallesMedicion.getText());
+
+
+                    //Aquí colocas tu objeto tipo Date
+                    Date date= new Date();
+                    date =  new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(date));                        
+                    java.sql.Timestamp fechaGuardar = new java.sql.Timestamp(date.getTime());                       
+
+                    med.setFecha(fechaGuardar); 
+                    med.setOndaSPO2(vSPO2.toString());
+                    med.setOndaECG1(vECG1.toString());
+                    med.setOndaECG2(vECG2.toString());
+                    med.setOndaRESP(vRESP.toString());
+                    med.setPresionSistolica(vsistolica.toString());
+                    med.setPresionDiastolica(vdiastolica.toString());
+                    med.setPulso(vpulso.toString());
+                    med.setMed(vmed.toString());
+                    med.setEcg(vECG.toString());
+                    med.setSpo2(vSPO2text.toString());
+                    med.setHr(vHR.toString());
+                    med.setResp(vRESPtext.toString());                        
+                    em.persist(med);
+                }catch(Exception e)
+                {
+                    System.out.println(e);
+                } 
+            }
+        }
+
+        em.getTransaction().commit();       
   
     }
     public void graficar() {
@@ -1230,12 +1294,31 @@ private static final int Y_MAX_RESP = 3000;
         
         ObservableList<String> availableChoices = FXCollections.observableArrayList("5 minutos", "10 minutos", "15 minutos", "20 minutos", "25 minutos", "30 minutos"); 
         intervalo.setItems(availableChoices);
+        intervalo.getSelectionModel().selectFirst();
+        
         
         availableChoices = FXCollections.observableArrayList("15 segundos", "30 segundos", "45 segundos", "60 segundos"); 
         duracionMuestra.setItems(availableChoices);
+        duracionMuestra.getSelectionModel().selectFirst();
         
         availableChoices = FXCollections.observableArrayList("30 minutos", "1 hora", "1 hora, 30 minutos", "2 horas"); 
         duracionExamen.setItems(availableChoices);
+        duracionExamen.getSelectionModel().selectFirst();
+        
+        //Desplegables del afinamiento
+        availableChoices = FXCollections.observableArrayList("Derecho", "Izquierdo");  
+        brazoAfinamiento.setItems(availableChoices);
+        brazoAfinamiento.getSelectionModel().selectFirst();
+        
+        availableChoices = FXCollections.observableArrayList("Derecho", "Izquierdo");  
+        posicionAfinamiento.setItems(availableChoices);
+        posicionAfinamiento.getSelectionModel().selectFirst();
+        
+        availableChoices = FXCollections.observableArrayList("Mañana", "Tarde", "Noche");  
+        jornadaAfinamiento.setItems(availableChoices);
+        jornadaAfinamiento.getSelectionModel().selectFirst();
+        
+        
         
         // INICIAL
         gc.clearRect(1280+1, 0+1, 600-2, 615-2);
@@ -2075,47 +2158,33 @@ public void reproducirRESP()
  
     }
                 
-        
-        
-                
-        //Vector<Integer> repSPO2=  med.getOndaSPO2();
-    
-    
-    
-    
-    private class AddToQueueRepro extends Thread {
-        public void run() {
-                while(!reprodSPO2.isEmpty())
-                {
-                    reproducirSPO2();                
-                
-
-                }
-        }
-    }
     
     //Variable necesaria para este método
-    private static int contadorTomaPeso;
+    private float pesoAlmacenar= 0;
+    private float grasa= 0;
+    private float porcentajeAgua= 0;
+    private float masaMuscular= 0;
+    private float imc= 0;
     
     public void actualizarPeso()
-    {
+    {        
         float peso= admin.staticParameters.readWeight();        
+        pesoAlmacenar= peso;
         
         if(peso<=0.0)
         {
             pesoImprimir.setText("---");
         }else
         {
-            float grasa= admin.staticParameters.readBodyFat();
-            float porcentajeAgua= admin.staticParameters.readWaterPercent();
-            float masaMuscular= admin.staticParameters.readMuscleMass();
-            float imc = (float) (peso/(Math.pow(pacienteCargado.getEstatura()/100, 2)));            
+            grasa= admin.staticParameters.readBodyFat();
+            porcentajeAgua= admin.staticParameters.readWaterPercent();
+            masaMuscular= admin.staticParameters.readMuscleMass();
+            imc = (float) (peso/(Math.pow(pacienteCargado.getEstatura()/100, 2)));            
             pesoImprimir.setText(peso + "Kg");
             grasaImprimir.setText(grasa + "%");
             pAguaImprimir.setText(porcentajeAgua + "%");
             masaImprimir.setText("IMM= " + masaMuscular);  
-            iMCImprimir.setText(String.valueOf(imc));
-            
+            iMCImprimir.setText(String.valueOf(imc));            
         }
     }
     
@@ -2130,32 +2199,11 @@ public void reproducirRESP()
         AlterarInterfaz alterador= new AlterarInterfaz(admin, this);
         alterador.setOpcion(2); //Para modificar presión
         alterador.start();
-        
-        
-       /* Timer timer;
-        timer = new Timer();
-        contadorTomaPeso= 0;
-
-        TimerTask task = new TimerTask() 
-        {
-
-            @Override
-            public void run()
-            {   
-                contadorTomaPeso++;
-                pesoImprimir.setText(String.valueOf(weight));
-                if(contadorTomaPeso >= 7)
-                {
-                    timer.cancel();
-                    timer.purge();                    
-                }
-            }
-        };
-        // Empezamos dentro de 10s 
-        timer.schedule(task, 0, 500);*/
-                
-        
+        guardarAfinamiento.setDisable(false);       
     }
+    
+    private int presSistolica= 0;
+    private int presDiastolica= 0;
     
     public void actualizarPresion()
     {
@@ -2166,7 +2214,9 @@ public void reproducirRESP()
             presionImprimir.setText("---/---");
         }else
         {
-            presionImprimir.setText(diastolica +"/" + sistolica);
+            presSistolica= sistolica;
+            presDiastolica= diastolica; 
+            presionImprimir.setText(sistolica+ "/" + diastolica );
         }
         
     }
@@ -2255,7 +2305,8 @@ public void reproducirRESP()
         
         AlterarInterfaz alterador= new AlterarInterfaz(admin, this);
         alterador.setOpcion(1); //Para modificar presión
-        alterador.start(); 
+        alterador.start();
+        guardarAfinamiento.setDisable(false);
         
     }
     
@@ -2285,5 +2336,15 @@ public void reproducirRESP()
 //        em.remove(u);
 //        em.getTransaction().commit();
 //    }
+    
+    public void llenarTablaAfinamientos()
+    {
+       String identificacion= textIdentificacion1.getText();
+       
+       EntityManager em = Persistence.createEntityManagerFactory("KioskoPU").createEntityManager();
+       Query queryAfinamientoFindAll = em.createNativeQuery("SELECT * from historial_afinamiento m WHERE identificacion= '" + identificacion +"'", HistorialAfinamiento.class);
+       List<HistorialAfinamiento> listAfinamientos = queryAfinamientoFindAll.getResultList(); 
+       tablaAfinamientos.setItems(FXCollections.observableArrayList(listAfinamientos)); 
+    }
 
 }

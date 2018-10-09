@@ -326,7 +326,7 @@
                      <content>
                         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="568.0" prefWidth="2000.0">
                            <children>
-                              <TableView layoutX="44.0" layoutY="34.0" prefHeight="440.0" prefWidth="1035.0">
+                              <TableView fx:id="tablaAfinamientos" layoutX="44.0" layoutY="34.0" prefHeight="440.0" prefWidth="1035.0">
                                 <columns>
                                   <TableColumn prefWidth="75.0" text="C1" />
                                   <TableColumn prefWidth="75.0" text="C2" />
@@ -337,31 +337,31 @@
                                     <Font size="24.0" />
                                  </font>
                               </Label>
-                              <ChoiceBox layoutX="1291.0" layoutY="33.0" prefHeight="35.0" prefWidth="208.0" />
+                              <ChoiceBox fx:id="brazoAfinamiento" layoutX="1291.0" layoutY="33.0" prefHeight="35.0" prefWidth="208.0" />
                               <Label layoutX="1130.0" layoutY="104.0" text="Posición:">
                                  <font>
                                     <Font size="24.0" />
                                  </font>
                               </Label>
-                              <ChoiceBox layoutX="1291.0" layoutY="104.0" prefHeight="35.0" prefWidth="208.0" />
+                              <ChoiceBox fx:id="posicionAfinamiento" layoutX="1291.0" layoutY="104.0" prefHeight="35.0" prefWidth="208.0" />
                               <Label layoutX="1133.0" layoutY="173.0" text="Jornada:">
                                  <font>
                                     <Font size="24.0" />
                                  </font>
                               </Label>
-                              <ChoiceBox layoutX="1291.0" layoutY="173.0" prefHeight="35.0" prefWidth="208.0" />
+                              <ChoiceBox fx:id="jornadaAfinamiento" layoutX="1291.0" layoutY="173.0" prefHeight="35.0" prefWidth="208.0" />
                               <Label layoutX="1130.0" layoutY="236.0" prefHeight="35.0" prefWidth="152.0" text="Estado inicial:">
                                  <font>
                                     <Font size="24.0" />
                                  </font>
                               </Label>
-                              <TextField layoutX="1291.0" layoutY="230.0" prefHeight="47.0" prefWidth="208.0" />
+                              <TextField fx:id="estadoAfinamiento" layoutX="1291.0" layoutY="230.0" prefHeight="47.0" prefWidth="208.0" />
                               <Label layoutX="1132.0" layoutY="304.0" text="Detalles:">
                                  <font>
                                     <Font size="24.0" />
                                  </font>
                               </Label>
-                              <TextArea layoutX="1133.0" layoutY="348.0" prefHeight="122.0" prefWidth="373.0" />
+                              <TextArea fx:id="detallesAfinamiento" layoutX="1133.0" layoutY="348.0" prefHeight="122.0" prefWidth="373.0" />
                               <Button fx:id="tomarPeso" layoutX="1574.0" layoutY="33.0" mnemonicParsing="false" onAction="#tomarPeso" text="Tomar peso">
                                  <font>
                                     <Font size="18.0" />
@@ -382,7 +382,7 @@
                                     <Font size="15.0" />
                                  </font>
                               </Label>
-                              <Button layoutX="1664.0" layoutY="422.0" mnemonicParsing="false" prefWidth="128.0" text="Guardar">
+                              <Button fx:id="guardarAfinamiento" layoutX="1664.0" layoutY="422.0" mnemonicParsing="false" onAction="#almacenarAfinamiento" prefWidth="128.0" text="Guardar">
                                  <font>
                                     <Font size="22.0" />
                                  </font>
@@ -392,7 +392,7 @@
                                     <Font size="35.0" />
                                  </font>
                               </Text>
-                              <Text fx:id="pesoImprimir" layoutX="1568.0" layoutY="199.0" strokeType="OUTSIDE" strokeWidth="0.0" text="---/---" wrappingWidth="160.13671875">
+                              <Text fx:id="pesoImprimir" layoutX="1568.0" layoutY="199.0" strokeType="OUTSIDE" strokeWidth="0.0" text="---" wrappingWidth="160.13671875">
                                  <font>
                                     <Font size="35.0" />
                                  </font>
