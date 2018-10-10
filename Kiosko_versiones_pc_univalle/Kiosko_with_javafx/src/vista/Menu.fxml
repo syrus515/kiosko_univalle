@@ -328,8 +328,18 @@
                            <children>
                               <TableView fx:id="tablaAfinamientos" layoutX="44.0" layoutY="34.0" prefHeight="440.0" prefWidth="1035.0">
                                 <columns>
-                                  <TableColumn prefWidth="75.0" text="C1" />
-                                  <TableColumn prefWidth="75.0" text="C2" />
+                                  <TableColumn fx:id="columnaFechaAfinamiento" prefWidth="77.00003051757812" text="Fecha" />
+                                  <TableColumn fx:id="columnaPesoAfinamiento" prefWidth="52.00006103515625" text="Peso" />
+                                    <TableColumn fx:id="columnaPosicionAfinamiento" prefWidth="75.99996948242188" text="Posición" />
+                                    <TableColumn fx:id="columnaJornadaAfinamiento" prefWidth="64.0" text="Jornada" />
+                                    <TableColumn fx:id="columnaDiastolicaAfinamiento" prefWidth="62.0" text="Diastólica" />
+                                    <TableColumn fx:id="columnaSistolicaAfinamiento" prefWidth="64.0" text="Sistólica" />
+                                    <TableColumn fx:id="columnaGrasaAfinamiento" prefWidth="100.0" text="Grasa corporal" />
+                                    <TableColumn fx:id="columnaAguaAfinamiento" prefWidth="116.0" text="Porcentaje de agua" />
+                                    <TableColumn fx:id="columnaMuscularAfinamiento" prefWidth="96.0" text="Masa muscular" />
+                                    <TableColumn fx:id="columnaIMCAfinamiento" prefWidth="42.0" text="IMC" />
+                                    <TableColumn fx:id="columnaEstadoAfinamiento" prefWidth="102.0" text="Estado Inicial" />
+                                    <TableColumn fx:id="columnaDetallesAfinamiento" prefWidth="181.0" text="Detalles" />
                                 </columns>
                               </TableView>
                               <Label layoutX="1130.0" layoutY="33.0" text="Brazo:">

@@ -424,6 +424,30 @@ private static final int Y_MAX_RESP = 3000;
     private Button guardarAfinamiento;
     @FXML
     private TableView<HistorialAfinamiento> tablaAfinamientos;
+    @FXML
+    private TableColumn<?, ?> columnaFechaAfinamiento;
+    @FXML
+    private TableColumn<?, ?> columnaPesoAfinamiento;
+    @FXML
+    private TableColumn<?, ?> columnaPosicionAfinamiento;
+    @FXML
+    private TableColumn<?, ?> columnaJornadaAfinamiento;
+    @FXML
+    private TableColumn<?, ?> columnaDiastolicaAfinamiento;
+    @FXML
+    private TableColumn<?, ?> columnaSistolicaAfinamiento;
+    @FXML
+    private TableColumn<?, ?> columnaGrasaAfinamiento;
+    @FXML
+    private TableColumn<?, ?> columnaAguaAfinamiento;
+    @FXML
+    private TableColumn<?, ?> columnaMuscularAfinamiento;
+    @FXML
+    private TableColumn<?, ?> columnaIMCAfinamiento;
+    @FXML
+    private TableColumn<?, ?> columnaEstadoAfinamiento;
+    @FXML
+    private TableColumn<?, ?> columnaDetallesAfinamiento;
     
     @FXML
     public void cerrarPrograma() {
@@ -2339,6 +2363,30 @@ public void reproducirRESP()
     
     public void llenarTablaAfinamientos()
     {
+        private TableColumn<?, ?> columnaFechaAfinamiento;
+    @FXML
+    private TableColumn<?, ?> columnaPesoAfinamiento;
+    @FXML
+    private TableColumn<?, ?> columnaPosicionAfinamiento;
+    @FXML
+    private TableColumn<?, ?> columnaJornadaAfinamiento;
+    @FXML
+    private TableColumn<?, ?> columnaDiastolicaAfinamiento;
+    @FXML
+    private TableColumn<?, ?> columnaSistolicaAfinamiento;
+    @FXML
+    private TableColumn<?, ?> columnaGrasaAfinamiento;
+    @FXML
+    private TableColumn<?, ?> columnaAguaAfinamiento;
+    @FXML
+    private TableColumn<?, ?> columnaMuscularAfinamiento;
+    @FXML
+    private TableColumn<?, ?> columnaIMCAfinamiento;
+    @FXML
+    private TableColumn<?, ?> columnaEstadoAfinamiento;
+    @FXML
+    private TableColumn<?, ?> columnaDetallesAfinamiento;
+        
        String identificacion= textIdentificacion1.getText();
        
        EntityManager em = Persistence.createEntityManagerFactory("KioskoPU").createEntityManager();
