@@ -10,7 +10,6 @@ import BD.Antecedentespersonales;
 import BD.AntecedentespersonalesPK;
 import BD.ConexionDBs;
 import BD.HistorialAfinamiento;
-import BD.HistorialAfinamientoPK;
 import com.digitalpersona.onetouch.DPFPGlobal;
 import com.digitalpersona.onetouch.DPFPTemplate;
 import java.awt.image.BufferedImage;
@@ -48,6 +47,7 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
@@ -82,6 +82,7 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.text.Font;
@@ -425,29 +426,29 @@ private static final int Y_MAX_RESP = 3000;
     @FXML
     private TableView<HistorialAfinamiento> tablaAfinamientos;
     @FXML
-    private TableColumn<?, ?> columnaFechaAfinamiento;
+    private TableColumn<HistorialAfinamiento, LocalDate> columnaFechaAfinamiento;
     @FXML
-    private TableColumn<?, ?> columnaPesoAfinamiento;
+    private TableColumn<HistorialAfinamiento, Double> columnaPesoAfinamiento;
     @FXML
-    private TableColumn<?, ?> columnaPosicionAfinamiento;
+    private TableColumn<HistorialAfinamiento, String> columnaPosicionAfinamiento;
     @FXML
-    private TableColumn<?, ?> columnaJornadaAfinamiento;
+    private TableColumn<HistorialAfinamiento, String> columnaJornadaAfinamiento;
     @FXML
-    private TableColumn<?, ?> columnaDiastolicaAfinamiento;
+    private TableColumn<HistorialAfinamiento, Integer> columnaDiastolicaAfinamiento;
     @FXML
-    private TableColumn<?, ?> columnaSistolicaAfinamiento;
+    private TableColumn<HistorialAfinamiento, Integer> columnaSistolicaAfinamiento;
     @FXML
-    private TableColumn<?, ?> columnaGrasaAfinamiento;
+    private TableColumn<HistorialAfinamiento, Float> columnaGrasaAfinamiento;
     @FXML
-    private TableColumn<?, ?> columnaAguaAfinamiento;
+    private TableColumn<HistorialAfinamiento, Float> columnaAguaAfinamiento;
     @FXML
-    private TableColumn<?, ?> columnaMuscularAfinamiento;
+    private TableColumn<HistorialAfinamiento, Float> columnaMuscularAfinamiento;
     @FXML
-    private TableColumn<?, ?> columnaIMCAfinamiento;
+    private TableColumn<HistorialAfinamiento, Float> columnaIMCAfinamiento;
     @FXML
-    private TableColumn<?, ?> columnaEstadoAfinamiento;
+    private TableColumn<HistorialAfinamiento, String> columnaEstadoAfinamiento;
     @FXML
-    private TableColumn<?, ?> columnaDetallesAfinamiento;
+    private TableColumn<HistorialAfinamiento, String> columnaDetallesAfinamiento;
     
     @FXML
     public void cerrarPrograma() {
@@ -460,6 +461,11 @@ private static final int Y_MAX_RESP = 3000;
     {
         admin= new AdminDevice(null);
         admin.ConectarTcp();
+    }
+    
+    public void restringirBotones()
+    {
+        guardarAfinamiento.setDisable(true);
     }
     
     @FXML
@@ -1095,8 +1101,10 @@ private static final int Y_MAX_RESP = 3000;
                     java.sql.Timestamp fechaGuardar = new java.sql.Timestamp(date.getTime()); 
                     
                     HistorialAfinamiento afi= new HistorialAfinamiento();
-                    HistorialAfinamientoPK afiPK= new HistorialAfinamientoPK(cboxTipoIdentificacion.getValue().toString().substring(0, 2), textIdentificacion1.getText(), fechaGuardar);
-                    afi.setHistorialAfinamientoPK(afiPK);
+                    afi.setId(1);
+                    afi.setIdentificacion(textIdentificacion1.getText());
+                    afi.setTipoIdentificacion(cboxTipoIdentificacion.getValue().toString().substring(0, 2));                    
+                    afi.setFecha(fechaGuardar);
                     afi.setPeso(pesoAlmacenar);
                     afi.setBrazo(brazoAfinamiento.getSelectionModel().getSelectedItem());
                     afi.setPosicion(posicionAfinamiento.getSelectionModel().getSelectedItem());
@@ -1120,6 +1128,7 @@ private static final int Y_MAX_RESP = 3000;
 
         em.getTransaction().commit();
         guardarAfinamiento.setDisable(true);
+        llenarTablaAfinamientos();
 }
 
 public void almacenarSenales()
@@ -1334,7 +1343,7 @@ public void almacenarSenales()
         brazoAfinamiento.setItems(availableChoices);
         brazoAfinamiento.getSelectionModel().selectFirst();
         
-        availableChoices = FXCollections.observableArrayList("Derecho", "Izquierdo");  
+        availableChoices = FXCollections.observableArrayList("Sentado", "De pie", "Acostado");  
         posicionAfinamiento.setItems(availableChoices);
         posicionAfinamiento.getSelectionModel().selectFirst();
         
@@ -2362,31 +2371,21 @@ public void reproducirRESP()
 //    }
     
     public void llenarTablaAfinamientos()
-    {
-        private TableColumn<?, ?> columnaFechaAfinamiento;
-    @FXML
-    private TableColumn<?, ?> columnaPesoAfinamiento;
-    @FXML
-    private TableColumn<?, ?> columnaPosicionAfinamiento;
-    @FXML
-    private TableColumn<?, ?> columnaJornadaAfinamiento;
-    @FXML
-    private TableColumn<?, ?> columnaDiastolicaAfinamiento;
-    @FXML
-    private TableColumn<?, ?> columnaSistolicaAfinamiento;
-    @FXML
-    private TableColumn<?, ?> columnaGrasaAfinamiento;
-    @FXML
-    private TableColumn<?, ?> columnaAguaAfinamiento;
-    @FXML
-    private TableColumn<?, ?> columnaMuscularAfinamiento;
-    @FXML
-    private TableColumn<?, ?> columnaIMCAfinamiento;
-    @FXML
-    private TableColumn<?, ?> columnaEstadoAfinamiento;
-    @FXML
-    private TableColumn<?, ?> columnaDetallesAfinamiento;
-        
+    { 
+       columnaFechaAfinamiento.setCellValueFactory(new PropertyValueFactory<>("fecha"));
+       columnaPesoAfinamiento.setCellValueFactory(new PropertyValueFactory<>("peso"));
+       columnaPosicionAfinamiento.setCellValueFactory(new PropertyValueFactory<>("posicion"));
+       columnaJornadaAfinamiento.setCellValueFactory(new PropertyValueFactory<>("jornada"));
+       columnaDiastolicaAfinamiento.setCellValueFactory(new PropertyValueFactory<>("presDiastolica"));
+       columnaSistolicaAfinamiento.setCellValueFactory(new PropertyValueFactory<>("presSistolica"));
+       columnaGrasaAfinamiento.setCellValueFactory(new PropertyValueFactory<>("GrasaCorporal"));
+       columnaAguaAfinamiento.setCellValueFactory(new PropertyValueFactory<>("PorcentajeAgua"));
+       columnaMuscularAfinamiento.setCellValueFactory(new PropertyValueFactory<>("MasaMuscular"));
+       columnaIMCAfinamiento.setCellValueFactory(new PropertyValueFactory<>("IMC"));
+       columnaEstadoAfinamiento.setCellValueFactory(new PropertyValueFactory<>("estadoInicial"));
+       columnaDetallesAfinamiento.setCellValueFactory(new PropertyValueFactory<>("Detalles"));      
+       
+         
        String identificacion= textIdentificacion1.getText();
        
        EntityManager em = Persistence.createEntityManagerFactory("KioskoPU").createEntityManager();

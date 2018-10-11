@@ -9,11 +9,15 @@ import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
-import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -25,9 +29,10 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "HistorialAfinamiento.findAll", query = "SELECT h FROM HistorialAfinamiento h")
-    , @NamedQuery(name = "HistorialAfinamiento.findByTipoid", query = "SELECT h FROM HistorialAfinamiento h WHERE h.historialAfinamientoPK.tipoid = :tipoid")
-    , @NamedQuery(name = "HistorialAfinamiento.findByIdentificacion", query = "SELECT h FROM HistorialAfinamiento h WHERE h.historialAfinamientoPK.identificacion = :identificacion")
-    , @NamedQuery(name = "HistorialAfinamiento.findByFecha", query = "SELECT h FROM HistorialAfinamiento h WHERE h.historialAfinamientoPK.fecha = :fecha")
+    , @NamedQuery(name = "HistorialAfinamiento.findById", query = "SELECT h FROM HistorialAfinamiento h WHERE h.id = :id")
+    , @NamedQuery(name = "HistorialAfinamiento.findByTipoIdentificacion", query = "SELECT h FROM HistorialAfinamiento h WHERE h.tipoIdentificacion = :tipoIdentificacion")
+    , @NamedQuery(name = "HistorialAfinamiento.findByIdentificacion", query = "SELECT h FROM HistorialAfinamiento h WHERE h.identificacion = :identificacion")
+    , @NamedQuery(name = "HistorialAfinamiento.findByFecha", query = "SELECT h FROM HistorialAfinamiento h WHERE h.fecha = :fecha")
     , @NamedQuery(name = "HistorialAfinamiento.findByPeso", query = "SELECT h FROM HistorialAfinamiento h WHERE h.peso = :peso")
     , @NamedQuery(name = "HistorialAfinamiento.findByBrazo", query = "SELECT h FROM HistorialAfinamiento h WHERE h.brazo = :brazo")
     , @NamedQuery(name = "HistorialAfinamiento.findByPosicion", query = "SELECT h FROM HistorialAfinamiento h WHERE h.posicion = :posicion")
@@ -43,8 +48,21 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class HistorialAfinamiento implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    @EmbeddedId
-    protected HistorialAfinamientoPK historialAfinamientoPK;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Basic(optional = false)
+    @Column(name = "id")
+    private Integer id;
+    @Basic(optional = false)
+    @Column(name = "tipoIdentificacion")
+    private String tipoIdentificacion;
+    @Basic(optional = false)
+    @Column(name = "identificacion")
+    private String identificacion;
+    @Basic(optional = false)
+    @Column(name = "fecha")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date fecha;
     @Basic(optional = false)
     @Column(name = "peso")
     private double peso;
@@ -85,12 +103,15 @@ public class HistorialAfinamiento implements Serializable {
     public HistorialAfinamiento() {
     }
 
-    public HistorialAfinamiento(HistorialAfinamientoPK historialAfinamientoPK) {
-        this.historialAfinamientoPK = historialAfinamientoPK;
+    public HistorialAfinamiento(Integer id) {
+        this.id = id;
     }
 
-    public HistorialAfinamiento(HistorialAfinamientoPK historialAfinamientoPK, double peso, String brazo, String posicion, String jornada, String estadoInicial, int presDiastolica, int presSistolica, String detalles, float grasaCorporal, float porcentajeAgua, float masaMuscular, float imc) {
-        this.historialAfinamientoPK = historialAfinamientoPK;
+    public HistorialAfinamiento(Integer id, String tipoIdentificacion, String identificacion, Date fecha, double peso, String brazo, String posicion, String jornada, String estadoInicial, int presDiastolica, int presSistolica, String detalles, float grasaCorporal, float porcentajeAgua, float masaMuscular, float imc) {
+        this.id = id;
+        this.tipoIdentificacion = tipoIdentificacion;
+        this.identificacion = identificacion;
+        this.fecha = fecha;
         this.peso = peso;
         this.brazo = brazo;
         this.posicion = posicion;
@@ -105,16 +126,36 @@ public class HistorialAfinamiento implements Serializable {
         this.imc = imc;
     }
 
-    public HistorialAfinamiento(String tipoid, String identificacion, Date fecha) {
-        this.historialAfinamientoPK = new HistorialAfinamientoPK(tipoid, identificacion, fecha);
+    public Integer getId() {
+        return id;
     }
 
-    public HistorialAfinamientoPK getHistorialAfinamientoPK() {
-        return historialAfinamientoPK;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
-    public void setHistorialAfinamientoPK(HistorialAfinamientoPK historialAfinamientoPK) {
-        this.historialAfinamientoPK = historialAfinamientoPK;
+    public String getTipoIdentificacion() {
+        return tipoIdentificacion;
+    }
+
+    public void setTipoIdentificacion(String tipoIdentificacion) {
+        this.tipoIdentificacion = tipoIdentificacion;
+    }
+
+    public String getIdentificacion() {
+        return identificacion;
+    }
+
+    public void setIdentificacion(String identificacion) {
+        this.identificacion = identificacion;
+    }
+
+    public Date getFecha() {
+        return fecha;
+    }
+
+    public void setFecha(Date fecha) {
+        this.fecha = fecha;
     }
 
     public double getPeso() {
@@ -216,7 +257,7 @@ public class HistorialAfinamiento implements Serializable {
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (historialAfinamientoPK != null ? historialAfinamientoPK.hashCode() : 0);
+        hash += (id != null ? id.hashCode() : 0);
         return hash;
     }
 
@@ -227,7 +268,7 @@ public class HistorialAfinamiento implements Serializable {
             return false;
         }
         HistorialAfinamiento other = (HistorialAfinamiento) object;
-        if ((this.historialAfinamientoPK == null && other.historialAfinamientoPK != null) || (this.historialAfinamientoPK != null && !this.historialAfinamientoPK.equals(other.historialAfinamientoPK))) {
+        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
         return true;
@@ -235,7 +276,7 @@ public class HistorialAfinamiento implements Serializable {
 
     @Override
     public String toString() {
-        return "BD.HistorialAfinamiento[ historialAfinamientoPK=" + historialAfinamientoPK + " ]";
+        return "BD.HistorialAfinamiento[ id=" + id + " ]";
     }
     
 }

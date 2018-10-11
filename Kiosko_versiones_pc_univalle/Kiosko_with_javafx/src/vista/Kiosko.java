@@ -102,6 +102,7 @@ public class Kiosko extends Application {
             
             controller.setProgramaPrincipal(this, usuario, nombre, rol);
             controller.iniciarAdmin();
+            controller.restringirBotones();
             
             ventanaPrincipal.show();
             ventanaPrincipal.setResizable(false);
