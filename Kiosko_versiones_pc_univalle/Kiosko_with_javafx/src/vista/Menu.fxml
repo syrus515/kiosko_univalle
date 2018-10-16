@@ -47,9 +47,9 @@
                                 <MenuItem fx:id="mnuCerrarPrograma" mnemonicParsing="false" onAction="#cerrarPrograma" text="Cerrar programa" />
                               </items>
                             </Menu>
-                            <Menu mnemonicParsing="false" text="Reportes">
+                            <Menu mnemonicParsing="false" text="Conexión">
                               <items>
-                                <MenuItem mnemonicParsing="false" text="Reporte" />
+                                <MenuItem fx:id="menuConexion" mnemonicParsing="false" onAction="#escuchaDesconexion" text="Conectar" />
                               </items>
                             </Menu>
                             <Menu mnemonicParsing="false" text="Ayuda">

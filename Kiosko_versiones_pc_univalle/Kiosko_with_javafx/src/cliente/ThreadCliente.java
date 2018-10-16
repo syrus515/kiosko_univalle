@@ -13,8 +13,12 @@ import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.net.SocketException;
+import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
+import javafx.stage.StageStyle;
 import javax.swing.JOptionPane;
 
 /**
@@ -38,6 +42,7 @@ public class ThreadCliente extends Thread {
     ConnectionState connectionState;
     AdminDevice admin;
     boolean leerSenales;
+    boolean banderaIniciar= false;
 
     public ThreadCliente(Ecg1Signal ecg1Signal,
             Ecg2Signal ecg2Signal, Spo2Signal spo2Signal, RespSignal respSignal, StaticParameters staticParameter,
@@ -52,7 +57,11 @@ public class ThreadCliente extends Thread {
         this.connectionState = connectionState;
         this.admin = admin;
         arrancarCliente();
-        start(); // Se arranca el hilo.
+        if(banderaIniciar)
+        {
+            start(); // Se arranca el hilo.
+        }
+        
     }
     
     public void switchLectura()
@@ -66,8 +75,10 @@ public class ThreadCliente extends Thread {
             //socketCliente = new Socket("181.142.112.79", PUERTO); // puerto del servidor por omisiÃ³n
             //socketCliente = new Socket("192.168.43.110", PUERTO); // puerto del servidor por omisiÃ³n
             System.out.println("Arrancando el cliente."); 
-            socketCliente = new Socket("169.254.212.48", PUERTO); // puerto del servidor por omisiÃ³n, 192.168.43.115 - 181.206.10.190
+            socketCliente = new Socket("169.254.212.48", PUERTO); // puerto del servidor por omisiÃ³n, 192.168.43.115 - 181.206.10.190            
             connectionState.tcpSetState(true);
+            banderaIniciar= true; //Hubo conexión, por tanto el hilo puede iniciar.
+            
         } catch (java.lang.NumberFormatException e1) {
             // No se puede arrancar el cliente porque se introdujo un nÃºmero de puerto que no es entero.
             // Error irrecuperable: se sale del programa. No hace falta limpiar el socket, pues no llegÃ³ a
@@ -84,8 +95,21 @@ public class ThreadCliente extends Thread {
                     + "puerto " + PUERTO;
             errorFatal(e3, mensaje);
         } catch (SocketException e) {
-            e.printStackTrace();
-        } catch (IOException e4) {
+            //e.printStackTrace();
+            
+            //Cuadro de diálogo en caso de no haber conexión.
+            Alert dialogoAlerta= new Alert(Alert.AlertType.CONFIRMATION);
+            dialogoAlerta.setTitle("Falla en la conexión");
+            dialogoAlerta.setHeaderText(null);
+            dialogoAlerta.initStyle(StageStyle.UTILITY);
+            dialogoAlerta.setContentText("No se encuentra el dispositivo\n ¿Desea continuar sin conexión?");
+            Optional<ButtonType> result= dialogoAlerta.showAndWait();
+            if(result.get()!=ButtonType.OK)
+            {
+                System.exit(0); //Se cierra el programa si así lo quiso el usuario.
+            }
+        }
+        catch (IOException e4) {
             // No se puede arrancar el cliente. Error irrecuperable: se sale del programa.
             // No hace falta limpiar el socket, pues no llegÃ³ a crearse.
             String mensaje = "No se puede conectar con el puerto " + PUERTO + " de la maquina "
@@ -223,7 +247,8 @@ public class ThreadCliente extends Thread {
             e1.printStackTrace();
         } catch (IOException e1) {
             e1.printStackTrace();
-        } finally {
+        }
+        finally {
             connectionState.tcpSetState(false);
             closeStreams();
             admin.dispositivoDesconectado();

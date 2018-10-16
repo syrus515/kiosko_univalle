@@ -88,6 +88,7 @@ import javafx.scene.layout.FlowPane;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
+import javafx.stage.StageStyle;
 import javax.persistence.Query;
 
 public class MenuController implements Initializable {
@@ -449,6 +450,8 @@ private static final int Y_MAX_RESP = 3000;
     private TableColumn<HistorialAfinamiento, String> columnaEstadoAfinamiento;
     @FXML
     private TableColumn<HistorialAfinamiento, String> columnaDetallesAfinamiento;
+    @FXML
+    private MenuItem menuConexion;
     
     @FXML
     public void cerrarPrograma() {
@@ -461,6 +464,13 @@ private static final int Y_MAX_RESP = 3000;
     {
         admin= new AdminDevice(null);
         admin.ConectarTcp();
+        menuConexion.setText("Conectar");
+        if(admin.isConnectedTCP())
+        {
+            menuConexion.setText("Desconectar");
+            validadorConexion();
+        }
+        
     }
     
     public void restringirBotones()
@@ -2392,6 +2402,79 @@ public void reproducirRESP()
        Query queryAfinamientoFindAll = em.createNativeQuery("SELECT * from historial_afinamiento m WHERE identificacion= '" + identificacion +"'", HistorialAfinamiento.class);
        List<HistorialAfinamiento> listAfinamientos = queryAfinamientoFindAll.getResultList(); 
        tablaAfinamientos.setItems(FXCollections.observableArrayList(listAfinamientos)); 
+    }
+    
+    //Métodos para conexión y reconexión.
+    public void conectar()
+    {
+       admin.ConectarTcp();
+       if(admin.isConnectedTCP())
+       {
+           menuConexion.setText("Desconectar");        
+       }       
+    }
+    
+    public void desconectar()
+    {
+        admin.desconectarCliente();
+        menuConexion.setText("Conectar");
+        validadorConexion();
+    }
+    
+    @FXML
+    public void escuchaDesconexion()
+    {        
+        if(menuConexion.getText().equals("Conectar"))
+        {            
+            conectar();
+            if(admin.isConnectedTCP())
+            {                
+                Alert dialogoAlerta= new Alert(AlertType.INFORMATION);
+                dialogoAlerta.setTitle("Conexión exitosa");
+                dialogoAlerta.setHeaderText(null);
+                dialogoAlerta.setContentText("El dispositivo se ha conectado correctamente");
+                dialogoAlerta.initStyle(StageStyle.UTILITY);
+                dialogoAlerta.showAndWait();                
+            }           
+        }else
+        {
+            desconectar();
+        }
+    }
+    
+    public void validadorConexion() //Este método siempre se está ejecutando para detectar cuando se caiga la conexión.
+    {
+        Timer timerIniciar;
+        timerIniciar = new Timer();
+        
+        TimerTask taskIniciar = new TimerTask() 
+        {
+            @Override
+            public void run()
+            {
+                while(admin.isConnectedTCP())
+                {
+                    //No hace nada mientras haya conexion.
+                }
+                //En caso de salir del while, se informa que ya no hay conexión.
+                
+                //---------Primero se deben cancelar los procesos críticos.
+                admin.desconectarCliente();
+                menuConexion.setText("Conectar");
+                
+                
+                //Luego se procede a informar la desconexión.
+                Alert dialogoAlerta= new Alert(AlertType.INFORMATION);
+                dialogoAlerta.setTitle("Dispositivo desconectado");
+                dialogoAlerta.setHeaderText(null);
+                dialogoAlerta.setContentText("El dispositivo se ha desconectado, por favor conéctelo y\n"
+                                            + "reestablezca la conexión a través del menú Conexión-> Conectar");
+                dialogoAlerta.initStyle(StageStyle.UTILITY);
+                dialogoAlerta.showAndWait();                
+            }
+        };
+        // Empezamos dentro de 10s 
+        timerIniciar.schedule(taskIniciar, 0);
     }
 
 }
