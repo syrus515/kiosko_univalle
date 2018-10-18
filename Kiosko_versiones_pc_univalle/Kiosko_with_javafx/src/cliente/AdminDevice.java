@@ -108,11 +108,20 @@ public class AdminDevice {
         return connectionState.tcpReadState();
     }
     
+    public boolean isTcpNull()
+    {
+        return tcpCliente==null;
+    }
+    
     public void desconectarCliente(){
         if(tcpCliente!=null){
+            
             dispositivoDesconectado();
             connectionState.tcpSetState(false);
-            tcpCliente.closeStreams();
+            ojooooooo
+            //tcpCliente.closeStreams(); 
+            tcpCliente.interrupt();
+                    
             tcpCliente=null;
         }
         if(bluetoothCliente!=null){
@@ -151,5 +160,10 @@ public class AdminDevice {
                 commands.setCommand("",0);
             }
         }
+    }
+    
+    public boolean isSocketConnected()
+    {
+        return tcpCliente.isSocketConnected();
     }
 }

@@ -5,6 +5,7 @@ package cliente;
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
+import Controlador.LeerLinea;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -14,6 +15,14 @@ import java.io.PrintWriter;
 import java.net.Socket;
 import java.net.SocketException;
 import java.util.Optional;
+import java.util.Timer;
+import java.util.TimerTask;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.scene.control.Alert;
@@ -29,7 +38,7 @@ public class ThreadCliente extends Thread {
 
     private static final int PUERTO = 9001;
     private Socket socketCliente;
-    private BufferedReader entrada;
+    private static BufferedReader entrada;
     private PrintWriter salida;
     public PrintWriter salida2;
     Ecg1Signal ecg1Signal;
@@ -68,6 +77,11 @@ public class ThreadCliente extends Thread {
     {
         leerSenales= !leerSenales;        
     }
+    
+    public boolean isSocketConnected()
+    {        
+        return socketCliente.isConnected();
+    }
 
     private void arrancarCliente() {
 
@@ -76,8 +90,9 @@ public class ThreadCliente extends Thread {
             //socketCliente = new Socket("192.168.43.110", PUERTO); // puerto del servidor por omisiÃ³n
             System.out.println("Arrancando el cliente."); 
             socketCliente = new Socket("169.254.212.48", PUERTO); // puerto del servidor por omisiÃ³n, 192.168.43.115 - 181.206.10.190            
+            socketCliente.setKeepAlive(true);
             connectionState.tcpSetState(true);
-            banderaIniciar= true; //Hubo conexión, por tanto el hilo puede iniciar.
+            banderaIniciar= true; //Hubo conexión, por tanto el hilo puede iniciar.            
             
         } catch (java.lang.NumberFormatException e1) {
             // No se puede arrancar el cliente porque se introdujo un nÃºmero de puerto que no es entero.
@@ -117,7 +132,21 @@ public class ThreadCliente extends Thread {
             errorFatal(e4, mensaje);
         }
     }
-
+    
+    private static String lineaLeida= "vacio";
+    
+    final Runnable stuffToDo = new Thread() {
+        @Override 
+        public void run() { 
+            try {
+                lineaLeida=entrada.readLine();
+            } catch (IOException ex) {
+                lineaLeida= "vacio";
+            }         
+        }
+      };
+    
+    
     public synchronized void run() {
         String linea = null;
         String[] dato;
@@ -128,14 +157,41 @@ public class ThreadCliente extends Thread {
         String request = "KUV!req!data";
         int[] indRef = {0, 0, 0};
         String lastCommand = "";
-        try {
+        try {//aviable >0 y ready
             entrada = new BufferedReader(new InputStreamReader(socketCliente.getInputStream()));
             salida = new PrintWriter(new OutputStreamWriter(socketCliente.getOutputStream()));
             salida2 = new PrintWriter(new OutputStreamWriter(socketCliente.getOutputStream()));
 
             commands.setCommand("", 0);
-            writeSocket("KUV!Sec-WebSocket-Key: OI2Jzq7EZ4+dTkLaa3GLdw==");
-            while ((linea = entrada.readLine()) != null) {
+            writeSocket("KUV!Sec-WebSocket-Key: OI2Jzq7EZ4+dTkLaa3GLdw==");            
+            //LeerLinea lector;
+            //while ((linea = entrada.readLine()) != null) {
+            do{
+            //while (true) {
+                //System.out.println("Esto estoy imprimiendo de más: "); 
+                
+                //linea = entrada.readLine();
+                //lector= new LeerLinea(entrada);            
+                //lector.start();
+                //double contador= 0;
+                
+                
+                //------------------------------
+                
+                final ExecutorService executor = Executors.newSingleThreadExecutor();
+                final Future future = executor.submit(stuffToDo);
+                executor.shutdown(); // This does not cancel the already-scheduled task.
+                
+                future.get(2000, TimeUnit.MILLISECONDS);
+                linea= lineaLeida;
+                
+                //------------------------------
+                
+                //linea= lector.getLinea();
+                
+                //salida.write("Probar conexion"); 
+                //linea = entrada.readLine(); 
+                
                 if (!connectionState.tcpReadState()) {
                     break;
                 }
@@ -239,21 +295,40 @@ public class ThreadCliente extends Thread {
 
                     }
                 }
-            }
-
+            }while(linea!="vacio");
+            /*if(lector.isAlive())
+            {
+                lector.interrupt();
+                lector= null;
+            }*/
         } catch (SocketException e) {
             e.printStackTrace();
+            System.out.println("Llega acá Socket");
         } catch (java.lang.NullPointerException e1) {
+            System.out.println("Llega acá Null");
             e1.printStackTrace();
         } catch (IOException e1) {
+            System.out.println("Llega acá IO");
             e1.printStackTrace();
+        } catch (InterruptedException ex) {
+            Logger.getLogger(ThreadCliente.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ExecutionException ex) {
+            Logger.getLogger(ThreadCliente.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (TimeoutException ex) {
+            //admin.mc.mensajeDesconexion();
+            System.out.println("Excepción de perdida, controlada");            
         }
-        finally {
-            connectionState.tcpSetState(false);
-            closeStreams();
-            admin.dispositivoDesconectado();
+            
+            //admin.mc.mensajeDesconexion();
+            
+            //connectionState.tcpSetState(false);
+            //closeStreams();
+            System.out.println("Llega acá1");
+            admin.desconectarCliente();
+            System.out.println("Llega acá2");
+            //admin.dispositivoDesconectado();
             //System.exit(-1);
-        }
+        
     }
 
     public void writeSocket(String mensaje) {

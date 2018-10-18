@@ -468,7 +468,11 @@ private static final int Y_MAX_RESP = 3000;
         if(admin.isConnectedTCP())
         {
             menuConexion.setText("Desconectar");
-            validadorConexion();
+            try {
+                validadorConexion();
+            } catch (Exception ex) {
+                mensajeDesconexion();
+            }
         }
         
     }
@@ -2418,7 +2422,11 @@ public void reproducirRESP()
     {
         admin.desconectarCliente();
         menuConexion.setText("Conectar");
-        validadorConexion();
+        try {
+            validadorConexion();
+        } catch (Exception ex) {
+            mensajeDesconexion();
+        }
     }
     
     @FXML
@@ -2442,7 +2450,7 @@ public void reproducirRESP()
         }
     }
     
-    public void validadorConexion() //Este método siempre se está ejecutando para detectar cuando se caiga la conexión.
+    public void validadorConexion() throws Exception //Este método siempre se está ejecutando para detectar cuando se caiga la conexión.
     {
         Timer timerIniciar;
         timerIniciar = new Timer();
@@ -2452,29 +2460,36 @@ public void reproducirRESP()
             @Override
             public void run()
             {
-                while(admin.isConnectedTCP())
+                
+                
+                while(!admin.isTcpNull())
                 {
-                    //No hace nada mientras haya conexion.
+                    //No hace nada mientras haya conexion.                    
                 }
                 //En caso de salir del while, se informa que ya no hay conexión.
                 
                 //---------Primero se deben cancelar los procesos críticos.
-                admin.desconectarCliente();
+                //admin.desconectarCliente();
                 menuConexion.setText("Conectar");
                 
                 
                 //Luego se procede a informar la desconexión.
-                Alert dialogoAlerta= new Alert(AlertType.INFORMATION);
-                dialogoAlerta.setTitle("Dispositivo desconectado");
-                dialogoAlerta.setHeaderText(null);
-                dialogoAlerta.setContentText("El dispositivo se ha desconectado, por favor conéctelo y\n"
-                                            + "reestablezca la conexión a través del menú Conexión-> Conectar");
-                dialogoAlerta.initStyle(StageStyle.UTILITY);
-                dialogoAlerta.showAndWait();                
+                System.out.println("Se ha desconectado el dispositivo");            
             }
         };
         // Empezamos dentro de 10s 
         timerIniciar.schedule(taskIniciar, 0);
+    }
+    
+    public void mensajeDesconexion()
+    {
+        Alert dialogoAlerta= new Alert(AlertType.INFORMATION);
+        dialogoAlerta.setTitle("Dispositivo desconectado");
+        dialogoAlerta.setHeaderText(null);
+        dialogoAlerta.setContentText("El dispositivo se ha desconectado, por favor conéctelo y\n"
+                                    + "reestablezca la conexión a través del menú Conexión-> Conectar");
+        dialogoAlerta.initStyle(StageStyle.UTILITY);
+        dialogoAlerta.showAndWait();  
     }
 
 }
