@@ -113,14 +113,33 @@ public class AdminDevice {
         return tcpCliente==null;
     }
     
+    public void desconectarDespuesDeCable()//Este método sirve para desconectar el socket después de un fallo físico
+    {
+        if(tcpCliente!=null){
+            
+            dispositivoDesconectado();
+            connectionState.tcpSetState(false);            
+            tcpCliente.anularStreams();
+            //tcpCliente.interrupt();
+                    
+            tcpCliente=null;
+        }
+        if(bluetoothCliente!=null){
+            dispositivoDesconectado();
+            connectionState.blueSetState(false);
+            bluetoothCliente.closeStreams();
+            bluetoothCliente=null;
+        }
+    }
+    
     public void desconectarCliente(){
         if(tcpCliente!=null){
             
             dispositivoDesconectado();
             connectionState.tcpSetState(false);
-            ojooooooo
-            //tcpCliente.closeStreams(); 
-            tcpCliente.interrupt();
+            //ojooooooo
+            tcpCliente.closeStreams(); 
+
                     
             tcpCliente=null;
         }

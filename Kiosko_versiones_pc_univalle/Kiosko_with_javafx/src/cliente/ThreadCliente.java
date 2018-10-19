@@ -324,7 +324,7 @@ public class ThreadCliente extends Thread {
             //connectionState.tcpSetState(false);
             //closeStreams();
             System.out.println("Llega acá1");
-            admin.desconectarCliente();
+            admin.desconectarDespuesDeCable();
             System.out.println("Llega acá2");
             //admin.dispositivoDesconectado();
             //System.exit(-1);
@@ -340,6 +340,18 @@ public class ThreadCliente extends Thread {
             admin.dispositivoDesconectado();
         }
     }
+    
+    public void anularStreams()
+    {
+        if (socketCliente != null) {
+            try {
+                socketCliente.close();
+            } catch (IOException e2) {
+            }
+            socketCliente = null;
+        }
+        System.out.println("Sin problema al cerrar el socket");
+    }
 
     public void closeStreams() {
         if (entrada != null) {
@@ -349,10 +361,12 @@ public class ThreadCliente extends Thread {
             }
             entrada = null;
         }
+        System.out.println("Sin problema al cerrar la entrada");
         if (salida != null) {
             salida.close();
             salida = null;
         }
+        System.out.println("Sin problema al cerrar la salida");
         if (socketCliente != null) {
             try {
                 socketCliente.close();
@@ -360,6 +374,7 @@ public class ThreadCliente extends Thread {
             }
             socketCliente = null;
         }
+        System.out.println("Sin problema al cerrar el socket");
     }
 
     private static void errorFatal(Exception excepcion, String mensajeError) {
