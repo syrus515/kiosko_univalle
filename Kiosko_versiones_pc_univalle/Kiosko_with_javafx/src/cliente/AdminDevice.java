@@ -35,7 +35,8 @@ public class AdminDevice {
     private ConcurrentLinkedQueue<Integer> queueECG1 = new ConcurrentLinkedQueue<Integer>();
     private ConcurrentLinkedQueue<Integer> queueECG2 = new ConcurrentLinkedQueue<Integer>();
     private ConcurrentLinkedQueue<Integer> queueSpo2 = new ConcurrentLinkedQueue<Integer>();
-    private ConcurrentLinkedQueue<Integer> queueResp = new ConcurrentLinkedQueue<Integer>();
+    private ConcurrentLinkedQueue<Integer> queueResp = new ConcurrentLinkedQueue<Integer>();    
+    
     
     
     public AdminDevice(MenuController mc){
@@ -85,7 +86,10 @@ public class AdminDevice {
     
     public void switchLectura()
     {
-        tcpCliente.switchLectura();        
+        if(tcpCliente!=null)
+        {
+            tcpCliente.switchLectura();        
+        }        
     }
     
     public void dispositivoDesconectado(){
@@ -115,16 +119,21 @@ public class AdminDevice {
     
     public void desconectarDespuesDeCable()//Este método sirve para desconectar el socket después de un fallo físico
     {
-        if(tcpCliente!=null){
-            
-            dispositivoDesconectado();
-            connectionState.tcpSetState(false);            
-            tcpCliente.anularStreams();
-            //tcpCliente.interrupt();
-                    
-            tcpCliente=null;
-        }
-        if(bluetoothCliente!=null){
+        if(connectionState.tcpReadState())
+        {
+            if(tcpCliente!=null)
+            {
+              dispositivoDesconectado();
+              connectionState.tcpSetState(false);            
+              tcpCliente.anularStreams();           
+
+              tcpCliente=null;
+              mc.apagarDesdeHilo();
+              mc.escuchaDesconexion();           
+            }  
+        }        
+        if(bluetoothCliente!=null)
+        {
             dispositivoDesconectado();
             connectionState.blueSetState(false);
             bluetoothCliente.closeStreams();

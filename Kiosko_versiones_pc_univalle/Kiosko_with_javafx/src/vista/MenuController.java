@@ -50,6 +50,7 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.EmptyStackException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
@@ -462,7 +463,7 @@ private static final int Y_MAX_RESP = 3000;
     
     public void iniciarAdmin()
     {
-        admin= new AdminDevice(null);
+        admin= new AdminDevice(this);
         admin.ConectarTcp();
         menuConexion.setText("Conectar");
         if(admin.isConnectedTCP())
@@ -470,7 +471,13 @@ private static final int Y_MAX_RESP = 3000;
             menuConexion.setText("Desconectar");
             try {
                 validadorConexion();
-            } catch (Exception ex) {
+            } catch (EmptyStackException ex) {
+                if(apagarDesdeHilo)
+                {
+                    System.out.println("Debería cambiar el texto");
+                    apagarDesdeHilo= false;
+                    btnIniciarSeñales.setText("Iniciar medición simple");                
+                }
                 mensajeDesconexion();
             }
         }
@@ -982,6 +989,12 @@ private static final int Y_MAX_RESP = 3000;
     
     //Variables necesarias para el método
     boolean primeraVez= true;
+    private boolean apagarDesdeHilo= false;
+    
+    public void apagarDesdeHilo()
+    {
+        apagarDesdeHilo= true;
+    }
     
         @FXML
     void iniciarLecturaSeñales(ActionEvent event) 
@@ -1005,14 +1018,21 @@ private static final int Y_MAX_RESP = 3000;
 
             addToQueue=null;
             queueParam=null;
-           btnIniciarSeñales.setText("Iniciar");
-            
-            
+            if(!apagarDesdeHilo)
+            {
+                btnIniciarSeñales.setText("Iniciar medición simple");                
+            }else
+            {
+                btnIniciarSeñales.setDisable(true);
+            }
+                
+            //apagarDesdeHilo= false;            
             //Guardar en la base de datos
             almacenarSenales();
                         
         } else 
-        {            
+        { 
+            btnIniciarSeñales.setText("Detener medición");
             if(primeraVez)
             {
                primeraVez= false;
@@ -2420,21 +2440,47 @@ public void reproducirRESP()
     
     public void desconectar()
     {
-        admin.desconectarCliente();
+        if(admin.isConnectedTCP())
+        {
+            if(!admin.isTcpNull())
+            {
+                admin.desconectarCliente();
+            }
+        }       
+        
         menuConexion.setText("Conectar");
+        cancelarMediciones();
         try {
             validadorConexion();
-        } catch (Exception ex) {
+        } catch (EmptyStackException ex) {
+            if(apagarDesdeHilo)
+            {
+                System.out.println("Debería cambiar el texto");
+                apagarDesdeHilo= false;
+                btnIniciarSeñales.setText("Iniciar medición simple");                
+            }
             mensajeDesconexion();
+            
         }
+    }
+    
+    public void cancelarMediciones()
+    {
+       if(btnIniciarSeñales.getText()=="Detener medición")
+       {
+           ActionEvent e= new ActionEvent();
+           iniciarLecturaSeñales(e);           
+       }
     }
     
     @FXML
     public void escuchaDesconexion()
-    {        
+    { 
         if(menuConexion.getText().equals("Conectar"))
-        {            
+        { 
             conectar();
+            btnIniciarSeñales.setText("Iniciar medición simple");
+            btnIniciarSeñales.setDisable(false);
             if(admin.isConnectedTCP())
             {                
                 Alert dialogoAlerta= new Alert(AlertType.INFORMATION);
@@ -2443,14 +2489,15 @@ public void reproducirRESP()
                 dialogoAlerta.setContentText("El dispositivo se ha conectado correctamente");
                 dialogoAlerta.initStyle(StageStyle.UTILITY);
                 dialogoAlerta.showAndWait();                
-            }           
+            }   
+            
         }else
         {
             desconectar();
         }
     }
     
-    public void validadorConexion() throws Exception //Este método siempre se está ejecutando para detectar cuando se caiga la conexión.
+    public void validadorConexion() throws EmptyStackException //Este método siempre se está ejecutando para detectar cuando se caiga la conexión.
     {
         Timer timerIniciar;
         timerIniciar = new Timer();
@@ -2458,7 +2505,7 @@ public void reproducirRESP()
         TimerTask taskIniciar = new TimerTask() 
         {
             @Override
-            public void run()
+            public void run() throws EmptyStackException
             {
                 
                 
@@ -2469,12 +2516,12 @@ public void reproducirRESP()
                 //En caso de salir del while, se informa que ya no hay conexión.
                 
                 //---------Primero se deben cancelar los procesos críticos.
-                //admin.desconectarCliente();
-                menuConexion.setText("Conectar");
-                
+                //admin.desconectarCliente();                
+                menuConexion.setText("Conectar");                                
                 
                 //Luego se procede a informar la desconexión.
-                System.out.println("Se ha desconectado el dispositivo");            
+                System.out.println("Se ha desconectado el dispositivo");                            
+                
             }
         };
         // Empezamos dentro de 10s 

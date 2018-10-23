@@ -322,10 +322,8 @@ public class ThreadCliente extends Thread {
             //admin.mc.mensajeDesconexion();
             
             //connectionState.tcpSetState(false);
-            //closeStreams();
-            System.out.println("Llega acá1");
+            //closeStreams();            
             admin.desconectarDespuesDeCable();
-            System.out.println("Llega acá2");
             //admin.dispositivoDesconectado();
             //System.exit(-1);
         
