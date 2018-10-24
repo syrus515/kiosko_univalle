@@ -10,6 +10,7 @@ import BD.Antecedentespersonales;
 import BD.AntecedentespersonalesPK;
 import BD.ConexionDBs;
 import BD.HistorialAfinamiento;
+import BD.MedicionPersonalizada;
 import com.digitalpersona.onetouch.DPFPGlobal;
 import com.digitalpersona.onetouch.DPFPTemplate;
 import java.awt.image.BufferedImage;
@@ -1177,14 +1178,17 @@ public void almacenarSenales()
             {                    
                 try
                 {
+                    //Obtención de la medición personalizada
+                    EntityManager emAuxiliar = Persistence.createEntityManagerFactory("KioskoPU").createEntityManager();
+                    Query queryMedicionFindAll = em.createNativeQuery("SELECT * from medicion_personalizada m WHERE id= '1'", MedicionPersonalizada.class);
+                    List<MedicionPersonalizada> listMedicion = queryMedicionFindAll.getResultList();
+                    //--------------------------------------
+                    
                     Medicion med= new Medicion();
                     med.setId(1);
                     med.setIdentificacion(obj); 
                     med.setTipoid(obj);
-                    med.setTipo("1");
-                    med.setIntervalo(0);
-                    med.setDuracionMuestra(1);
-                    med.setDuracionExamen(1);
+                    med.setIdPersonalizada(listMedicion.get(0));                    
                     med.setDetalles(detallesMedicion.getText());
 
 
