@@ -170,6 +170,11 @@ public class Kiosko extends Application {
 
     }
     
+    public void mostrarVentanaCharts() //Método para mostrar la ventana donde van las gráficas de las mediciones personalizadas.
+    {
+        
+    }
+    
     
     public void mostrarVentanaFoto(MenuController refController) {
         if (refController.openFoto) {

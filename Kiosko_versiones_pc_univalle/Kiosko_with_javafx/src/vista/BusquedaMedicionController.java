@@ -6,6 +6,7 @@
 package vista;
 
 import BD.Medicion;
+import BD.MedicionPersonalizada;
 import java.net.URL;
 import java.time.LocalDate;
 import java.util.List;
@@ -37,26 +38,34 @@ public class BusquedaMedicionController implements Initializable {
     @FXML
     private DatePicker hastaReproduccion;
     @FXML
-    private TableView<Medicion> tablaReproduccion;
+    private TableView<MedicionPersonalizada> tablaReproduccion;
     @FXML
     private Button reproducir;
         
     @FXML
-    private TableColumn<Medicion, LocalDate> columnaFecha;
+    private TableColumn<MedicionPersonalizada, LocalDate> columnaFecha;
     @FXML
-    private TableColumn<Medicion, String> columnaDetalles;
+    private TableColumn<MedicionPersonalizada, String> columnaDetalles;
     @FXML
-    private TableColumn<Medicion, Integer> columnaIntervalo;
+    private TableColumn<MedicionPersonalizada, Integer> columnaIntervalo;
     @FXML
-    private TableColumn<Medicion, Integer> ColumnaMuestra;
+    private TableColumn<MedicionPersonalizada, Integer> ColumnaMuestra;
     @FXML
-    private TableColumn<Medicion, Integer> ColumnaExamen;
+    private TableColumn<MedicionPersonalizada, Integer> ColumnaExamen;
     
     private String usuario;
     
     private Kiosko programaPrincipal;
     
     private Stage thisStage;
+    @FXML
+    private TableColumn<Medicion, LocalDate> columnaFechaSimple;
+    @FXML
+    private TableColumn<Medicion, String> columnaDetallesSimple;
+    @FXML
+    private Button cargarSimple;
+    @FXML
+    private TableView<Medicion> tablaMedicionSimple;
 
     /**
      * Initializes the controller class.
@@ -69,6 +78,9 @@ public class BusquedaMedicionController implements Initializable {
         columnaIntervalo.setCellValueFactory(new PropertyValueFactory<>("intervalo"));
         ColumnaMuestra.setCellValueFactory(new PropertyValueFactory<>("DuracionMuestra"));
         ColumnaExamen.setCellValueFactory(new PropertyValueFactory<>("DuracionExamen"));        
+        
+        columnaDetallesSimple.setCellValueFactory(new PropertyValueFactory<>("detalles"));
+        columnaFechaSimple.setCellValueFactory(new PropertyValueFactory<>("fecha"));
     }  
     
     public void setProgramaPrincipal(Kiosko programaPrincipal) 
@@ -78,23 +90,37 @@ public class BusquedaMedicionController implements Initializable {
     
     public void llenarTabla()
     {
+        //Código para llenar las mediciones simples
        usuario= programaPrincipal.getUsuarioABuscar();
        
-       EntityManager em = Persistence.createEntityManagerFactory("KioskoPU").createEntityManager();
+       EntityManager em = Persistence.createEntityManagerFactory("KioskoPU").createEntityManager();        
        Query queryMedicionFindAll = em.createNativeQuery("SELECT * from medicion m WHERE identificacion= '" + usuario +"'", Medicion.class);
        List<Medicion> listMedicion = queryMedicionFindAll.getResultList();
-       tablaReproduccion.setItems(FXCollections.observableArrayList(listMedicion));        
+       tablaMedicionSimple.setItems(FXCollections.observableArrayList(listMedicion));
+       
+       
+       //Código para llenar las mediciones personalizadas       
+       String consulta= "SELECT medicion_personalizada.id , medicion_personalizada.intervalo, medicion_personalizada.duracionMuestra, medicion_personalizada.duracionExamen,"
+               + "medicion_personalizada.fecha, medicion_personalizada.detalles " +
+        "FROM medicion_personalizada"+
+        " INNER JOIN medicion ON medicion.idPersonalizada=medicion_personalizada.id AND medicion_personalizada.id!=1" ;
+       queryMedicionFindAll = em.createNativeQuery(consulta, MedicionPersonalizada.class);
+       //Query queryMedicionFindAll = em.createNativeQuery("SELECT * from medicion_personalizada m WHERE identificacion= '" + usuario +"'", MedicionPersonalizada.class);
+       List<MedicionPersonalizada> listMedicionPersonalizada = queryMedicionFindAll.getResultList();
+       tablaReproduccion.setItems(FXCollections.observableArrayList(listMedicionPersonalizada)); 
     }
     
+    @FXML
     public void cerrarYReproducir()
     {
-        int id= tablaReproduccion.getSelectionModel().getSelectedItem().getId();       
+        int id= tablaMedicionSimple.getSelectionModel().getSelectedItem().getId();       
         EntityManager em = Persistence.createEntityManagerFactory("KioskoPU").createEntityManager();        
         Query queryReproducir= em.createNamedQuery("Medicion.findById", Medicion.class);
         queryReproducir.setParameter("id", id);
         Medicion medicion= (Medicion) queryReproducir.getSingleResult();        
         programaPrincipal.setMedicionReproducir(medicion);
         
+        System.out.println("Sí funcionó!!!!" + id);
         this.thisStage.close();
     }
     

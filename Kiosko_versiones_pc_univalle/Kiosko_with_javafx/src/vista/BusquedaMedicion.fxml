@@ -3,30 +3,58 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox prefHeight="400.0" prefWidth="640.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="vista.BusquedaMedicionController">
+<VBox maxHeight="-Infinity" minHeight="-Infinity" prefHeight="453.0" prefWidth="640.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="vista.BusquedaMedicionController">
   <children>
-    <AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="408.0" prefWidth="640.0" VBox.vgrow="ALWAYS">
-         <children>
-            <DatePicker fx:id="desdeReproduccion" layoutX="59.0" layoutY="37.0" prefHeight="51.0" prefWidth="192.0" />
-            <DatePicker fx:id="hastaReproduccion" layoutX="394.0" layoutY="38.0" prefHeight="51.0" prefWidth="192.0" />
-            <Label layoutX="59.0" layoutY="11.0" text="Desde" />
-            <Label layoutX="394.0" layoutY="12.0" text="Hasta" />
-            <TableView fx:id="tablaReproduccion" layoutX="59.0" layoutY="104.0" prefHeight="213.0" prefWidth="528.0">
-              <columns>
-                <TableColumn id="columnaFecha" fx:id="columnaFecha" prefWidth="66.0" text="Fecha" />
-                <TableColumn id="columnaDetalles" fx:id="columnaDetalles" prefWidth="175.0" text="Detalles" />
-                  <TableColumn id="columnaIntervalo" fx:id="columnaIntervalo" minWidth="0.0" prefWidth="63.0" text="Intervalo" />
-                  <TableColumn id="ColumnaMuestra" fx:id="ColumnaMuestra" prefWidth="116.0" text="Duracion Muestra" />
-                  <TableColumn id="ColumnaExamen" fx:id="ColumnaExamen" prefWidth="107.0" text="Duracion Examen" />
-              </columns>
-            </TableView>
-            <Button fx:id="reproducir" layoutX="434.0" layoutY="328.0" mnemonicParsing="false" onAction="#cerrarYReproducir" prefHeight="51.0" prefWidth="153.0" text="Reproducir" />
-         </children>
-    </AnchorPane>
+      <TabPane minHeight="-Infinity" prefHeight="443.0" prefWidth="640.0" tabClosingPolicy="UNAVAILABLE">
+        <tabs>
+          <Tab text="Mediciones simples">
+            <content>
+              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="410.0" prefWidth="640.0">
+                     <children>
+                        <DatePicker layoutX="59.0" layoutY="38.0" prefHeight="51.0" prefWidth="192.0" />
+                        <DatePicker layoutX="394.0" layoutY="38.0" prefHeight="51.0" prefWidth="192.0" />
+                        <Label layoutX="59.0" layoutY="11.0" text="Desde" />
+                        <Label layoutX="394.0" layoutY="12.0" text="Hasta" />
+                        <TableView fx:id="tablaMedicionSimple" layoutX="59.0" layoutY="104.0" prefHeight="213.0" prefWidth="528.0">
+                          <columns>
+                            <TableColumn fx:id="columnaFechaSimple" prefWidth="146.0" text="Fecha" />
+                            <TableColumn fx:id="columnaDetallesSimple" prefWidth="381.0" text="Detalles" />
+                          </columns>
+                        </TableView>
+                        <Button fx:id="cargarSimple" layoutX="434.0" layoutY="328.0" mnemonicParsing="false" onAction="#cerrarYReproducir" prefHeight="51.0" prefWidth="153.0" text="Cargar medición" />
+                     </children></AnchorPane>
+            </content>
+          </Tab>
+          <Tab text="Mediciones personalizadas">
+               <content>
+                <AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="303.0" prefWidth="726.0">
+                     <children>
+                        <DatePicker fx:id="desdeReproduccion" layoutX="59.0" layoutY="38.0" prefHeight="51.0" prefWidth="192.0" />
+                        <DatePicker fx:id="hastaReproduccion" layoutX="394.0" layoutY="38.0" prefHeight="51.0" prefWidth="192.0" />
+                        <Label layoutX="59.0" layoutY="11.0" text="Desde" />
+                        <Label layoutX="394.0" layoutY="12.0" text="Hasta" />
+                        <TableView fx:id="tablaReproduccion" layoutX="59.0" layoutY="104.0" prefHeight="213.0" prefWidth="528.0">
+                          <columns>
+                            <TableColumn id="columnaFecha" fx:id="columnaFecha" prefWidth="66.0" text="Fecha" />
+                            <TableColumn id="columnaDetalles" fx:id="columnaDetalles" prefWidth="175.0" text="Detalles" />
+                              <TableColumn id="columnaIntervalo" fx:id="columnaIntervalo" minWidth="0.0" prefWidth="63.0" text="Intervalo" />
+                              <TableColumn id="ColumnaMuestra" fx:id="ColumnaMuestra" prefWidth="116.0" text="Duracion Muestra" />
+                              <TableColumn id="ColumnaExamen" fx:id="ColumnaExamen" prefWidth="107.0" text="Duracion Examen" />
+                          </columns>
+                        </TableView>
+                        <Button fx:id="reproducir" layoutX="434.0" layoutY="328.0" mnemonicParsing="false" prefHeight="51.0" prefWidth="153.0" text="Mostrar resultados" />
+                     </children>
+                </AnchorPane>
+               </content>
+          </Tab>
+        </tabs>
+      </TabPane>
   </children>
 </VBox>
