@@ -124,6 +124,13 @@ public class BusquedaMedicionController implements Initializable {
         this.thisStage.close();
     }
     
+    @FXML
+    public void presentarGraficos()
+    {
+        int idPersonalizado= tablaReproduccion.getSelectionModel().getSelectedItem().getId();
+        this.programaPrincipal.mostrarVentanaCharts(idPersonalizado);
+    }
+    
     public void setStage(Stage stage)
     {
         this.thisStage= stage;

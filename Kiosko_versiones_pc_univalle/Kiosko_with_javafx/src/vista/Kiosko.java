@@ -125,6 +125,7 @@ public class Kiosko extends Application {
         }
     }
     
+     
     public void mostrarVentanaReproduccion() //Método para mostrar la ventana donde se buscan las mediciones almacenadas del paciente
     {
         try {
@@ -149,6 +150,48 @@ public class Kiosko extends Application {
             controller.llenarTabla();
             ventana.show();
             ventana.setResizable(false);
+            Rectangle2D ventanaPrimariaLimites = new Rectangle2D(640, 300, 640, 500);
+            ventana.setX(ventanaPrimariaLimites.getMinX());
+            ventana.setY(ventanaPrimariaLimites.getMinY());
+            ventana.setWidth(ventanaPrimariaLimites.getWidth());
+            ventana.setHeight(ventanaPrimariaLimites.getHeight());
+            //primaryStage.close();
+            
+            //controller.setProgramaPrincipal(this);
+            ventana.setOnCloseRequest(new EventHandler<WindowEvent>(){            
+            @Override public void handle(WindowEvent event) {
+                //event.consume(); //Consumar el evento
+                ventana.close();
+                
+            }  
+        });
+        } catch (Exception ex) {
+            System.out.println("Error del sistema: " + ex.toString());
+        }      
+
+    }
+    
+    public void mostrarVentanaCharts(int idPersonalizado) //Método para mostrar la ventana donde van las gráficas de las mediciones personalizadas.
+    {
+        try {            
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(Kiosko.class.getResource("/vista/graficasEstadisticas.fxml"));
+            VBox menu = (VBox) loader.load();
+            Stage ventana = new Stage();
+            ventana.initOwner(ventanaPrincipal);
+            ventana.setTitle("Resultados medición personalizada");
+            
+            
+            Scene scene = new Scene(menu);
+            scene.getStylesheets().add("/vista/menu.css");
+            ventana.setScene(scene);
+            GraficasEstadisticasController controller = loader.getController();
+            
+            controller.setIdPersonalizado(idPersonalizado);
+            controller.obtenerMediciones();
+            controller.dibujarCharts();
+            ventana.show();
+            ventana.setResizable(false);
             Rectangle2D ventanaPrimariaLimites = new Rectangle2D(640, 300, 640, 420);
             ventana.setX(ventanaPrimariaLimites.getMinX());
             ventana.setY(ventanaPrimariaLimites.getMinY());
@@ -166,13 +209,7 @@ public class Kiosko extends Application {
         });
         } catch (Exception ex) {
             System.out.println("Error del sistema: " + ex.toString());
-        }        
-
-    }
-    
-    public void mostrarVentanaCharts() //Método para mostrar la ventana donde van las gráficas de las mediciones personalizadas.
-    {
-        
+        }  
     }
     
     

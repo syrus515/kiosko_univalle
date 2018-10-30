@@ -49,7 +49,7 @@
                               <TableColumn id="ColumnaExamen" fx:id="ColumnaExamen" prefWidth="107.0" text="Duracion Examen" />
                           </columns>
                         </TableView>
-                        <Button fx:id="reproducir" layoutX="434.0" layoutY="328.0" mnemonicParsing="false" prefHeight="51.0" prefWidth="153.0" text="Mostrar resultados" />
+                        <Button fx:id="reproducir" layoutX="434.0" layoutY="328.0" mnemonicParsing="false" onAction="#presentarGraficos" prefHeight="51.0" prefWidth="153.0" text="Mostrar resultados" />
                      </children>
                 </AnchorPane>
                </content>

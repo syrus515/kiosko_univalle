@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.chart.CategoryAxis?>
+<?import javafx.scene.chart.LineChart?>
+<?import javafx.scene.chart.NumberAxis?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox prefHeight="1000.0" prefWidth="1293.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="vista.GraficasEstadisticasController">
+  <children>
+    <AnchorPane maxHeight="-1.0" maxWidth="-Infinity" prefHeight="1000.0" prefWidth="1200.0" VBox.vgrow="ALWAYS">
+      <children>
+            <LineChart fx:id="chartSistolica" layoutX="6.0" layoutY="7.0" prefHeight="347.0" prefWidth="400.0" title="Presión Sistólica">
+              <xAxis>
+                <CategoryAxis side="BOTTOM" />
+              </xAxis>
+              <yAxis>
+                <NumberAxis side="LEFT" />
+              </yAxis>
+            </LineChart>
+            <LineChart fx:id="chartDiastolica" layoutX="400.0" layoutY="7.0" prefHeight="347.0" prefWidth="400.0" title="Presión Diastólica">
+               <xAxis>
+                  <CategoryAxis side="BOTTOM" />
+               </xAxis>
+               <yAxis>
+                  <NumberAxis side="LEFT" />
+               </yAxis>
+            </LineChart>
+            <LineChart fx:id="chartMedia" layoutX="779.0" layoutY="7.0" prefHeight="347.0" prefWidth="400.0" title="Presión media">
+               <xAxis>
+                  <CategoryAxis side="BOTTOM" />
+               </xAxis>
+               <yAxis>
+                  <NumberAxis side="LEFT" />
+               </yAxis>
+            </LineChart>
+            <LineChart fx:id="chartPulso" layoutX="7.0" layoutY="335.0" prefHeight="347.0" prefWidth="400.0" title="Pulso">
+               <xAxis>
+                  <CategoryAxis side="BOTTOM" />
+               </xAxis>
+               <yAxis>
+                  <NumberAxis side="LEFT" />
+               </yAxis>
+            </LineChart>
+            <LineChart fx:id="chartECG" layoutX="401.0" layoutY="335.0" prefHeight="347.0" prefWidth="400.0" title="ECG">
+               <xAxis>
+                  <CategoryAxis side="BOTTOM" />
+               </xAxis>
+               <yAxis>
+                  <NumberAxis side="LEFT" />
+               </yAxis>
+            </LineChart>
+            <LineChart fx:id="chartSPO2" layoutX="780.0" layoutY="335.0" prefHeight="347.0" prefWidth="400.0" title="SPO2">
+               <xAxis>
+                  <CategoryAxis side="BOTTOM" />
+               </xAxis>
+               <yAxis>
+                  <NumberAxis side="LEFT" />
+               </yAxis>
+            </LineChart>
+            <LineChart fx:id="chartHeart" layoutX="8.0" layoutY="659.0" prefHeight="347.0" prefWidth="400.0" title="Heart Rate">
+               <xAxis>
+                  <CategoryAxis side="BOTTOM" />
+               </xAxis>
+               <yAxis>
+                  <NumberAxis side="LEFT" />
+               </yAxis>
+            </LineChart>
+            <LineChart fx:id="chartRESP" layoutX="402.0" layoutY="659.0" prefHeight="347.0" prefWidth="400.0" title="RESP">
+               <xAxis>
+                  <CategoryAxis side="BOTTOM" />
+               </xAxis>
+               <yAxis>
+                  <NumberAxis side="LEFT" />
+               </yAxis>
+            </LineChart>
+      </children>
+    </AnchorPane>
+  </children>
+</VBox>
