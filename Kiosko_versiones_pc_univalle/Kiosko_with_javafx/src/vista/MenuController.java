@@ -997,7 +997,7 @@ private static final int Y_MAX_RESP = 3000;
         apagarDesdeHilo= true;
     }
     
-        @FXML
+    @FXML
     void iniciarLecturaSeñales(ActionEvent event) 
     {  
         Timer timerIniciar;
@@ -1115,7 +1115,143 @@ private static final int Y_MAX_RESP = 3000;
         //btnIniciarSeñales.setText("Parar");        
     }
     
-    private double peso;
+    private boolean terminaMedicion;
+    
+    @FXML
+    public void iniciarMedicionPersonalizada()
+    {
+        int intervaloMedicion= obtenerIntervalo();
+        int duracionMuestraMedicion= obtenerDuracion();
+        int duracionExamenMedicion= obtenerDuracionExamen();
+        
+        //A continuación se programa una tarea que acaba la medición al final del examen.
+        terminaMedicion= false;
+        Timer timerTerminar;
+        timerTerminar = new Timer();
+        
+        TimerTask taskTerminar = new TimerTask() 
+        {
+            @Override
+            public void run() throws EmptyStackException
+            {                           
+                terminaMedicion= true;
+            }
+        };
+        // Empezamos dentro de 10s 
+        timerTerminar.schedule(taskTerminar, (duracionExamenMedicion*60*1000)+10);//Se convierten los minutos en milisegundos.
+        
+        Timer timerMedicion;
+        timerMedicion = new Timer();
+        
+        TimerTask taskMedir = new TimerTask() 
+        {
+            @Override
+            public void run() throws EmptyStackException
+            {
+                if(!terminaMedicion)
+                {
+                    ActionEvent e= new ActionEvent();
+                    iniciarLecturaSeñales(e);
+                    acabarMedicion(duracionMuestraMedicion);//Se termina la muestra iniciada en el tiempo determinado.                    
+                }else
+                {
+                   timerMedicion.cancel(); 
+                }
+            }
+        };
+        // Empezamos dentro de 10s 
+        timerMedicion.schedule(taskMedir, 5,intervaloMedicion*60*1000);//Se convierten los minutos en milisegundos.        
+    }
+    
+    private void acabarMedicion(int tiempo)
+    {
+        int duracionMuestra= tiempo*1000; //Se convierte a milisegundos.
+        Timer timerMedicion;
+        timerMedicion = new Timer();
+        
+        TimerTask taskMedir = new TimerTask() 
+        {
+            @Override
+            public void run() throws EmptyStackException
+            {   
+                ActionEvent e= new ActionEvent();
+                iniciarLecturaSeñales(e);
+            }
+        };
+        // Empezamos dentro de 10s 
+        timerMedicion.schedule(taskMedir, duracionMuestra);
+    }
+    
+    private int obtenerIntervalo()
+    {
+       String valor= this.intervalo.getSelectionModel().getSelectedItem();
+       int resultado= 5;
+       switch(valor)
+       {
+           case "10 minutos":
+               resultado= 10;
+               break;
+           case "15 minutos":
+               resultado= 15;
+               break;
+           case "20 minutos":
+               resultado= 20;
+               break;
+           case "25 minutos":
+               resultado= 25;
+               break;
+           case "30 minutos":
+               resultado= 30;
+               break;
+           default: resultado= 5;
+               break;
+       }       
+       return resultado;
+    }
+    
+    private int obtenerDuracion()
+    {
+       String valor= this.duracionMuestra.getSelectionModel().getSelectedItem();
+       int resultado= 15;
+       switch(valor)
+       {
+           case "30 segundos":
+               resultado= 30;
+               break;
+           case "45 segundos":
+               resultado= 45;
+               break;
+           case "60 segundos":
+               resultado= 60;
+               break;
+           default: resultado= 15;
+               break;
+       }       
+       return resultado;
+    }
+    
+    private int obtenerDuracionExamen()
+    {
+       String valor= this.duracionExamen.getSelectionModel().getSelectedItem();
+       int resultado= 30;
+       switch(valor)
+       {
+           case "1 hora":
+               resultado= 60;
+               break;
+           case "1 hora, 30 minutos":
+               resultado= 90;
+               break;
+           case "2 horas": //Modificar esto, en este momento está para pruebas.
+               resultado= 10;
+               System.err.println("Eurea!!!!!!!!!!!!!!!!!!");
+               break;
+           default: resultado= 30;
+               break;
+       }       
+       return resultado;
+    }
+    
     
     @FXML
     public void almacenarAfinamiento()

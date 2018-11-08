@@ -213,7 +213,7 @@
                               </Text>
                               <Button fx:id="btnIniciarSeñales" layoutX="1317.0" layoutY="232.0" mnemonicParsing="false" onAction="#iniciarLecturaSeñales" prefHeight="64.0" prefWidth="239.0" text="Iniciar medición simple" />
                               <Label layoutX="1316.0" layoutY="14.0" prefHeight="23.0" prefWidth="150.0" text="Detalles medición:" />
-                              <Button layoutX="1319.0" layoutY="585.0" mnemonicParsing="false" prefHeight="73.0" prefWidth="242.0" text="Iniciar medición personalizada" />
+                              <Button fx:id="iniciarPersonalizada" layoutX="1319.0" layoutY="585.0" mnemonicParsing="false" onAction="#iniciarMedicionPersonalizada" prefHeight="73.0" prefWidth="242.0" text="Iniciar medición personalizada" />
                               <ChoiceBox fx:id="intervalo" layoutX="1319.0" layoutY="354.0" prefHeight="45.0" prefWidth="150.0" />
                               <Label layoutX="1319.0" layoutY="327.0" prefHeight="17.0" prefWidth="204.0" text="Intérvalo entre muestras:" />
                               <Label layoutX="1319.0" layoutY="405.0" prefHeight="17.0" prefWidth="187.0" text="Duracion de cada muestra:" />
