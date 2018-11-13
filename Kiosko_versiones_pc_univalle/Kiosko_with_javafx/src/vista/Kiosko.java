@@ -129,9 +129,7 @@ public class Kiosko extends Application {
     public void mostrarVentanaReproduccion() //Método para mostrar la ventana donde se buscan las mediciones almacenadas del paciente
     {
         try {
-            this.usuario = usuario;
-            this.nombre = nombre;
-            this.rol = rol;
+
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(Kiosko.class.getResource("/vista/BusquedaMedicion.fxml"));
             VBox menu = (VBox) loader.load();
@@ -150,7 +148,7 @@ public class Kiosko extends Application {
             controller.llenarTabla();
             ventana.show();
             ventana.setResizable(false);
-            Rectangle2D ventanaPrimariaLimites = new Rectangle2D(640, 300, 640, 500);
+            Rectangle2D ventanaPrimariaLimites = new Rectangle2D(640, 300, 640, 453);
             ventana.setX(ventanaPrimariaLimites.getMinX());
             ventana.setY(ventanaPrimariaLimites.getMinY());
             ventana.setWidth(ventanaPrimariaLimites.getWidth());
@@ -187,12 +185,15 @@ public class Kiosko extends Application {
             ventana.setScene(scene);
             GraficasEstadisticasController controller = loader.getController();
             
+            controller.setProgramaPrincipal(this);
+            controller.setStage(ventana);
+            
             controller.setIdPersonalizado(idPersonalizado);
             controller.obtenerMediciones();
             controller.dibujarCharts();
             ventana.show();
             ventana.setResizable(false);
-            Rectangle2D ventanaPrimariaLimites = new Rectangle2D(640, 300, 640, 420);
+            Rectangle2D ventanaPrimariaLimites = new Rectangle2D(10, 10, 1293, 1000);
             ventana.setX(ventanaPrimariaLimites.getMinX());
             ventana.setY(ventanaPrimariaLimites.getMinY());
             ventana.setWidth(ventanaPrimariaLimites.getWidth());
@@ -207,7 +208,8 @@ public class Kiosko extends Application {
                 
             }  
         });
-        } catch (Exception ex) {
+        } catch (Exception ex) {       
+            ex.printStackTrace();
             System.out.println("Error del sistema: " + ex.toString());
         }  
     }

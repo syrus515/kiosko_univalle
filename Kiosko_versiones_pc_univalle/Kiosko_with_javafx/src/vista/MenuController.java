@@ -45,6 +45,7 @@ import javafx.scene.control.Alert.AlertType;
 
 import cliente.AdminDevice;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -454,6 +455,8 @@ private static final int Y_MAX_RESP = 3000;
     private TableColumn<HistorialAfinamiento, String> columnaDetallesAfinamiento;
     @FXML
     private MenuItem menuConexion;
+    @FXML
+    private Button iniciarPersonalizada;
     
     @FXML
     public void cerrarPrograma() {
@@ -1033,7 +1036,10 @@ private static final int Y_MAX_RESP = 3000;
                         
         } else 
         { 
-            btnIniciarSeñales.setText("Detener medición");
+            if(!esPersonalizada)
+            {
+                btnIniciarSeñales.setText("Detener medición");
+            }            
             if(primeraVez)
             {
                primeraVez= false;
@@ -1063,9 +1069,6 @@ private static final int Y_MAX_RESP = 3000;
                 // Empezamos dentro de 0s 
                 timerIniciar.schedule(taskIniciar, 0);
             }
-            
-            
-        
         }
         banderaInicio = !banderaInicio;
 
@@ -1115,52 +1118,109 @@ private static final int Y_MAX_RESP = 3000;
         //btnIniciarSeñales.setText("Parar");        
     }
     
-    private boolean terminaMedicion;
+    private boolean terminaMedicion; //Determina si la medición ya terminó del todo
+    private boolean banderaMedicion= true; //Determina si la medición personalizada inicia o se cancela
     
     @FXML
     public void iniciarMedicionPersonalizada()
     {
+        if(banderaMedicion)
+        {
+            btnIniciarSeñales.setDisable(true);//Se desactiva el botón de medición simple
+            iniciarPersonalizada.setText("Detener medición personalizada");
+            
+            idMedPersonalizada= crearMedicionPersonalizada(); //Se crea la nueva medición personalizada
+            esPersonalizada= true; //Se avisa que se guardará una medición personalizada
+            
+        
+            int intervaloMedicion= obtenerIntervalo();
+            int duracionMuestraMedicion= obtenerDuracion();
+            int duracionExamenMedicion= obtenerDuracionExamen();
+
+            //A continuación se programa una tarea que acaba la medición al final del examen.
+            terminaMedicion= false;
+            Timer timerTerminar;
+            timerTerminar = new Timer();
+
+            TimerTask taskTerminar = new TimerTask() 
+            {
+                @Override
+                public void run() throws EmptyStackException
+                {                           
+                    terminaMedicion= true;
+                }
+            };
+            // Empezamos dentro de 10s 
+            timerTerminar.schedule(taskTerminar, (duracionExamenMedicion*60*1000)+10);//Se convierten los minutos en milisegundos.
+
+            Timer timerMedicion;
+            timerMedicion = new Timer();
+
+            TimerTask taskMedir = new TimerTask() 
+            {
+                @Override
+                public void run() throws EmptyStackException
+                {
+                    if(!terminaMedicion)
+                    {
+                        ActionEvent e= new ActionEvent();
+                        iniciarLecturaSeñales(e);
+                        acabarMedicion(duracionMuestraMedicion);//Se termina la muestra iniciada en el tiempo determinado.                    
+                    }else
+                    {
+                       btnIniciarSeñales.setDisable(false); //Esto es lo último que hace, cuando ya se acabo el tiempo total de la medición personalizada.
+                       esPersonalizada= false;
+                       banderaMedicion= true;
+                       iniciarPersonalizada.setText("Iniciar medición personalizada");
+                       timerMedicion.cancel(); 
+                    }
+                }
+            };
+            // Empezamos dentro de 10s 
+            timerMedicion.schedule(taskMedir, 5,intervaloMedicion*60*1000);//Se convierten los minutos en milisegundos.  
+            banderaMedicion= false;
+        }else
+        {   //En caso de cancelar la medición personalizada:           
+            terminaMedicion= true; //Se informa que se debe cerrar el hilo.
+            banderaMedicion= true; //Se habilita un nuevo registro de medición personalizada.
+            iniciarPersonalizada.setText("Iniciar medición personalizada"); //Se reestablece el botón.
+            btnIniciarSeñales.setDisable(false); //Se habilita el botón de medición simple.
+            esPersonalizada= false; //Se habilita el registro de medición genérica (simple).            
+        }
+               
+    }
+    
+    private int crearMedicionPersonalizada()
+    { 
+        em = Persistence.createEntityManagerFactory("KioskoPU").createEntityManager();
+        em.getTransaction().begin();
         int intervaloMedicion= obtenerIntervalo();
         int duracionMuestraMedicion= obtenerDuracion();
         int duracionExamenMedicion= obtenerDuracionExamen();
+        //AquÃ­ colocas tu objeto tipo Date
+        Date date= new Date();
+        try {                        
+            date =  new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(date));
+        } catch (ParseException ex) {
+            Logger.getLogger(MenuController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        java.sql.Timestamp fechaGuardar = new java.sql.Timestamp(date.getTime());
+        MedicionPersonalizada med= new MedicionPersonalizada();
+        med.setId(1);
+        med.setIntervalo(intervaloMedicion);
+        med.setDuracionExamen(duracionExamenMedicion);
+        med.setDuracionMuestra(duracionMuestraMedicion);
+        med.setFecha(fechaGuardar);
+        med.setDetalles(detallesMedicion.getText());
+        em.persist(med);                
+        em.getTransaction().commit();  
         
-        //A continuación se programa una tarea que acaba la medición al final del examen.
-        terminaMedicion= false;
-        Timer timerTerminar;
-        timerTerminar = new Timer();
+        //Obtiendo el ID para guardar cada medicion de la medición personalizada
+        Query queryMedicionFindAll = em.createNativeQuery("select * from medicion_personalizada m order by m.id desc", MedicionPersonalizada.class);
+                       
+        List<MedicionPersonalizada> listMedicion = queryMedicionFindAll.getResultList();
         
-        TimerTask taskTerminar = new TimerTask() 
-        {
-            @Override
-            public void run() throws EmptyStackException
-            {                           
-                terminaMedicion= true;
-            }
-        };
-        // Empezamos dentro de 10s 
-        timerTerminar.schedule(taskTerminar, (duracionExamenMedicion*60*1000)+10);//Se convierten los minutos en milisegundos.
-        
-        Timer timerMedicion;
-        timerMedicion = new Timer();
-        
-        TimerTask taskMedir = new TimerTask() 
-        {
-            @Override
-            public void run() throws EmptyStackException
-            {
-                if(!terminaMedicion)
-                {
-                    ActionEvent e= new ActionEvent();
-                    iniciarLecturaSeñales(e);
-                    acabarMedicion(duracionMuestraMedicion);//Se termina la muestra iniciada en el tiempo determinado.                    
-                }else
-                {
-                   timerMedicion.cancel(); 
-                }
-            }
-        };
-        // Empezamos dentro de 10s 
-        timerMedicion.schedule(taskMedir, 5,intervaloMedicion*60*1000);//Se convierten los minutos en milisegundos.        
+        return listMedicion.get(0).getId();     
     }
     
     private void acabarMedicion(int tiempo)
@@ -1244,7 +1304,7 @@ private static final int Y_MAX_RESP = 3000;
                break;
            case "2 horas": //Modificar esto, en este momento está para pruebas.
                resultado= 10;
-               System.err.println("Eurea!!!!!!!!!!!!!!!!!!");
+               System.err.println("Eureka!!!!!!!!!!!!!!!!!!");
                break;
            default: resultado= 30;
                break;
@@ -1302,6 +1362,9 @@ private static final int Y_MAX_RESP = 3000;
         llenarTablaAfinamientos();
 }
 
+private boolean esPersonalizada= false; //Determina si la medición a guardar hace parte de una personalizada.
+private int idMedPersonalizada; //Almacena el id de la medición personalizada a asociar con cada medición.
+
 public void almacenarSenales()
 {
         em = Persistence.createEntityManagerFactory("KioskoPU").createEntityManager();
@@ -1317,6 +1380,10 @@ public void almacenarSenales()
                     //Obtención de la medición personalizada
                     EntityManager emAuxiliar = Persistence.createEntityManagerFactory("KioskoPU").createEntityManager();
                     Query queryMedicionFindAll = em.createNativeQuery("SELECT * from medicion_personalizada m WHERE id= '1'", MedicionPersonalizada.class);
+                    if(esPersonalizada)
+                    {
+                        queryMedicionFindAll = em.createNativeQuery("SELECT * from medicion_personalizada m WHERE id= '"+ idMedPersonalizada + "'", MedicionPersonalizada.class);
+                    }                  
                     List<MedicionPersonalizada> listMedicion = queryMedicionFindAll.getResultList();
                     //--------------------------------------
                     
@@ -1347,6 +1414,8 @@ public void almacenarSenales()
                     med.setHr(vHR.toString());
                     med.setResp(vRESPtext.toString());                        
                     em.persist(med);
+                    
+                    resetVectores();
                 }catch(Exception e)
                 {
                     System.out.println(e);
@@ -1357,7 +1426,25 @@ public void almacenarSenales()
         em.getTransaction().commit();       
   
     }
-    public void graficar() {
+
+public void resetVectores()
+{
+    //vectores para guardar datos de la medicion
+    vSPO2 = new Vector(0,1);
+    vECG1 = new Vector(0,1);
+    vECG2 = new Vector(0,1);
+    vRESP = new Vector(0,1);
+    vsistolica = new Vector(0,1);
+    vdiastolica = new Vector(0,1);
+    vpulso = new Vector(0,1);
+    vmed = new Vector(0,1);
+    vECG = new Vector(0,1);
+    vSPO2text = new Vector(0,1);
+    vHR = new Vector(0,1);
+    vRESPtext = new Vector(0,1);
+}
+
+public void graficar() {
         // INICIAL
         gc = pintarKiosko.getGraphicsContext2D();
         anchoGC = pintarKiosko.getWidth();

@@ -15,6 +15,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.XYChart;
+import javafx.stage.Stage;
 import javax.persistence.EntityManager;
 import javax.persistence.Persistence;
 import javax.persistence.Query;
@@ -27,24 +28,27 @@ import javax.persistence.Query;
 public class GraficasEstadisticasController implements Initializable {
 
     @FXML
-    private LineChart<Number, Number> chartSistolica;
+    private LineChart<String, Double> chartSistolica;
     @FXML
-    private LineChart<Number, Number> chartDiastolica;
+    private LineChart<String, Double> chartDiastolica;
     @FXML
-    private LineChart<Number, Number> chartMedia;
+    private LineChart<String, Double> chartMedia;
     @FXML
-    private LineChart<Number, Number> chartPulso;
+    private LineChart<String, Double> chartPulso;
     @FXML
-    private LineChart<Number, Number> chartECG;
+    private LineChart<String, Double> chartECG;
     @FXML
-    private LineChart<Number, Number> chartSPO2;
+    private LineChart<String, Double> chartSPO2;
     @FXML
-    private LineChart<Number, Number> chartHeart;
+    private LineChart<String, Double> chartHeart;
     @FXML
-    private LineChart<Number, Number> chartRESP;
+    private LineChart<String, Double> chartRESP;
     
     private int idPersonalizado;
     private List<Medicion> mediciones;
+    private Kiosko programaPrincipal;
+    
+    private Stage thisStage;
 
     /**
      * Initializes the controller class.
@@ -80,21 +84,21 @@ public class GraficasEstadisticasController implements Initializable {
     
     private void dibujarSistolica()
     {
-        XYChart.Series<Number, Number> series= new XYChart.Series<>();
+        XYChart.Series<String, Double> series= new XYChart.Series<>();
         chartSistolica.getData().add(series);
-        int ejeX= 0;
+        double ejeX= 0;
         for(int i=0; i<mediciones.size(); i++) //Se recorren todas las mediciones del paciente para dicha medición personalizada.
         {
-            List<Integer> datosNumericos= new ArrayList<Integer>();
+            List<Double> datosNumericos= new ArrayList<Double>();
             String datos= mediciones.get(i).getPresionSistolica().substring(1, mediciones.get(i).getPresionSistolica().length()-1);
             StringTokenizer tokens= new StringTokenizer(datos, ", ");
             while(tokens.hasMoreTokens()) //Se convierten los datos almacenados por cada medicion en un arreglo de enteros.
             {
-                datosNumericos.add(Integer.parseInt(tokens.nextToken()));
+                datosNumericos.add(Double.parseDouble(tokens.nextToken()));
             }
             for(int j=0; j<datosNumericos.size(); j++) //Se agrega al chart cada dato del vector numérico obtenido.
             {               
-                series.getData().add(new XYChart.Data<>(ejeX, datosNumericos.get(j)));
+                series.getData().add(new XYChart.Data<>(String.valueOf(ejeX), datosNumericos.get(j)));
                 ejeX++; //Se aumenta una posición en el eje X (tiempo).
             }
         }
@@ -102,21 +106,21 @@ public class GraficasEstadisticasController implements Initializable {
     
     private void dibujarDiastolica()
     {
-        XYChart.Series<Number, Number> series= new XYChart.Series<>();
+        XYChart.Series<String, Double> series= new XYChart.Series<>();
         chartDiastolica.getData().add(series);
         int ejeX= 0;
         for(int i=0; i<mediciones.size(); i++) //Se recorren todas las mediciones del paciente para dicha medición personalizada.
         {
-            List<Integer> datosNumericos= new ArrayList<Integer>();
+            List<Double> datosNumericos= new ArrayList<Double>();
             String datos= mediciones.get(i).getPresionDiastolica().substring(1, mediciones.get(i).getPresionDiastolica().length()-1);
             StringTokenizer tokens= new StringTokenizer(datos, ", ");
             while(tokens.hasMoreTokens()) //Se convierten los datos almacenados por cada medicion en un arreglo de enteros.
             {
-                datosNumericos.add(Integer.parseInt(tokens.nextToken()));
+                datosNumericos.add(Double.parseDouble(tokens.nextToken()));
             }
             for(int j=0; j<datosNumericos.size(); j++) //Se agrega al chart cada dato del vector numérico obtenido.
             {               
-                series.getData().add(new XYChart.Data<>(ejeX, datosNumericos.get(j)));
+                series.getData().add(new XYChart.Data<>(String.valueOf(ejeX), datosNumericos.get(j)));
                 ejeX++; //Se aumenta una posición en el eje X (tiempo).
             }
         }
@@ -124,21 +128,21 @@ public class GraficasEstadisticasController implements Initializable {
     
     private void dibujarMedia()
     {
-        XYChart.Series<Number, Number> series= new XYChart.Series<>();
+        XYChart.Series<String, Double> series= new XYChart.Series<>();
         chartMedia.getData().add(series);
         int ejeX= 0;
         for(int i=0; i<mediciones.size(); i++) //Se recorren todas las mediciones del paciente para dicha medición personalizada.
         {
-            List<Integer> datosNumericos= new ArrayList<Integer>();
+            List<Double> datosNumericos= new ArrayList<Double>();
             String datos= mediciones.get(i).getMed().substring(1, mediciones.get(i).getMed().length()-1);
             StringTokenizer tokens= new StringTokenizer(datos, ", ");
             while(tokens.hasMoreTokens()) //Se convierten los datos almacenados por cada medicion en un arreglo de enteros.
             {
-                datosNumericos.add(Integer.parseInt(tokens.nextToken()));
+                datosNumericos.add(Double.parseDouble(tokens.nextToken()));
             }
             for(int j=0; j<datosNumericos.size(); j++) //Se agrega al chart cada dato del vector numérico obtenido.
             {               
-                series.getData().add(new XYChart.Data<>(ejeX, datosNumericos.get(j)));
+                series.getData().add(new XYChart.Data<>(String.valueOf(ejeX), datosNumericos.get(j)));
                 ejeX++; //Se aumenta una posición en el eje X (tiempo).
             }
         }
@@ -146,21 +150,21 @@ public class GraficasEstadisticasController implements Initializable {
     
     private void dibujarPulso()
     {
-        XYChart.Series<Number, Number> series= new XYChart.Series<>();
+        XYChart.Series<String, Double> series= new XYChart.Series<>();
         chartPulso.getData().add(series);
         int ejeX= 0;
         for(int i=0; i<mediciones.size(); i++) //Se recorren todas las mediciones del paciente para dicha medición personalizada.
         {
-            List<Integer> datosNumericos= new ArrayList<Integer>();
+            List<Double> datosNumericos= new ArrayList<Double>();
             String datos= mediciones.get(i).getPulso().substring(1, mediciones.get(i).getPulso().length()-1);
             StringTokenizer tokens= new StringTokenizer(datos, ", ");
             while(tokens.hasMoreTokens()) //Se convierten los datos almacenados por cada medicion en un arreglo de enteros.
             {
-                datosNumericos.add(Integer.parseInt(tokens.nextToken()));
+                datosNumericos.add(Double.parseDouble(tokens.nextToken()));
             }
             for(int j=0; j<datosNumericos.size(); j++) //Se agrega al chart cada dato del vector numérico obtenido.
             {               
-                series.getData().add(new XYChart.Data<>(ejeX, datosNumericos.get(j)));
+                series.getData().add(new XYChart.Data<>(String.valueOf(ejeX), datosNumericos.get(j)));
                 ejeX++; //Se aumenta una posición en el eje X (tiempo).
             }
         }
@@ -168,21 +172,21 @@ public class GraficasEstadisticasController implements Initializable {
     
     private void dibujarECG()
     {
-        XYChart.Series<Number, Number> series= new XYChart.Series<>();
+        XYChart.Series<String, Double> series= new XYChart.Series<>();
         chartECG.getData().add(series);
         int ejeX= 0;
         for(int i=0; i<mediciones.size(); i++) //Se recorren todas las mediciones del paciente para dicha medición personalizada.
         {
-            List<Integer> datosNumericos= new ArrayList<Integer>();
+            List<Double> datosNumericos= new ArrayList<Double>();
             String datos= mediciones.get(i).getEcg().substring(1, mediciones.get(i).getEcg().length()-1);
             StringTokenizer tokens= new StringTokenizer(datos, ", ");
             while(tokens.hasMoreTokens()) //Se convierten los datos almacenados por cada medicion en un arreglo de enteros.
             {
-                datosNumericos.add(Integer.parseInt(tokens.nextToken()));
+                datosNumericos.add(Double.parseDouble(tokens.nextToken()));
             }
             for(int j=0; j<datosNumericos.size(); j++) //Se agrega al chart cada dato del vector numérico obtenido.
             {               
-                series.getData().add(new XYChart.Data<>(ejeX, datosNumericos.get(j)));
+                series.getData().add(new XYChart.Data<>(String.valueOf(ejeX), datosNumericos.get(j)));
                 ejeX++; //Se aumenta una posición en el eje X (tiempo).
             }
         }
@@ -190,21 +194,22 @@ public class GraficasEstadisticasController implements Initializable {
     
     private void dibujarSPO2()
     {
-        XYChart.Series<Number, Number> series= new XYChart.Series<>();
+        XYChart.Series<String, Double> series= new XYChart.Series<>();
         chartSPO2.getData().add(series);
         int ejeX= 0;
         for(int i=0; i<mediciones.size(); i++) //Se recorren todas las mediciones del paciente para dicha medición personalizada.
         {
-            List<Integer> datosNumericos= new ArrayList<Integer>();
+            List<Double> datosNumericos= new ArrayList<Double>();
             String datos= mediciones.get(i).getSpo2().substring(1, mediciones.get(i).getSpo2().length()-1);
             StringTokenizer tokens= new StringTokenizer(datos, ", ");
             while(tokens.hasMoreTokens()) //Se convierten los datos almacenados por cada medicion en un arreglo de enteros.
             {
-                datosNumericos.add(Integer.parseInt(tokens.nextToken()));
+                datosNumericos.add(Double.parseDouble(tokens.nextToken()));
             }
             for(int j=0; j<datosNumericos.size(); j++) //Se agrega al chart cada dato del vector numérico obtenido.
-            {               
-                series.getData().add(new XYChart.Data<>(ejeX, datosNumericos.get(j)));
+            {
+                System.err.println(datosNumericos.get(j));
+                series.getData().add(new XYChart.Data<>(String.valueOf(ejeX), datosNumericos.get(j)));
                 ejeX++; //Se aumenta una posición en el eje X (tiempo).
             }
         }
@@ -212,21 +217,21 @@ public class GraficasEstadisticasController implements Initializable {
     
     private void dibujarHearRate()
     {
-        XYChart.Series<Number, Number> series= new XYChart.Series<>();
+        XYChart.Series<String, Double> series= new XYChart.Series<>();
         chartHeart.getData().add(series);
         int ejeX= 0;
         for(int i=0; i<mediciones.size(); i++) //Se recorren todas las mediciones del paciente para dicha medición personalizada.
         {
-            List<Integer> datosNumericos= new ArrayList<Integer>();
+            List<Double> datosNumericos= new ArrayList<Double>();
             String datos= mediciones.get(i).getHr().substring(1, mediciones.get(i).getHr().length()-1);
             StringTokenizer tokens= new StringTokenizer(datos, ", ");
             while(tokens.hasMoreTokens()) //Se convierten los datos almacenados por cada medicion en un arreglo de enteros.
             {
-                datosNumericos.add(Integer.parseInt(tokens.nextToken()));
+                datosNumericos.add(Double.parseDouble(tokens.nextToken()));
             }
             for(int j=0; j<datosNumericos.size(); j++) //Se agrega al chart cada dato del vector numérico obtenido.
             {               
-                series.getData().add(new XYChart.Data<>(ejeX, datosNumericos.get(j)));
+                series.getData().add(new XYChart.Data<>(String.valueOf(ejeX), datosNumericos.get(j)));
                 ejeX++; //Se aumenta una posición en el eje X (tiempo).
             }
         }
@@ -234,24 +239,34 @@ public class GraficasEstadisticasController implements Initializable {
     
     private void dibujarResp()
     {
-        XYChart.Series<Number, Number> series= new XYChart.Series<>();
+        XYChart.Series<String, Double> series= new XYChart.Series<>();
         chartRESP.getData().add(series);
         int ejeX= 0;
         for(int i=0; i<mediciones.size(); i++) //Se recorren todas las mediciones del paciente para dicha medición personalizada.
         {
-            List<Integer> datosNumericos= new ArrayList<Integer>();
+            List<Double> datosNumericos= new ArrayList<Double>();
             String datos= mediciones.get(i).getResp().substring(1, mediciones.get(i).getResp().length()-1);
             StringTokenizer tokens= new StringTokenizer(datos, ", ");
             while(tokens.hasMoreTokens()) //Se convierten los datos almacenados por cada medicion en un arreglo de enteros.
             {
-                datosNumericos.add(Integer.parseInt(tokens.nextToken()));
+                datosNumericos.add(Double.parseDouble(tokens.nextToken()));
             }
             for(int j=0; j<datosNumericos.size(); j++) //Se agrega al chart cada dato del vector numérico obtenido.
             {               
-                series.getData().add(new XYChart.Data<>(ejeX, datosNumericos.get(j)));
+                series.getData().add(new XYChart.Data<>(String.valueOf(ejeX), datosNumericos.get(j)));
                 ejeX++; //Se aumenta una posición en el eje X (tiempo).
             }
         }
+    }
+    
+    public void setProgramaPrincipal(Kiosko programaPrincipal) 
+    {
+        this.programaPrincipal = programaPrincipal;        
+    }
+    
+    public void setStage(Stage stage)
+    {
+        this.thisStage= stage;
     }
     
 }

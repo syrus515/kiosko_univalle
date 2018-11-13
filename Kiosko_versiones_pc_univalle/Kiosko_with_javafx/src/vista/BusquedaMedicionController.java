@@ -100,7 +100,7 @@ public class BusquedaMedicionController implements Initializable {
        
        
        //Código para llenar las mediciones personalizadas       
-       String consulta= "SELECT medicion_personalizada.id , medicion_personalizada.intervalo, medicion_personalizada.duracionMuestra, medicion_personalizada.duracionExamen,"
+       String consulta= "SELECT DISTINCT medicion_personalizada.id , medicion_personalizada.intervalo, medicion_personalizada.duracionMuestra, medicion_personalizada.duracionExamen,"
                + "medicion_personalizada.fecha, medicion_personalizada.detalles " +
         "FROM medicion_personalizada"+
         " INNER JOIN medicion ON medicion.idPersonalizada=medicion_personalizada.id AND medicion_personalizada.id!=1" ;
