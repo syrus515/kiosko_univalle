@@ -11,3 +11,21 @@
 .axis-minor-tick-mark {
     -fx-stroke: transparent;
 }
+
+.chart-vertical-grid-lines {
+    -fx-stroke: #F61F1F;
+}
+.chart-horizontal-grid-lines {
+    -fx-stroke: #F61F1F;
+}
+
+.chart-plot-background {
+    -fx-background-color: transparent;
+}
+
+.chart-series-line {    
+    -fx-stroke-width: 2px;
+    -fx-effect: null;
+}
+ 
+.default-color0.chart-series-line { -fx-stroke: #060000; }

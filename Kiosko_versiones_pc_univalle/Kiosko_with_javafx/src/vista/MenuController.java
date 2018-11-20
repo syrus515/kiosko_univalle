@@ -256,11 +256,11 @@ public class MenuController implements Initializable {
     
     
     private static final int MAX_DATA_POINTS_SPO2 = 500;
-private static final int MAX_DATA_POINTS_ECG = 500;
-private static final int MAX_DATA_POINTS_RESP = 500;
-private static final int Y_MAX_SPO2 = 256;
-private static final int Y_MAX_ECG = 3000;
-private static final int Y_MAX_RESP = 3000;
+    private static final int MAX_DATA_POINTS_ECG = 500;
+    private static final int MAX_DATA_POINTS_RESP = 500;
+    private static final int Y_MAX_SPO2 = 256;
+    private static final int Y_MAX_ECG = 3000;
+    private static final int Y_MAX_RESP = 3000;
 
     private XYChart.Series series;
     private XYChart.Series<Number, Number> series1;
@@ -458,14 +458,15 @@ private static final int Y_MAX_RESP = 3000;
     @FXML
     private Button iniciarPersonalizada;
     
-    @FXML
-    public void cerrarPrograma() {
+    @FXML    
+    public void cerrarPrograma() //Este método administra el cierre del programa para esta clase que termina siendo la que soporta la ejecución.
+    {
         admin.desconectarCliente();
         System.out.println("Se cerró el programa");        
         System.exit(0);
     }
     
-    public void iniciarAdmin()
+    public void iniciarAdmin() 
     {
         admin= new AdminDevice(this);
         admin.ConectarTcp();
@@ -1451,7 +1452,7 @@ public void graficar() {
         altoGC = pintarKiosko.getHeight();
         
         gc.clearRect(0, 0, anchoGC, altoGC);
-        gc.setFill(Color.ALICEBLUE);
+        gc.setFill(Color.TRANSPARENT);
         gc.fillRect(0, 0, anchoGC, altoGC);
         
 //        pintarKiosko.addEventHandler(MouseEvent.MOUSE_PRESSED, new EventHandler<MouseEvent>() {
@@ -1616,11 +1617,11 @@ public void graficar() {
         
         // INICIAL
         gc.clearRect(1280+1, 0+1, 600-2, 615-2);
-        gc.setFill(Color.ALICEBLUE);
+        gc.setFill(Color.TRANSPARENT);
         gc.fillRect(1280, 0, 600, 615);
         
         gc.clearRect(1580+1, 0+1, 5-2, 615-2);
-        gc.setFill(Color.NAVY);
+        gc.setFill(Color.TRANSPARENT);
         gc.fillRect(1580, 0, 5, 615);
         Image eje = null;
         eje = new Image(getClass().getResource("/imagenes/spo22.png").toString(), 100, 100, true, true);
@@ -1881,8 +1882,10 @@ public void graficar() {
         xAxis.setForceZeroInRange(false);
         xAxis.setAutoRanging(false);
         xAxis.setLowerBound(0);
-        xAxis.setUpperBound(MAX_DATA_POINTS_SPO2);
-        xAxis.setTickUnit(MAX_DATA_POINTS_SPO2/10);
+        //xAxis.setUpperBound(MAX_DATA_POINTS_SPO2);
+        xAxis.setUpperBound(MAX_DATA_POINTS_ECG);
+        //xAxis.setTickUnit(MAX_DATA_POINTS_SPO2/10);
+        xAxis.setTickUnit(MAX_DATA_POINTS_ECG/10);
      
         xAxis_2.setForceZeroInRange(false);
         xAxis_2.setAutoRanging(false);
@@ -1920,12 +1923,13 @@ public void graficar() {
         yAxis_4.setAutoRanging(false);
         yAxis_4.setLowerBound(0);
         yAxis_4.setUpperBound(Y_MAX_RESP);
-        yAxis_4.setTickUnit(Y_MAX_RESP/10);
-
-    lc1.getYAxis().setVisible(false);
-    lc1.getYAxis().setOpacity(0);
+        yAxis_4.setTickUnit(Y_MAX_RESP/10);      
+        
+        
+        /*lc1.getYAxis().setVisible(false);
+        lc1.getYAxis().setOpacity(0);
         lc1.getXAxis().setVisible(false);
-        lc1.getXAxis().setOpacity(0);
+        lc1.getXAxis().setOpacity(0);*/
         lc2.getYAxis().setVisible(false);
         lc2.getYAxis().setOpacity(0);
         lc2.getXAxis().setVisible(false);
@@ -1938,6 +1942,8 @@ public void graficar() {
         lc4.getYAxis().setOpacity(0);
         lc4.getXAxis().setVisible(false);
         lc4.getXAxis().setOpacity(0);
+        
+       
 
         //-- Chart
         //Line chart Spo2
@@ -2160,11 +2166,11 @@ private class QueueParametros implements Runnable {
         Font fontLarge = Font.font("Verdana", FontWeight.BOLD, 10);
         gc.setFont(fontLarge);
         gc.clearRect(0 + 1, 0 + 1 + ptoInicialECG1_Y, anchoECG1-2, altoECG1-2);
-        gc.setFill(Color.NAVY);
+        gc.setFill(Color.TRANSPARENT);
         gc.fillRect(0, 0 + ptoInicialECG1_Y, anchoECG1, altoECG1);
-        gc.setFill(Color.WHITE);
-        gc.setStroke(Color.WHITE);
-        gc.fillText("1.4", ptoInicialECG1 - 5, ptoInicialECG1 - 5 + ptoInicialECG1_Y);
+        gc.setFill(Color.BLACK);
+        gc.setStroke(Color.BLACK);
+        /*gc.fillText("1.4", ptoInicialECG1, ptoInicialECG1 + ptoInicialECG1_Y);
         gc.strokeLine(ptoInicialECG1, ptoInicialECG1 + ptoInicialECG1_Y, ptoInicialECG1, (altoECG1 - ptoInicialECG1) + ptoInicialECG1_Y);
         gc.fillText("V", 2, ptoInicialECG1_Y + (mitadECG1 - 30));
         gc.fillText("O", 2, ptoInicialECG1_Y + (mitadECG1 - 15));
@@ -2172,15 +2178,15 @@ private class QueueParametros implements Runnable {
         gc.fillText("T", 2, ptoInicialECG1_Y + (mitadECG1 + 15));
         gc.fillText("A", 2, ptoInicialECG1_Y + (mitadECG1 + 30));
         gc.fillText("J", 2, ptoInicialECG1_Y + (mitadECG1 + 45));
-        gc.fillText("E", 2, ptoInicialECG1_Y + (mitadECG1 + 60));
-        gc.fillText("-1.4   Segundos", ptoInicialECG1 - 5, altoECG1 - 5 + ptoInicialECG1_Y);
+        gc.fillText("j", 2, ptoInicialECG1_Y + (mitadECG1 + 60));
+        gc.fillText("-1.4   Segundos", ptoInicialECG1 - 5, altoECG1 - 5 + ptoInicialECG1_Y);*/
 
         // lines of voltage.
-        double intervalo = (altoECG1 - (ptoInicialECG1 * 2)) / 14;
+        /*double intervalo = (altoECG1 - (ptoInicialECG1 * 2)) / 14;
         for (int i = 0; i < 6; i++) {
             gc.strokeLine(ptoInicialECG1 - 5, (mitadECG1 + ptoInicialECG1) + ((i + 1) * intervalo) + ptoInicialECG1_Y, ptoInicialECG1 + 5, (mitadECG1 + ptoInicialECG1) + ((i + 1) * intervalo) + ptoInicialECG1_Y);
             gc.strokeLine(ptoInicialECG1 - 5, (mitadECG1 + ptoInicialECG1) - ((i + 1) * intervalo) + ptoInicialECG1_Y, ptoInicialECG1 + 5, (mitadECG1 + ptoInicialECG1) - ((i + 1) * intervalo) + ptoInicialECG1_Y);
-        }
+        }*/
     }
 
     public void graficarECG2() {
@@ -2195,10 +2201,10 @@ private class QueueParametros implements Runnable {
         Font fontLarge = Font.font("Verdana", FontWeight.BOLD, 10);
         gc.setFont(fontLarge);
         gc.clearRect(anchoECG2 + 1, 0 + 1 + ptoInicialECG2_Y, anchoECG2 - 2, altoECG2 - 2);
-        gc.setFill(Color.NAVY);
+        gc.setFill(Color.TRANSPARENT);
         gc.fillRect(anchoECG2, 0 + ptoInicialECG2_Y, anchoECG2, altoECG2);
-        gc.setFill(Color.WHITE);
-        gc.setStroke(Color.WHITE);
+        gc.setFill(Color.BLACK);
+        gc.setStroke(Color.BLACK);
         gc.fillText("1.4", anchoECG2 + (ptoInicialECG2 - 5), ptoInicialECG2 - 5 + ptoInicialECG2_Y );
         gc.strokeLine((anchoECG2 + ptoInicialECG2), ptoInicialECG2 + ptoInicialECG2_Y, (anchoECG2 + ptoInicialECG2), (altoECG2 - ptoInicialECG2) + ptoInicialECG2_Y);
         gc.fillText("V", anchoECG2 + 2, ptoInicialECG2_Y + (mitadECG2 - 30));
@@ -2230,10 +2236,10 @@ private class QueueParametros implements Runnable {
         Font fontLarge = Font.font("Verdana", FontWeight.BOLD, 10);
         gc.setFont(fontLarge);
         gc.clearRect(0 + 1, altoSPO2 + 1 + ptoInicialSPO2_Y, anchoSPO2 - 2, altoSPO2 - 2);
-        gc.setFill(Color.NAVY);
+        gc.setFill(Color.TRANSPARENT);
         gc.fillRect(0, altoSPO2 + ptoInicialSPO2_Y, anchoSPO2, altoSPO2);
-        gc.setFill(Color.WHITE);
-        gc.setStroke(Color.WHITE);
+        gc.setFill(Color.BLACK);
+        gc.setStroke(Color.BLACK);
         gc.fillText("256", (ptoInicialSPO2 - 5), altoSPO2 + (ptoInicialSPO2 - 5) + ptoInicialSPO2_Y);
         gc.strokeLine(ptoInicialSPO2, altoSPO2 + ptoInicialSPO2 + ptoInicialSPO2_Y, ptoInicialSPO2, (altoSPO2 + (altoSPO2 - ptoInicialSPO2)) + ptoInicialSPO2_Y);
         gc.fillText("S", 2, (altoSPO2 + ptoInicialSPO2_Y + mitadSPO2));
@@ -2262,10 +2268,10 @@ private class QueueParametros implements Runnable {
         Font fontLarge = Font.font("Verdana", FontWeight.BOLD, 10);
         gc.setFont(fontLarge);
         gc.clearRect(anchoRESP + 1, altoRESP + 1 + ptoInicialRESP_Y, anchoRESP - 2, altoRESP - 2);
-        gc.setFill(Color.NAVY);
+        gc.setFill(Color.TRANSPARENT);
         gc.fillRect(anchoRESP, altoRESP+ptoInicialRESP_Y, anchoRESP, altoRESP);
-        gc.setFill(Color.WHITE);
-        gc.setStroke(Color.WHITE);
+        gc.setFill(Color.BLACK);
+        gc.setStroke(Color.BLACK);;
         gc.fillText("256", anchoRESP + (ptoInicialRESP - 5), altoRESP + (ptoInicialRESP - 5) + ptoInicialRESP_Y);
         gc.strokeLine(anchoRESP+ptoInicialRESP, altoRESP+ptoInicialRESP+ptoInicialRESP_Y, anchoRESP+ptoInicialRESP, altoRESP + (altoRESP - ptoInicialRESP)+ ptoInicialRESP_Y);
         gc.fillText("R", anchoRESP+2, altoRESP+(mitadRESP - 60)+ptoInicialRESP_Y);

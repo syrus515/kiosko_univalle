@@ -103,7 +103,7 @@ public class BusquedaMedicionController implements Initializable {
        String consulta= "SELECT DISTINCT medicion_personalizada.id , medicion_personalizada.intervalo, medicion_personalizada.duracionMuestra, medicion_personalizada.duracionExamen,"
                + "medicion_personalizada.fecha, medicion_personalizada.detalles " +
         "FROM medicion_personalizada"+
-        " INNER JOIN medicion ON medicion.idPersonalizada=medicion_personalizada.id AND medicion_personalizada.id!=1" ;
+        " INNER JOIN medicion ON medicion.idPersonalizada=medicion_personalizada.id AND medicion_personalizada.id!=1 WHERE identificacion= '" + usuario +"'";
        queryMedicionFindAll = em.createNativeQuery(consulta, MedicionPersonalizada.class);
        //Query queryMedicionFindAll = em.createNativeQuery("SELECT * from medicion_personalizada m WHERE identificacion= '" + usuario +"'", MedicionPersonalizada.class);
        List<MedicionPersonalizada> listMedicionPersonalizada = queryMedicionFindAll.getResultList();
