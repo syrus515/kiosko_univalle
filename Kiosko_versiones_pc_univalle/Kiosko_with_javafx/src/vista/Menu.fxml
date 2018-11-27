@@ -139,7 +139,7 @@
                         <AnchorPane>
                            <children>
                               <Canvas fx:id="pintarKiosko" height="615.0" width="1980.0" />
-                              <LineChart fx:id="lc1" alternativeRowFillVisible="false" createSymbols="false" horizontalZeroLineVisible="false" layoutY="7.0" legendVisible="false" prefHeight="320.0" prefWidth="600.0" verticalZeroLineVisible="false">
+                              <LineChart fx:id="lc1" alternativeRowFillVisible="false" createSymbols="false" horizontalGridLinesVisible="false" horizontalZeroLineVisible="false" layoutX="627.0" layoutY="318.0" legendVisible="false" prefHeight="320.0" prefWidth="600.0" verticalGridLinesVisible="false" verticalZeroLineVisible="false">
                                 <xAxis>
                                   <NumberAxis side="BOTTOM" fx:id="xAxis" />
                                 </xAxis>
@@ -147,7 +147,7 @@
                                   <NumberAxis fx:id="yAxis" side="LEFT" />
                                 </yAxis>
                               </LineChart>
-                              <LineChart fx:id="lc2" alternativeRowFillVisible="false" createSymbols="false" horizontalZeroLineVisible="false" layoutX="638.0" layoutY="7.0" legendVisible="false" prefHeight="320.0" prefWidth="600.0" verticalZeroLineVisible="false">
+                              <LineChart fx:id="lc2" alternativeRowFillVisible="false" createSymbols="false" horizontalZeroLineVisible="false" layoutY="7.0" legendVisible="false" prefHeight="320.0" prefWidth="600.0" verticalZeroLineVisible="false">
                                 <xAxis>
                                   <NumberAxis side="BOTTOM" fx:id="xAxis_2" />
                                 </xAxis>
@@ -155,7 +155,7 @@
                                   <NumberAxis fx:id="yAxis_2" side="LEFT" />
                                 </yAxis>
                               </LineChart>
-                              <LineChart fx:id="lc3" alternativeRowFillVisible="false" createSymbols="false" horizontalGridLinesVisible="false" horizontalZeroLineVisible="false" layoutY="318.0" legendVisible="false" prefHeight="320.0" prefWidth="600.0" verticalGridLinesVisible="false" verticalZeroLineVisible="false">
+                              <LineChart fx:id="lc3" alternativeRowFillVisible="false" createSymbols="false" horizontalZeroLineVisible="false" layoutX="627.0" layoutY="9.0" legendVisible="false" prefHeight="320.0" prefWidth="600.0" verticalZeroLineVisible="false">
                                 <xAxis>
                                   <NumberAxis side="BOTTOM" fx:id="xAxis_3" />
                                 </xAxis>
@@ -163,7 +163,7 @@
                                   <NumberAxis fx:id="yAxis_3" side="LEFT" />
                                 </yAxis>
                               </LineChart>
-                              <LineChart fx:id="lc4" alternativeRowFillVisible="false" createSymbols="false" horizontalGridLinesVisible="false" horizontalZeroLineVisible="false" layoutX="638.0" layoutY="318.0" legendVisible="false" prefHeight="320.0" prefWidth="600.0" verticalGridLinesVisible="false" verticalZeroLineVisible="false">
+                              <LineChart fx:id="lc4" alternativeRowFillVisible="false" createSymbols="false" horizontalGridLinesVisible="false" horizontalZeroLineVisible="false" layoutX="-3.0" layoutY="318.0" legendVisible="false" prefHeight="320.0" prefWidth="600.0" verticalGridLinesVisible="false" verticalZeroLineVisible="false">
                                 <xAxis>
                                   <NumberAxis side="BOTTOM" fx:id="xAxis_4" />
                                 </xAxis>

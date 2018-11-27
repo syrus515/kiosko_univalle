@@ -196,7 +196,7 @@ public class GraficasEstadisticasController implements Initializable {
     {
         XYChart.Series<String, Double> series= new XYChart.Series<>();
         chartSPO2.getData().add(series);
-        int ejeX= 0;
+        int ejeX= 0;        
         for(int i=0; i<mediciones.size(); i++) //Se recorren todas las mediciones del paciente para dicha medición personalizada.
         {
             List<Double> datosNumericos= new ArrayList<Double>();
@@ -206,7 +206,8 @@ public class GraficasEstadisticasController implements Initializable {
             {
                 datosNumericos.add(Double.parseDouble(tokens.nextToken()));
             }
-            for(int j=0; j<datosNumericos.size(); j++) //Se agrega al chart cada dato del vector numérico obtenido.
+            int tamanio= (datosNumericos.size()-1)/4;
+            for(int j=0; j<datosNumericos.size(); j+=tamanio) //Se agrega al chart cada dato del vector numérico obtenido.
             {
                 System.err.println(datosNumericos.get(j));
                 series.getData().add(new XYChart.Data<>(String.valueOf(ejeX), datosNumericos.get(j)));
