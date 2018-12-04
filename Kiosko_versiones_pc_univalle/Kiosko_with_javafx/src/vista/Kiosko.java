@@ -187,7 +187,7 @@ public class Kiosko extends Application {
             
             controller.setProgramaPrincipal(this);
             controller.setStage(ventana);
-            
+                
             controller.setIdPersonalizado(idPersonalizado);
             controller.obtenerMediciones();
             controller.dibujarCharts();

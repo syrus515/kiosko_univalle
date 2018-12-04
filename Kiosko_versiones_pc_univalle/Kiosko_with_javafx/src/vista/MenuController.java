@@ -1,6 +1,5 @@
 package vista;
 
-
 import BD.Medicion;
 import BD.Pacientes;
 import BD.PacientesPK;
@@ -8,7 +7,6 @@ import BD.Antecedentesfamiliares;
 import BD.AntecedentesfamiliaresPK;
 import BD.Antecedentespersonales;
 import BD.AntecedentespersonalesPK;
-import BD.ConexionDBs;
 import BD.HistorialAfinamiento;
 import BD.MedicionPersonalizada;
 import com.digitalpersona.onetouch.DPFPGlobal;
@@ -44,18 +42,10 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 
 import cliente.AdminDevice;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.EmptyStackException;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
 import java.util.StringTokenizer;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -68,26 +58,19 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.animation.AnimationTimer;
 import javafx.animation.Timeline;
-import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
-import javafx.scene.Scene;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.Accordion;
-import javafx.scene.control.ButtonType;
 import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.ChoiceDialog;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.FlowPane;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
@@ -301,7 +284,7 @@ public class MenuController implements Initializable {
     @FXML
     private NumberAxis yAxis_3;
     @FXML
-   private NumberAxis yAxis_4;
+    private NumberAxis yAxis_4;
     
     @FXML
     LineChart<Number, Number> lc1;
@@ -1019,8 +1002,6 @@ public class MenuController implements Initializable {
             executor = Executors.newFixedThreadPool(2);
 
             //pararLecturaECG(); //Este método no está cumpliendo función alguna
-
-
             addToQueue=null;
             queueParam=null;
             if(!apagarDesdeHilo)
@@ -1072,7 +1053,6 @@ public class MenuController implements Initializable {
             }
         }
         banderaInicio = !banderaInicio;
-
     }
     
     private void hiloPrimeraVez()
@@ -1105,18 +1085,12 @@ public class MenuController implements Initializable {
         graficarRESP();
         pintarLecturaECG();
 
-        //executor = Executors.newFixedThreadPool(2); //Cambiar para posiblemente solucionar el otro error.                       
-
         addToQueue = new AddToQueue();
         queueParam= new QueueParametros();
-
-        //addToQueue.run();
-        //queueParam.run(); //Mirar si esto soluciona el error de concurrencia.
 
         executor.execute(addToQueue);
         executor.execute(queueParam);
         prepareTimeline();
-        //btnIniciarSeñales.setText("Parar");        
     }
     
     private boolean terminaMedicion; //Determina si la medición ya terminó del todo
@@ -1357,7 +1331,6 @@ public class MenuController implements Initializable {
                 } 
             }
         }
-
         em.getTransaction().commit();
         guardarAfinamiento.setDisable(true);
         llenarTablaAfinamientos();
@@ -1395,7 +1368,6 @@ public void almacenarSenales()
                     med.setIdPersonalizada(listMedicion.get(0));                    
                     med.setDetalles(detallesMedicion.getText());
 
-
                     //Aquí colocas tu objeto tipo Date
                     Date date= new Date();
                     date =  new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(date));                        
@@ -1423,9 +1395,7 @@ public void almacenarSenales()
                 } 
             }
         }
-
-        em.getTransaction().commit();       
-  
+        em.getTransaction().commit();
     }
 
 public void resetVectores()
@@ -1453,115 +1423,7 @@ public void graficar() {
         
         gc.clearRect(0, 0, anchoGC, altoGC);
         gc.setFill(Color.TRANSPARENT);
-        gc.fillRect(0, 0, anchoGC, altoGC);
-        
-//        pintarKiosko.addEventHandler(MouseEvent.MOUSE_PRESSED, new EventHandler<MouseEvent>() {
-//            @Override
-//            public void handle (MouseEvent event) {
-//                if (event.getX()<=640 && event.getY()<=300) { // Espacio de ECG1
-//                    popup = new Alert(AlertType.CONFIRMATION);
-//                    popup.setTitle("Mouse click.");
-//                    popup.setHeaderText(null);
-//                    popup.setContentText("ECG1");
-////                    popup.showAndWait();
-//                    Optional<ButtonType> result = popup.showAndWait();
-//                    if (result.get() == ButtonType.OK){
-//                        System.out.println("Valor: OK." );
-//                    } else {
-//                        System.out.println("Valor: Error");
-//                    }                    
-//                } else if (event.getX()<=1280 && event.getY()<=300) { // Espacio de ECG2
-//                    popup = new Alert(AlertType.CONFIRMATION);
-//                    popup.setTitle("Mouse click.");
-//                    popup.setHeaderText(null);
-//                    popup.setContentText("ECG2");
-//                    popup.showAndWait();
-//                } else if (event.getX()<=640 && event.getY()<=600) { // Espacio de SPO2
-//                    popup = new Alert(AlertType.CONFIRMATION);
-//                    popup.setTitle("Mouse click.");
-//                    popup.setHeaderText(null);
-//                    popup.setContentText("SPO2");
-//                    popup.showAndWait();
-//                } else if (event.getX()<=1280 && event.getY()<=600) { // // Espacio de Respiración
-//                    popup = new Alert(AlertType.CONFIRMATION);
-//                    popup.setTitle("Mouse click.");
-//                    popup.setHeaderText(null);
-//                    popup.setContentText("RESPIRACIÓN");
-//                    popup.showAndWait();
-//                } else if ((event.getX()>=1375 && event.getY()>=10) && (event.getX()<=1475 && event.getY()<=50)) { // Botón Iniciar
-//                    if (banderaInicio) {
-//                        Image parar = new Image(getClass().getResource("/imagenes/botonIniciar.png").toString(), 100, 100, true, true);
-//                        gc.drawImage(parar, 1375, 10);
-//                        pararLecturaECG();
-//                        executor.shutdown();
-//                        addToQueue=null;
-//                        queueParam=null;
-//                    } else {
-//                        Image inicio = new Image(getClass().getResource("/imagenes/botonParar.png").toString(), 100, 100, true, true);
-//                        gc.drawImage(inicio, 1375, 10);
-//                        graficarECG1();
-//                        graficarECG2();
-//                        graficarSPO2();
-//                        graficarRESP();
-//                        pintarLecturaECG();
-//                        
-//                        executor = Executors.newFixedThreadPool(2);
-//                        addToQueue = new AddToQueue();
-//                        queueParam=new QueueParametros();
-//                        executor.execute(addToQueue);
-//                        executor.execute(queueParam);
-//                        prepareTimeline();
-//                    }
-//                    banderaInicio = !banderaInicio;
-//                } else if ((event.getX()>=1640 && event.getY()>=190) && (event.getX()<=1740 && event.getY()<=230)) { // Presión Manual
-//                    if (!banderaInicio) {
-//                        Image inicio = new Image(getClass().getResource("/imagenes/botonParar.png").toString(), 100, 100, true, true);
-//                        gc.drawImage(inicio, 1375, 10);
-//                        graficarECG1();
-//                        graficarECG2();
-//                        graficarSPO2();
-//                        graficarRESP();
-//                        pintarLecturaECG();
-//                        banderaInicio = !banderaInicio;
-//                    } 
-//                    iniciarPresionManual();
-//                } else if ((event.getX()>=1780 && event.getY()>=190) && (event.getX()<=1880 && event.getY()<=230)) { //Presión Automática
-//                    List<String> opcion = new ArrayList<>();
-//                    opcion.add("1");
-//                    opcion.add("2");
-//                    opcion.add("3");
-//                    opcion.add("4");
-//                    opcion.add("5");
-//                    opcion.add("10");
-//                    opcion.add("15");
-//                    opcion.add("20");
-//                    opcion.add("30");
-//                    opcion.add("45");
-//                    opcion.add("60");
-//                    ChoiceDialog<String> dialogo = new ChoiceDialog<>("1", opcion);
-//                    dialogo.setTitle("Ejecución automática de la presión.");
-//                    dialogo.setHeaderText("Número de minutos para que se ejecute automáticamente. ");
-//                    dialogo.setContentText("Seleccione el número de minutos.");
-//                    Optional<String> result = dialogo.showAndWait();
-//                    if (result.isPresent()){
-//                        int minutos = Integer.parseInt(result.get());
-//                        if (!banderaInicio) {
-//                            Image inicio = new Image(getClass().getResource("/imagenes/botonParar.png").toString(), 100, 100, true, true);
-//                            gc.drawImage(inicio, 1375, 10);
-//                            graficarECG1();
-//                            graficarECG2();
-//                            graficarSPO2();
-//                            graficarRESP();
-//                            pintarLecturaECG();
-//                        } 
-//                        iniciarPresionAutomatica(minutos);
-//                    }
-//                } else if ((event.getX()>=1700 && event.getY()>=550) && (event.getX()<=1800 && event.getY()<=590)) { // Pesar
-//                    admin.solicitarTanita("20", "masculino", "40", "175", "regular");
-//                    // masculino y femenino - deportista, regular sedentario
-//                }
-//            }
-//        });
+        gc.fillRect(0, 0, anchoGC, altoGC);   
     }
     
     public void pintarImagenes() {
@@ -1585,12 +1447,10 @@ public void graficar() {
     
     public void parametros() {
         
-        // Asignación de parámetros para desplegables
-        
+        // Asignación de parámetros para desplegables        
         ObservableList<String> availableChoices = FXCollections.observableArrayList("5 minutos", "10 minutos", "15 minutos", "20 minutos", "25 minutos", "30 minutos"); 
         intervalo.setItems(availableChoices);
-        intervalo.getSelectionModel().selectFirst();
-        
+        intervalo.getSelectionModel().selectFirst();        
         
         availableChoices = FXCollections.observableArrayList("15 segundos", "30 segundos", "45 segundos", "60 segundos"); 
         duracionMuestra.setItems(availableChoices);
@@ -1613,8 +1473,6 @@ public void graficar() {
         jornadaAfinamiento.setItems(availableChoices);
         jornadaAfinamiento.getSelectionModel().selectFirst();
         
-        
-        
         // INICIAL
         gc.clearRect(1280+1, 0+1, 600-2, 615-2);
         gc.setFill(Color.TRANSPARENT);
@@ -1628,27 +1486,14 @@ public void graficar() {
         gc.drawImage(eje, 1800, 350);
         eje = new Image(getClass().getResource("/imagenes/co2.png").toString(), 60, 60, true, true);
         gc.drawImage(eje, 1800, 500);
-        
-        //Graficación de los botones estáticos
-        /*Image inicio = new Image(getClass().getResource("/imagenes/botonIniciar.png").toString(), 100, 100, true, true);
-        gc.drawImage(inicio, 1375, 10);
-        
-        Image manual = new Image(getClass().getResource("/imagenes/manual.png").toString(), 100, 100, true, true);
-        gc.drawImage(manual, 1640, 190);
-        Image automatico = new Image(getClass().getResource("/imagenes/automatico.png").toString(), 100, 100, true, true);
-        gc.drawImage(automatico, 1780, 190);
-        
-        Image pesar = new Image(getClass().getResource("/imagenes/pesar.png").toString(), 100, 100, true, true);
-        gc.drawImage(pesar, 1700, 550);*/
-        
-        
+       
         pintarHR(0);
         pintarSPO2(0, 0);
         pintarRespiracion(0);
         //pintarImagenes();
-        pintarPresion(0, 0, 0, 0);
-        pintarPesa(0, 0, 0, 0);
+        pintarPresion(0, 0, 0, 0);        
     }
+    
         public void asignarStaticParameters(int hr, int respRate, int spo2Oxi, int spo2Hr, int presRate, int presDias, int presMed, int presSist) {       
         
         //Se guardan los datos en el vector para luego ser almacenados en BD    
@@ -1664,20 +1509,7 @@ public void graficar() {
         pintarHR(hr);
         pintarSPO2(spo2Oxi, spo2Hr);
         pintarRespiracion(respRate);
-        //pintarImagenes();
-        pintarPresion(presRate, presDias, presMed, presSist);
-        
-        
-        
-//        System.out.println("HR: "+hr);
-//        System.out.println("RR: "+respRate);
-//        System.out.println("SpO2: "+spo2Oxi);
-//        System.out.println("HrSpO2: "+spo2Hr);
-//        System.out.println("PresRate: "+presRate);
-//        System.out.println("PresDiast: "+presDias);
-//        System.out.println("PresMed: "+presMed);
-//        System.out.println("PresSist: "+presSist);
-        
+        pintarPresion(presRate, presDias, presMed, presSist);  
     }        
         
     
@@ -1686,30 +1518,9 @@ public void graficar() {
                ecgTextField.setText("---");               
            }else{
                ecgTextField.setText(Integer.toString(hr));
-           }
-        
-//        gc.clearRect(1285+1, 60+1, 285-2, 110-2);
-//        gc.setFill(Color.BLUE);
-//        gc.fillRect(1285, 60, 285, 110);
-//        gc.setFill(Color.CYAN);
-//        Font fontLarge = Font.font("Verdana", FontWeight.BOLD, 20);
-//        gc.setFont(fontLarge);
-//        gc.fillText("ECG", 1390, 90);
-//        fontLarge = Font.font("Verdana", FontWeight.BOLD, 10);
-//        gc.setFont(fontLarge);
-//        gc.fillText("Frecuencia", 1310, 130);
-//        gc.fillText("Cardiaca", 1310, 140);
-//        gc.fillText("Actual", 1310, 150);
-//        fontLarge = Font.font("Verdana", FontWeight.BOLD, 66);
-//        gc.setFont(fontLarge);
-//        if (hr < 1 || hr > 999) {
-//            gc.fillText("000", 1390, 160);
-//        } else {
-//            gc.fillText(Integer.toString(hr), 1390, 160);
-//        }
-//        gc.setFill(Color.BLACK);
-//        gc.setStroke(Color.BLACK);
+           }        
     }
+    
     public void pintarSPO2(int spo2Oxi, int spo2Hr) {
         if (spo2Oxi < 1 || spo2Oxi > 150) {
             spo2OxiTextField.setText("---");
@@ -1721,39 +1532,8 @@ public void graficar() {
         } else {
             spo2HrTextField.setText(Integer.toString(spo2Hr));
         }
-
-//        gc.clearRect(1285+1, 310+1, 205-2, 140-2);
-//        gc.setFill(Color.BLUE);
-//        gc.fillRect(1285, 310, 205, 140);
-//        gc.setFill(Color.ORANGE);
-//        Font fontLarge = Font.font("Verdana", FontWeight.BOLD, 20);
-//        gc.setFont(fontLarge);
-//        gc.fillText("SPO2", 1390, 330);
-//        fontLarge = Font.font("Verdana", FontWeight.BOLD, 10);
-//        gc.setFont(fontLarge);
-//        gc.fillText("% SPO2(Oxi)", 1310, 370);
-//        fontLarge = Font.font("Verdana", FontWeight.BOLD, 44);
-//        gc.setFont(fontLarge);
-//        if (spo2Oxi < 1 || spo2Oxi > 150) {
-//            gc.fillText("000", 1390, 380);
-//        } else {
-//            gc.fillText(Integer.toString(spo2Oxi), 1390, 380);
-//        }
-//        
-//        gc.setFill(Color.ORANGE);
-//        fontLarge = Font.font("Verdana", FontWeight.BOLD, 10);
-//        gc.setFont(fontLarge);
-//        gc.fillText("PRbpm", 1310, 420);
-//        fontLarge = Font.font("Verdana", FontWeight.BOLD, 44);
-//        gc.setFont(fontLarge);
-//        if (spo2Hr < 1 || spo2Hr > 999) {
-//            gc.fillText("000", 1390, 430);
-//        } else {
-//            gc.fillText(Integer.toString(spo2Hr), 1390, 430);
-//        }
-//        gc.setFill(Color.BLACK);
-//        gc.setStroke(Color.BLACK);
     }
+    
     public void pintarRespiracion(int respRate) {
         if (respRate== 0)
         {
@@ -1762,29 +1542,9 @@ public void graficar() {
         }else
         {
             respTextField.setText(Integer.toString(respRate));
-        }
-        
-        
-//        gc.clearRect(1285+1, 460+1, 205-2, 140-2);
-//        gc.setFill(Color.BLUE);
-//        gc.fillRect(1285, 460, 205, 140);
-//        gc.setFill(Color.YELLOW);
-//        Font fontLarge = Font.font("Verdana", FontWeight.BOLD, 20);
-//        gc.setFont(fontLarge);
-//        gc.fillText("CO2", 1390, 490);
-//        fontLarge = Font.font("Verdana", FontWeight.BOLD, 10);
-//        gc.setFont(fontLarge);
-//        gc.fillText("% CO2", 1310, 540);
-//        fontLarge = Font.font("Verdana", FontWeight.BOLD, 44);
-//        gc.setFont(fontLarge);
-//        if (respRate < 1 || respRate > 999) {
-//            gc.fillText("000", 1390, 550);
-//        } else {
-//            gc.fillText(Integer.toString(respRate), 1390, 550);
-//        }
-//        gc.setFill(Color.BLACK);
-//        gc.setStroke(Color.BLACK);
+        }        
     }
+    
     public void pintarPresion(int presRate, int presDias, int presMed, int presSist) {
         gc.clearRect(1595+1, 60+1, 300-2, 110-2);
         gc.setFill(Color.ALICEBLUE);
@@ -1802,25 +1562,21 @@ public void graficar() {
         fontLarge = Font.font("Verdana", FontWeight.BOLD, 34);
         gc.setFont(fontLarge);
         if (presSist < 1 || presSist > 999) {
-//            gc.fillText("000", 1800, 160);
             gc.fillText("---", 1660, 100);            
         } else {
             gc.fillText(Integer.toString(presSist), 1660, 100);
         }
         if (presDias < 1 || presDias > 999) {
-//            gc.fillText("000", 1800, 100);
             gc.fillText("---", 1660, 160);
         } else {
             gc.fillText(Integer.toString(presDias), 1660, 160);
         }
         if (presRate < 1 || presRate > 999) {
-//            gc.fillText("000", 1660, 100);
             gc.fillText("---", 1800, 100);
         } else {
             gc.fillText(Integer.toString(presRate), 1800, 100);
         }
         if (presMed < 1 || presMed > 999) {
-//            gc.fillText("000", 1660, 160);
             gc.fillText("---", 1800, 160);
         } else {
             gc.fillText(Integer.toString(presMed), 1800, 160);
@@ -1830,53 +1586,6 @@ public void graficar() {
         gc.setStroke(Color.BLACK);
     }
     
-    public void pintarPesa(float peso, float grasa, float agua, float masa) {
-        double imc = 0;
-//        System.out.println("Peso: "+peso);
-//        System.out.println("Grasa: "+grasa);
-//        System.out.println("Agua: "+agua);
-//        System.out.println("Masa: "+masa);
-//        gc.setFill(Color.WHITE);
-//        Font fontLarge = Font.font("Verdana", FontWeight.BOLD, 20);
-//        gc.setFont(fontLarge);
-//        gc.fillText("PESO", 1720, 330);
-//        
-//        fontLarge = Font.font("Verdana", FontWeight.BOLD, 10);
-//        gc.setFont(fontLarge);
-//        gc.fillText("% Agua", 1600, 420);
-//        gc.fillText("% Grasa", 1600, 480);
-//        gc.fillText("Masa", 1750, 420);
-//        gc.fillText("IMC", 1750, 480);
-//        fontLarge = Font.font("Verdana", FontWeight.BOLD, 34);
-//        gc.setFont(fontLarge);
-//        if (peso < 1 || peso > 300) {
-//            gc.fillText("000", 1715, 380);
-//        } else {
-//            gc.fillText(""+peso, 1715, 380);
-//        }
-//        if (agua < 1 || agua > 100) {
-//            gc.fillText("000", 1660, 430);
-//        } else {
-//            gc.fillText(""+agua, 1660, 430);
-//        }
-//        if (grasa < 1 || grasa > 100) {
-//            gc.fillText("000", 1660, 490);
-//        } else {
-//            gc.fillText(""+grasa, 1660, 490);
-//        }
-//        if (masa < 1 || masa > 999) {
-//            gc.fillText("000", 1800, 430);
-//        } else {
-//            gc.fillText(""+masa, 1800, 430);
-//        }
-//        if (imc < 1 || imc > 999) {
-//            gc.fillText("000", 1800, 490);
-//        } else {
-//            int estaturaCM = 175;
-//            //imc = peso/(Math.pow(estaturaCM/100, 2));
-//            gc.fillText(""+imc, 1800, 490);
-//        }
-    }
     public void initChartSignals(){
     
         xAxis.setForceZeroInRange(false);
@@ -1943,29 +1652,6 @@ public void graficar() {
         lc4.getXAxis().setVisible(false);
         lc4.getXAxis().setOpacity(0);
         
-       
-
-        //-- Chart
-        //Line chart Spo2
-//        lc1 = new LineChart<Number, Number>(xAxis, yAxis){
-//            // Override to remove symbols on each data point
-//            @Override protected void dataItemAdded(XYChart.Series<Number, Number> series, int itemIndex, XYChart.Data<Number, Number> item) {}
-//        };
-//        //Line chart ecg1
-//        lc2 = new LineChart<Number, Number>(xAxis_2, yAxis_2){
-//            // Override to remove symbols on each data point
-//            @Override protected void dataItemAdded(XYChart.Series<Number, Number> series, int itemIndex, XYChart.Data<Number, Number> item) {}
-//        };
-//        //Line chart ecg2
-//        lc3 = new LineChart<Number, Number>(xAxis_3, yAxis_3){
-//            // Override to remove symbols on each data point
-//            @Override protected void dataItemAdded(XYChart.Series<Number, Number> series, int itemIndex, XYChart.Data<Number, Number> item) {}
-//        };
-//        //Line chart RESP
-//        lc4 = new LineChart<Number, Number>(xAxis_4, yAxis_4){
-//            // Override to remove symbols on each data point
-//            @Override protected void dataItemAdded(XYChart.Series<Number, Number> series, int itemIndex, XYChart.Data<Number, Number> item) {}
-//        };
         lc1.setAnimated(false);
         //lc1.setId("ondaSPO2");
         lc1.setTitle("Onda SPO2");
@@ -1999,11 +1685,7 @@ public void graficar() {
         
         series4.setName("RESP");
         lc4.getData().add(series4);
-        //Las 4 graficas se agregan en la misma ventana para ver su comportamiento. 
-        //--Para integrarlo en el codigo final no se como seria; vos que manejas javafx sabras mejor
-      //FlowPane root = new FlowPane();
-      //root.getChildren().addAll(lc1,lc2,lc3,lc4);
-      //primaryStage.setScene(new Scene(root));
+
     }
     
         private class AddToQueue implements Runnable {
@@ -2034,7 +1716,6 @@ public void graficar() {
                  }
                   if (!admin.spo2Signal.isEmpty()){
                      //Con la ayuda de esta sección se guardarán los datos mostrados en pantalla dentro de los vectores.
-                     //vsistolica.add(Y_MAX_ECG)
                       
                      int auxSpo2= admin.spo2Signal.readWave();
                      vSPO2.add(auxSpo2);
@@ -2043,11 +1724,9 @@ public void graficar() {
                  }else{
                       //monitor.getData();
                   }
-                       Thread.sleep(7);
-                //System.out.println("Sistole: "+ admin.staticParameters.readPresSist()+", Diastole: "+admin.staticParameters.readPresDias()+", Media: "+admin.staticParameters.readPresMed()+", HR: "+admin.staticParameters.readSpo2Hr());
+                       Thread.sleep(7);                
              
-              executor.execute(this); 
-            
+              executor.execute(this);             
                 
             } catch (InterruptedException ex) {
                 //Logger.getLogger(MenuController.class.getName()).log(Level.SEVERE, null, ex);
@@ -2059,7 +1738,7 @@ public void graficar() {
 private class QueueParametros implements Runnable {
         public void run() {
         try {
-                    asignarStaticParameters(admin.staticParameters.readHr(),
+            asignarStaticParameters(admin.staticParameters.readHr(),
                     + admin.staticParameters.readResp(),
                     + admin.staticParameters.readSpo2Oxi(),
                     + admin.staticParameters.readSpo2Hr(),
@@ -2068,11 +1747,6 @@ private class QueueParametros implements Runnable {
                     + admin.staticParameters.readPresMed(),
                     + admin.staticParameters.readPresSist());
                     
-//                    pintarPesa(admin.staticParameters.readWeight(),
-//                        admin.staticParameters.readBodyFat(),
-//                        admin.staticParameters.readWaterPercent(),
-//                        admin.staticParameters.readMuscleMass());
-
             Thread.sleep(500);
             executor.execute(this);
             } catch (Exception e) {
@@ -2169,33 +1843,14 @@ private class QueueParametros implements Runnable {
         gc.setFill(Color.TRANSPARENT);
         gc.fillRect(0, 0 + ptoInicialECG1_Y, anchoECG1, altoECG1);
         gc.setFill(Color.BLACK);
-        gc.setStroke(Color.BLACK);
-        /*gc.fillText("1.4", ptoInicialECG1, ptoInicialECG1 + ptoInicialECG1_Y);
-        gc.strokeLine(ptoInicialECG1, ptoInicialECG1 + ptoInicialECG1_Y, ptoInicialECG1, (altoECG1 - ptoInicialECG1) + ptoInicialECG1_Y);
-        gc.fillText("V", 2, ptoInicialECG1_Y + (mitadECG1 - 30));
-        gc.fillText("O", 2, ptoInicialECG1_Y + (mitadECG1 - 15));
-        gc.fillText("L", 2, ptoInicialECG1_Y + mitadECG1);
-        gc.fillText("T", 2, ptoInicialECG1_Y + (mitadECG1 + 15));
-        gc.fillText("A", 2, ptoInicialECG1_Y + (mitadECG1 + 30));
-        gc.fillText("J", 2, ptoInicialECG1_Y + (mitadECG1 + 45));
-        gc.fillText("j", 2, ptoInicialECG1_Y + (mitadECG1 + 60));
-        gc.fillText("-1.4   Segundos", ptoInicialECG1 - 5, altoECG1 - 5 + ptoInicialECG1_Y);*/
-
-        // lines of voltage.
-        /*double intervalo = (altoECG1 - (ptoInicialECG1 * 2)) / 14;
-        for (int i = 0; i < 6; i++) {
-            gc.strokeLine(ptoInicialECG1 - 5, (mitadECG1 + ptoInicialECG1) + ((i + 1) * intervalo) + ptoInicialECG1_Y, ptoInicialECG1 + 5, (mitadECG1 + ptoInicialECG1) + ((i + 1) * intervalo) + ptoInicialECG1_Y);
-            gc.strokeLine(ptoInicialECG1 - 5, (mitadECG1 + ptoInicialECG1) - ((i + 1) * intervalo) + ptoInicialECG1_Y, ptoInicialECG1 + 5, (mitadECG1 + ptoInicialECG1) - ((i + 1) * intervalo) + ptoInicialECG1_Y);
-        }*/
+        gc.setStroke(Color.BLACK);        
     }
 
     public void graficarECG2() {
         // INICIAL
         int ptoInicialECG2 = ptoInicial;
         int ptoInicialECG2_Y = 5;
-//        double anchoECG2 = pintarKiosko.getWidth()/2;
         double anchoECG2 = 640;
-//        double altoECG2 = pintarKiosko.getHeight()/2;
         double altoECG2 = 300;
         double mitadECG2 = (altoECG2 / 2) - ptoInicialECG2;
         Font fontLarge = Font.font("Verdana", FontWeight.BOLD, 10);
@@ -2228,9 +1883,7 @@ private class QueueParametros implements Runnable {
         // INICIAL
         int ptoInicialSPO2 = ptoInicial;
         int ptoInicialSPO2_Y = 10;
-//        double anchoSPO2 = pintarKiosko.getWidth()/2;
         double anchoSPO2 = 640;
-//        double altoSPO2 = pintarKiosko.getHeight()/2;
         double altoSPO2 = 300;
         double mitadSPO2 = (altoSPO2 / 2) - ptoInicialSPO2;
         Font fontLarge = Font.font("Verdana", FontWeight.BOLD, 10);
@@ -2260,9 +1913,7 @@ private class QueueParametros implements Runnable {
         // INICIAL
         int ptoInicialRESP = ptoInicial;
         int ptoInicialRESP_Y = 10;
-//        double anchoRESP = pintarKiosko.getWidth()/2;
         double anchoRESP = 640;
-//        double altoRESP = pintarKiosko.getHeight()/2;
         double altoRESP = 300;
         double mitadRESP = (altoRESP / 2) - ptoInicialRESP;
         Font fontLarge = Font.font("Verdana", FontWeight.BOLD, 10);
@@ -2308,7 +1959,6 @@ public void customResize(TableView<?> view) {
             });
         }
     }
-
 
 public void reproducirSPO2()
 {
@@ -2378,11 +2028,6 @@ public void reproducirRESP()
         xAxis_4.setUpperBound(xSeriesData_resp-1);  
 }
 
-
-
-
-
-
     @FXML
     private void reproducirMedicion()
     {                 
@@ -2413,19 +2058,8 @@ public void reproducirRESP()
             while(tokens.hasMoreTokens())
             {
                 reprodRESP.add(Integer.parseInt(tokens.nextToken()));
-            } 
-            
-            // Every frame to take any data from queue and add to chart
-            /*new AnimationTimer() {
-            @Override public void handle(long now) {
-            
-            reproducirSPO2();
-            
-            }
-            }.start();*/
-            //AddToQueueRepro hilo= new AddToQueueRepro();
-            //hilo.run();
-            
+            }             
+           
             Timer timer;
             timer = new Timer();
             
@@ -2456,8 +2090,7 @@ public void reproducirRESP()
             timer.schedule(task, 0, 30);
   
  
-    }
-                
+    }                
     
     //Variable necesaria para este método
     private float pesoAlmacenar= 0;
@@ -2521,20 +2154,10 @@ public void reproducirRESP()
         
     }
     
-   
-    
     
     @FXML    
     public void tomarPresion()
-    {
-                        
-        //iniciarPresionManual();
-        
-        //Se verifica si la conexión TCP ya está abierta.
-        //admin = new AdminDevice(null);        
-        //admin.dispositivoDesconectado();
-        //admin.ConectarTcp();        
-        
+    {        
         Timer timerIniciar;
         timerIniciar = new Timer();
         
@@ -2578,64 +2201,12 @@ public void reproducirRESP()
         // Empezamos dentro de 10s 
         timerIniciar.schedule(taskIniciar, 0);
         
-        /*
-        Timer timer;
-        timer = new Timer();
-
-        TimerTask task = new TimerTask() 
-        {
-
-            @Override
-            public void run()
-            {   
-
-                int anterior= admin.staticParameters.readPresDias();
-                while(admin.staticParameters.readPresDias()== anterior)
-                {
-                    //No haga nada mientras la presión no se haya actualizado
-                    System.out.println(admin.staticParameters.readPresDias());
-                }
-                System.out.println("---------- Definitivo: " + admin.staticParameters.readPresDias()); 
-                //actualizarPresion(admin.staticParameters.readPresDias(), admin.staticParameters.readPresSist());                
-            }
-        };
-        // Empezamos dentro de 20s 
-        timer.schedule(task, 15000);   */
-        
-        
         AlterarInterfaz alterador= new AlterarInterfaz(admin, this);
         alterador.setOpcion(1); //Para modificar presión
         alterador.start();
         guardarAfinamiento.setDisable(false);
         
     }
-    
-    
-    
-//    public void datos() {
-//        EntityManager em = Persistence.createEntityManagerFactory("KioskoPU").createEntityManager();
-//        em.getTransaction().begin();
-//        Usuarios yo = new Usuarios();
-//        yo.setIdusuario(1);
-//        yo.setNombre("Victor Manuel");
-//        yo.setUsuario("root");
-//        yo.setRol("Administrador");
-// *********** Crear *******************************
-//        em.persist(yo);
-//        em.getTransaction().commit();
-// *********** Listar *******************************
-//        List<Pacientes> list = em.createNamedQuery("Pacientes.findAll", Pacientes.class).getResultList();
-//        list.stream().forEach((u) -> {
-//            System.out.print(u.getNombre1() + ", ");
-//        });
-// *********** Modificar *******************************
-//        em.merge(yo);
-//        em.getTransaction().commit();
-// *********** Borrar *******************************
-//        Usuarios u = em.find(Usuarios.class, 1);
-//        em.remove(u);
-//        em.getTransaction().commit();
-//    }
     
     public void llenarTablaAfinamientos()
     { 
@@ -2740,8 +2311,6 @@ public void reproducirRESP()
             @Override
             public void run() throws EmptyStackException
             {
-                
-                
                 while(!admin.isTcpNull())
                 {
                     //No hace nada mientras haya conexion.                    

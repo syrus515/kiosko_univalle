@@ -57,6 +57,12 @@
                                 <MenuItem mnemonicParsing="false" text="Acerca del programa" />
                               </items>
                             </Menu>
+                              <Menu mnemonicParsing="false" text="Smartcard">
+                                 <items>
+                                    <MenuItem mnemonicParsing="false" text="Crear" />
+                                    <MenuItem mnemonicParsing="false" text="Actualizar" />
+                                 </items>
+                              </Menu>
                           </menus>
                         </MenuBar>
                         <ToolBar>
