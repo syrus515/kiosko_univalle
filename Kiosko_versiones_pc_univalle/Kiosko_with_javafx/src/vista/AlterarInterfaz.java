@@ -43,6 +43,7 @@ public class AlterarInterfaz extends Thread
                 }
                 System.out.println("---------- Definitivo: " + admin.staticParameters.readPresDias()); 
                 menu.actualizarPresion();
+                menu.setTextoPresion("Tomar Presión");
                 
                 break;
                 

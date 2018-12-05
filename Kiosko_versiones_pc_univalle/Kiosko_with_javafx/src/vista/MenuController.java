@@ -2154,57 +2154,72 @@ public void reproducirRESP()
         
     }
     
-    
+    public void setTextoPresion(String presion)
+    {
+        tomarPresion.setText(presion);
+    }
+     
     @FXML    
     public void tomarPresion()
-    {        
-        Timer timerIniciar;
-        timerIniciar = new Timer();
-        
-        TimerTask taskIniciar = new TimerTask() 
+    {   
+        if(tomarPresion.getText().equals("Tomar Presión"))
         {
+            tomarPresion.setText("Detener"); 
+            Timer timerIniciar;
+            timerIniciar = new Timer();
 
-            @Override
-            public void run()
-            {   
+            TimerTask taskIniciar = new TimerTask() 
+            {
 
-                try {
-                    Thread.sleep(10);
-                } catch (InterruptedException ex) {
-                    Logger.getLogger(MenuController.class.getName()).log(Level.SEVERE, null, ex);
+                @Override
+                public void run()
+                {
+                    try {
+                        Thread.sleep(10);
+                    } catch (InterruptedException ex) {
+                        Logger.getLogger(MenuController.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                    if(tomarPresion.getText().equals("Detener")) admin.enviarComando("manualPressure", 0);                    
+                    try {
+                        Thread.sleep(1);
+                    } catch (InterruptedException ex) {
+                        Logger.getLogger(MenuController.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+
+                    if(tomarPresion.getText().equals("Detener")) admin.enviarComando("stopPressure", 0);
+                    try {
+                        Thread.sleep(1);
+                    } catch (InterruptedException ex) {
+                        Logger.getLogger(MenuController.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                    if(tomarPresion.getText().equals("Detener")) admin.enviarComando("startPressure", 0);
+                    try {
+                        Thread.sleep(2000);
+                    } catch (InterruptedException ex) {
+                        Logger.getLogger(MenuController.class.getName()).log(Level.SEVERE, null, ex);
+                    }
                 }
-                admin.enviarComando("manualPressure", 0);
-                try {
-                    Thread.sleep(1);
-                } catch (InterruptedException ex) {
-                    Logger.getLogger(MenuController.class.getName()).log(Level.SEVERE, null, ex);
-                }
+            };
+            // Empezamos dentro de 10s 
+            timerIniciar.schedule(taskIniciar, 0);
 
-                admin.enviarComando("stopPressure", 0);
-                try {
-                    Thread.sleep(1);
-                } catch (InterruptedException ex) {
-                    Logger.getLogger(MenuController.class.getName()).log(Level.SEVERE, null, ex);
-                }
-
-                admin.enviarComando("startPressure", 0);
+            AlterarInterfaz alterador= new AlterarInterfaz(admin, this);
+            alterador.setOpcion(1); //Para modificar presión
+            alterador.start();
+            guardarAfinamiento.setDisable(false);
+        }else
+        {
+            try {               
+                Thread.sleep(10);
                 
-                try {
-                    Thread.sleep(2000);
-                } catch (InterruptedException ex) {
-                    Logger.getLogger(MenuController.class.getName()).log(Level.SEVERE, null, ex);
-                }        
-                
-                
-            }
-        };
-        // Empezamos dentro de 10s 
-        timerIniciar.schedule(taskIniciar, 0);
+            }catch (InterruptedException ex) {
+            Logger.getLogger(MenuController.class.getName()).log(Level.SEVERE, null, ex);
+            } 
+            admin.enviarComando("stopPressure", 0); 
+            tomarPresion.setText("Tomar Presión");  
+        }
         
-        AlterarInterfaz alterador= new AlterarInterfaz(admin, this);
-        alterador.setOpcion(1); //Para modificar presión
-        alterador.start();
-        guardarAfinamiento.setDisable(false);
+        
         
     }
     
