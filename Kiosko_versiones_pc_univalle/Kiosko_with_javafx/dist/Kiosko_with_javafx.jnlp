@@ -8,7 +8,7 @@
   </information>
   <resources>
     <j2se version="1.6+" href="http://java.sun.com/products/autodl/j2se"/>
-    <jar href="Kiosko_with_javafx.jar" size="6442982" download="eager" />
+    <jar href="Kiosko_with_javafx.jar" size="6443433" download="eager" />
     <jar href="lib\bluecove-2.1.0.jar" size="547156" download="eager" />
     <jar href="lib\bridj-0.6.3-20130316.190111-13.jar" size="893456" download="eager" />
     <jar href="lib\controlsfx-8.0.6_20.jar" size="856539" download="eager" />

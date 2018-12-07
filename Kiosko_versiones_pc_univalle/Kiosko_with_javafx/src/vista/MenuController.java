@@ -1675,7 +1675,8 @@ public void graficar() {
         series4= new XYChart.Series<>();
         //series = new AreaChart.Series<Number, Number>();
         series1.setName("Spo2");
-        lc1.getData().add(series1);
+        lc1.getData().add(series1);        
+        
         
         series2.setName("ECG1");
         lc2.getData().add(series2);
@@ -1785,7 +1786,6 @@ private class QueueParametros implements Runnable {
         for (int i = 0; i < 20; i++) { //-- add 20 numbers to the plot+
             if (dataECG1.isEmpty()) break;
             series2.getData().add(new XYChart.Data<>(xSeriesData_ecg1++, dataECG1.remove()));
-
         }
         // remove points to keep us at no more than MAX_DATA_POINTS
         if (series2.getData().size() > MAX_DATA_POINTS_ECG) {
