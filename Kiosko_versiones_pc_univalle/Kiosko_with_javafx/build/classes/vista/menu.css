@@ -2,6 +2,11 @@
 .background {
     -fx-background-color: #1d1d1d;
 }
+
+/*.chart {
+
+    -fx-background-image: url("/imagenes/fondoOndas.png");
+}*/
 .chart-plot-background {
     -fx-background-color: transparent;
 }
@@ -10,13 +15,6 @@
 }
 .axis-minor-tick-mark {
     -fx-stroke: transparent;
-}
-
-.chart-vertical-grid-lines {
-    -fx-stroke: #F61F1F;
-}
-.chart-horizontal-grid-lines {
-    -fx-stroke: #F61F1F;
 }
 
 .chart-plot-background {
