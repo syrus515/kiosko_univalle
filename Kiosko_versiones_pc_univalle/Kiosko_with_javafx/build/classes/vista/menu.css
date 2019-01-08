@@ -3,10 +3,6 @@
     -fx-background-color: #1d1d1d;
 }
 
-/*.chart {
-
-    -fx-background-image: url("/imagenes/fondoOndas.png");
-}*/
 .chart-plot-background {
     -fx-background-color: transparent;
 }

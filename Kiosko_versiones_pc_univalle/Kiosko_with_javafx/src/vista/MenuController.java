@@ -71,11 +71,17 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.Border;
+import javafx.scene.layout.BorderStroke;
+import javafx.scene.layout.BorderStrokeStyle;
+import javafx.scene.layout.BorderWidths;
+import javafx.scene.layout.CornerRadii;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.StageStyle;
 import javax.persistence.Query;
+import javax.swing.BorderFactory;
 
 public class MenuController implements Initializable {
 
@@ -1659,6 +1665,9 @@ public void graficar() {
         lc2.setAnimated(false);
         //lc2.setId("ondaECG1");
         lc2.setTitle("Onda ECG CH1");
+        
+        lc2.setBorder(new Border(new BorderStroke(Color.BLACK, 
+                BorderStrokeStyle.DASHED, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
         
         lc3.setAnimated(false);
         //lc3.setId("ondaECG2");

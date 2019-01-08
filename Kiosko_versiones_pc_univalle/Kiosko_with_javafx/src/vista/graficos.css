@@ -1,6 +1,6 @@
+.chart {
 
-.background {
-    -fx-background-color: #1d1d1d;
+    -fx-background-image: url("/imagenes/fondoOndas.png");
 }
 
 .chart-plot-background {
