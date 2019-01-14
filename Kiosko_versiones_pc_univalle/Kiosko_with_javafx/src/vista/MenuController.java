@@ -2227,9 +2227,6 @@ public void reproducirRESP()
             admin.enviarComando("stopPressure", 0); 
             tomarPresion.setText("Tomar Presión");  
         }
-        
-        
-        
     }
     
     public void llenarTablaAfinamientos()
@@ -2266,6 +2263,7 @@ public void reproducirRESP()
        }       
     }
     
+    //Método para la desconexión manual
     public void desconectar()
     {
         if(admin.isConnectedTCP())
@@ -2292,15 +2290,17 @@ public void reproducirRESP()
         }
     }
     
+    //Método que cancela una medición en curso (la medición simple)
     public void cancelarMediciones()
     {
-       if(btnIniciarSeñales.getText()=="Detener medición")
+       if(btnIniciarSeñales.getText().equals("Detener medición"))
        {
            ActionEvent e= new ActionEvent();
            iniciarLecturaSeñales(e);           
        }
     }
     
+    //Método escucha a la acción del usuario de conectar o desconectar.
     @FXML
     public void escuchaDesconexion()
     { 
@@ -2325,7 +2325,8 @@ public void reproducirRESP()
         }
     }
     
-    public void validadorConexion() throws EmptyStackException //Este método siempre se está ejecutando para detectar cuando se caiga la conexión.
+    //Método para detectar la desconexión
+    public void validadorConexion() throws EmptyStackException //Este método siempre se está ejecutando para detectar cuando se corte la conexión.
     {
         Timer timerIniciar;
         timerIniciar = new Timer();

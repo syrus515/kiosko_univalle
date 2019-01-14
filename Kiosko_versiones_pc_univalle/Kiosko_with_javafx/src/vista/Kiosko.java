@@ -19,19 +19,18 @@ import javax.swing.JFrame;
 import org.controlsfx.dialog.Dialogs;
 public class Kiosko extends Application {
     
-    private Stage ventanaPrincipal; //Stage principal para poder derivar ventanas
-    
+    private Stage ventanaPrincipal; //Stage principal para poder derivar ventanas    
     private Stage primaryStage;
     private BorderPane rootLayout;
     Stage ventanaWebCam = null;
     Stage ventanaHuella = null;
     CapturaHuella capturaHuella = null;
     WebCam webCam = null;
-    String usuario=null, nombre=null, rol=null;
-    
+    String usuario=null, nombre=null, rol=null;    
     private String usuarioABuscar;
     private Medicion medicionReproducir;
     
+
     public void setMedicionReproducir(Medicion medicion)
     {
         this.medicionReproducir= medicion;    

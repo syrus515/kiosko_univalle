@@ -117,6 +117,7 @@ public class AdminDevice {
         return tcpCliente==null;
     }
     
+    //Método para cerrar todo después de que se pierde la conexión con el dispositivo.
     public void desconectarDespuesDeCable()//Este método sirve para desconectar el socket después de un fallo físico
     {
         if(connectionState.tcpReadState())
