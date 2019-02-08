@@ -94,7 +94,8 @@ public class WebCam extends BorderPane {
             @Override public void handle(WindowEvent event) {
                 primaryStage.hide();
                 refController.openFoto = true;
-                stopWebCamCamera();
+                disposeWebCamCamera(); //Comprobar que la cámara sí se apaga
+                stopWebCamCamera();                
             }
         });
     }
@@ -112,7 +113,7 @@ public class WebCam extends BorderPane {
         final Stage secStage = new Stage();
         BorderPane bp = new BorderPane();
         imagenTomada = new ImageView();
-        imagenTomada.setImage(cambiarTamañoImagen(imgWebCamCapturedImage.getImage()));
+        imagenTomada.setImage(cambiarTamanoImagen(imgWebCamCapturedImage.getImage()));
         
         FlowPane imagenFoto = new FlowPane();
         imagenFoto.setOrientation(Orientation.HORIZONTAL);
@@ -301,7 +302,7 @@ public class WebCam extends BorderPane {
         btnCamreaStart.setDisable(false);
         btnCamreaStop.setDisable(true);
     }
-    public Image cambiarTamañoImagen(Image imagenOriginal) {
+    public Image cambiarTamanoImagen(Image imagenOriginal) {
         double factor = 0.7;
         java.awt.Image imagen = SwingFXUtils.fromFXImage(imagenOriginal, null);
         java.awt.Image tmp1 = imagen.getScaledInstance((int)(imagen.getWidth(null)*factor),(int)(imagen.getHeight(null)*factor), java.awt.Image.SCALE_DEFAULT);

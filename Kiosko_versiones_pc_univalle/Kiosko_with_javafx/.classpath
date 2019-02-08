@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="lib" path="dist/Kiosko_with_javafx.jar"/>
+	<classpathentry kind="lib" path="dist/lib/bluecove-2.1.0.jar"/>
+	<classpathentry kind="lib" path="dist/lib/bridj-0.6.3-20130316.190111-13.jar"/>
+	<classpathentry kind="lib" path="dist/lib/controlsfx-8.0.6_20.jar"/>
+	<classpathentry kind="lib" path="dist/lib/controlsfx-8.40.9.jar"/>
+	<classpathentry kind="lib" path="dist/lib/controlsfx-samples-8.40.9.jar"/>
+	<classpathentry kind="lib" path="dist/lib/dpfpenrollment.jar"/>
+	<classpathentry kind="lib" path="dist/lib/dpfpverification.jar"/>
+	<classpathentry kind="lib" path="dist/lib/dpotapi.jar"/>
+	<classpathentry kind="lib" path="dist/lib/dpotjni.jar"/>
+	<classpathentry kind="lib" path="dist/lib/eclipselink.jar"/>
+	<classpathentry kind="lib" path="dist/lib/fxsampler-1.0.8.jar"/>
+	<classpathentry kind="lib" path="dist/lib/javax.persistence_2.1.0.v201304241213.jar"/>
+	<classpathentry kind="lib" path="dist/lib/jna-5.2.0.jar"/>
+	<classpathentry kind="lib" path="dist/lib/midp_2.1.jar"/>
+	<classpathentry kind="lib" path="dist/lib/mysql-connector-java-3.1.8-bin.jar"/>
+	<classpathentry kind="lib" path="dist/lib/mysql-connector-java-5.1.18-bin.jar"/>
+	<classpathentry kind="lib" path="dist/lib/openjfx-dialogs-1.0.3.jar"/>
+	<classpathentry kind="lib" path="dist/lib/org.eclipse.persistence.jpa.jpql_2.5.2.v20140319-9ad6abd.jar"/>
+	<classpathentry kind="lib" path="dist/lib/slf4j-api-1.7.2.jar"/>
+	<classpathentry kind="lib" path="dist/lib/webcam-capture-0.3.10-RC7.jar"/>
+	<classpathentry kind="lib" path="src/libs/jna-5.2.0.jar"/>
+	<classpathentry kind="output" path="build/classes"/>
+</classpath>

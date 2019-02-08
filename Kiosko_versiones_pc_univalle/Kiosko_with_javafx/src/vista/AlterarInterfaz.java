@@ -16,6 +16,8 @@ public class AlterarInterfaz extends Thread
     int opcion;
     AdminDevice admin;
     MenuController menu;
+    boolean detenerProcesos= false;//Esta bandera controla que se cancelen los procesos si hay desconexión.   
+    
     
     public AlterarInterfaz(AdminDevice admin, MenuController menu)
     {        
@@ -36,33 +38,59 @@ public class AlterarInterfaz extends Thread
         {
             case 1:
                 int anterior= admin.staticParameters.readPresDias();
-                while(admin.staticParameters.readPresDias()== anterior)
+                while(admin.staticParameters.readPresDias()== anterior && !detenerProcesos)
                 {
                     //No haga nada mientras la presión no se haya actualizado
                     System.out.println(admin.staticParameters.readPresDias());
                 }
-                System.out.println("---------- Definitivo: " + admin.staticParameters.readPresDias()); 
-                menu.actualizarPresion();
-                //menu.setTextoPresion("Tomar Presión");
+                if(!detenerProcesos)
+                {
+                    System.out.println("---------- Definitivo: " + admin.staticParameters.readPresDias()); 
+                    menu.actualizarPresion();                    
+                    //menu.setTextoPresion("Tomar Presión");
+                }else
+                {
+                    //Se deshabilitan los botones de la sección de afinamientos.
+                    menu.enableTunning(false);
+                }
+                
                 
                 break;
                 
             case 2:
                 float anteriorPeso= admin.staticParameters.readWeight();
-                while(admin.staticParameters.readWeight()== anteriorPeso)
+                while(admin.staticParameters.readWeight()== anteriorPeso && !detenerProcesos)
                 {
                     //No haga nada mientras la presión no se haya actualizado
                     System.out.println(admin.staticParameters.readWeight());
                 }
-                System.out.println("---------- Definitivo: " + admin.staticParameters.readWeight()); 
-                menu.actualizarPeso();
-                
+                 if(!detenerProcesos)
+                {
+                    System.out.println("---------- Definitivo: " + admin.staticParameters.readWeight()); 
+                    menu.actualizarPeso();
+                }else
+                {
+                    //Se deshabilitan los botones de la sección de afinamientos.
+                    menu.enableTunning(false);
+                }
                 break;
         }
          
                 
         
         
+    }
+    
+    //Pone la bandera en falso si hubo desconexión.
+    public void detenerProcesos()
+    {
+        detenerProcesos= true;
+    }
+    
+    //Habilita la bandera para que los procesos puedan iniciar.
+    public void iniciarProcesos()
+    {
+        detenerProcesos= false;
     }
 
     

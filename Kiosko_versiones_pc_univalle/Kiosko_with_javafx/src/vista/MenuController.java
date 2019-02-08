@@ -9,6 +9,8 @@ import BD.Antecedentespersonales;
 import BD.AntecedentespersonalesPK;
 import BD.HistorialAfinamiento;
 import BD.MedicionPersonalizada;
+
+
 import com.digitalpersona.onetouch.DPFPGlobal;
 import com.digitalpersona.onetouch.DPFPTemplate;
 import java.awt.image.BufferedImage;
@@ -82,6 +84,7 @@ import javafx.scene.text.Text;
 import javafx.stage.StageStyle;
 import javax.persistence.Query;
 import javax.swing.BorderFactory;
+
 
 public class MenuController implements Initializable {
 
@@ -179,7 +182,7 @@ public class MenuController implements Initializable {
 
 
     @FXML
-    private Button btnIniciarSeñales;
+    private Button btnIniciarSenales;
     @FXML
     private Canvas pintarKiosko;
     
@@ -228,6 +231,9 @@ public class MenuController implements Initializable {
     private int banderaImg = 1;
     private boolean banderaInicio=false;
     private Pacientes pacienteCargado;
+    
+    //Alterador de la interfaz (usaro por el afinamiento)
+    AlterarInterfaz alterador;
     
     //vectores para guardar datos de la medicion
     Vector<Integer> vSPO2 = new Vector(0,1);
@@ -447,42 +453,58 @@ public class MenuController implements Initializable {
     @FXML
     private Button iniciarPersonalizada;
     
+    /**
+     * Este método administra el cierre del programa para esta clase, ya que soporta la parte prinicipal de la ejecución.
+     */
     @FXML    
-    public void cerrarPrograma() //Este método administra el cierre del programa para esta clase que termina siendo la que soporta la ejecución.
+    public void cerrarPrograma()
     {
         admin.desconectarCliente();
-        System.out.println("Se cerró el programa");        
+        //System.out.println("Se cerró el programa");        
         System.exit(0);
     }
     
+    /**
+     * Este método inicia adminDevice, iniciando también el loop que verifica constantemente la conexión.
+     */
     public void iniciarAdmin() 
-    {
+    {        
         admin= new AdminDevice(this);
-        admin.ConectarTcp();
+        admin.ConectarTcp(); //Se establece la conexión TCP.
         menuConexion.setText("Conectar");
+        enableTunning(false);
+        enableMeasure(false);
         if(admin.isConnectedTCP())
         {
-            menuConexion.setText("Desconectar");
+            enableTunning(true);
+            enableMeasure(true);
+            menuConexion.setText("Desconectar"); //Se habilita la desconexión manual en el menú superior.
             try {
-                validadorConexion();
-            } catch (EmptyStackException ex) {
+                validadorConexion(); //Loop de verificación.
+            } catch (EmptyStackException ex) 
+            {
                 if(apagarDesdeHilo)
-                {
-                    System.out.println("Debería cambiar el texto");
-                    apagarDesdeHilo= false;
-                    btnIniciarSeñales.setText("Iniciar medición simple");                
+                {                    
+                    apagarDesdeHilo= false; //Bandera para controlar cambio de texto en algunos botones.
+                    btnIniciarSenales.setText("Iniciar medición simple");
+                    iniciarPersonalizada.setText("Iniciar medición personalizada");
                 }
                 mensajeDesconexion();
             }
-        }
-        
+        }        
     }
     
+    /**
+     * Este método se usa para restringir botones que no deben ser usados durante algún proceso determinado.
+     */
     public void restringirBotones()
     {
         guardarAfinamiento.setDisable(true);
     }
     
+    /**
+     * Este método permite enviar la identificación del paciente del cual se deben listar las mediciones para su reproducción.
+     */
     @FXML
     private void buscarMedicion()
     {
@@ -490,7 +512,9 @@ public class MenuController implements Initializable {
         programaPrincipal.mostrarVentanaReproduccion();
     }
     
-
+    /**
+     * Este método busca un paciente a través de la huella dactilar o de su número de identificación.
+     */
     @FXML
     private void buscarPaciente() {
         boolean bandera = false;
@@ -526,6 +550,9 @@ public class MenuController implements Initializable {
         }
     }
 
+    /**
+     * Este método busca un paciente a través de la huella dactilar o de su número de identificación.
+     */
     private Antecedentesfamiliares buscarAntecedenteFamiliares(String id) {
         Antecedentesfamiliares resultado = null;
         List<Antecedentesfamiliares> list = em.createNamedQuery("Antecedentesfamiliares.findAll", Antecedentesfamiliares.class).getResultList();
@@ -537,10 +564,13 @@ public class MenuController implements Initializable {
         }
         return resultado;
     }
-
+    
+    /**
+     * Este método se usa para .
+     */
     private Antecedentespersonales buscarAntecedentesPersonales(String id) {
         Antecedentespersonales resultado = null;
-        List<Antecedentespersonales> list = em.createNamedQuery("Antecedentespersonales.findAll", Antecedentespersonales.class).getResultList();
+        List<Antecedentespersonales> list = em.createNamedQuery("Antecedentesper sonales.findAll", Antecedentespersonales.class).getResultList();
         for (int i = 0; i < list.size(); i++) {
             Antecedentespersonales obj = list.get(i);
             if (id.equals(obj.getAntecedentespersonalesPK().getIdentificacion())) {
@@ -991,7 +1021,7 @@ public class MenuController implements Initializable {
     }
     
     @FXML
-    void iniciarLecturaSeñales(ActionEvent event) 
+    void iniciarLecturaSenales(ActionEvent event) 
     {  
         Timer timerIniciar;
         timerIniciar = new Timer();  
@@ -1012,10 +1042,10 @@ public class MenuController implements Initializable {
             queueParam=null;
             if(!apagarDesdeHilo)
             {
-                btnIniciarSeñales.setText("Iniciar medición simple");                
+                btnIniciarSenales.setText("Iniciar medición simple");                
             }else
             {
-                btnIniciarSeñales.setDisable(true);
+                btnIniciarSenales.setDisable(true);
             }
                 
             //apagarDesdeHilo= false;            
@@ -1026,7 +1056,7 @@ public class MenuController implements Initializable {
         { 
             if(!esPersonalizada)
             {
-                btnIniciarSeñales.setText("Detener medición");
+                btnIniciarSenales.setText("Detener medición");
             }            
             if(primeraVez)
             {
@@ -1080,7 +1110,7 @@ public class MenuController implements Initializable {
         executor.execute(addToQueue);
         executor.execute(queueParam);
         prepareTimeline();
-        //btnIniciarSeñales.setText("Parar");        
+        //btnIniciarSenales.setText("Parar");        
     }
     
     private void hiloSegundaVez()
@@ -1107,7 +1137,7 @@ public class MenuController implements Initializable {
     {
         if(banderaMedicion)
         {
-            btnIniciarSeñales.setDisable(true);//Se desactiva el botón de medición simple
+            btnIniciarSenales.setDisable(true);//Se desactiva el botón de medición simple
             iniciarPersonalizada.setText("Detener medición personalizada");
             
             idMedPersonalizada= crearMedicionPersonalizada(); //Se crea la nueva medición personalizada
@@ -1145,11 +1175,11 @@ public class MenuController implements Initializable {
                     if(!terminaMedicion)
                     {
                         ActionEvent e= new ActionEvent();
-                        iniciarLecturaSeñales(e);
+                        iniciarLecturaSenales(e);
                         acabarMedicion(duracionMuestraMedicion);//Se termina la muestra iniciada en el tiempo determinado.                    
                     }else
                     {
-                       btnIniciarSeñales.setDisable(false); //Esto es lo último que hace, cuando ya se acabo el tiempo total de la medición personalizada.
+                       btnIniciarSenales.setDisable(false); //Esto es lo último que hace, cuando ya se acabo el tiempo total de la medición personalizada.
                        esPersonalizada= false;
                        banderaMedicion= true;
                        iniciarPersonalizada.setText("Iniciar medición personalizada");
@@ -1164,8 +1194,8 @@ public class MenuController implements Initializable {
         {   //En caso de cancelar la medición personalizada:           
             terminaMedicion= true; //Se informa que se debe cerrar el hilo.
             banderaMedicion= true; //Se habilita un nuevo registro de medición personalizada.
-            iniciarPersonalizada.setText("Iniciar medición personalizada"); //Se reestablece el botón.
-            btnIniciarSeñales.setDisable(false); //Se habilita el botón de medición simple.
+            //iniciarPersonalizada.setText("Iniciar medición personalizada"); //Se reestablece el botón.
+            btnIniciarSenales.setDisable(false); //Se habilita el botón de medición simple.
             esPersonalizada= false; //Se habilita el registro de medición genérica (simple).            
         }
                
@@ -1216,7 +1246,7 @@ public class MenuController implements Initializable {
             public void run() throws EmptyStackException
             {   
                 ActionEvent e= new ActionEvent();
-                iniciarLecturaSeñales(e);
+                iniciarLecturaSenales(e);
             }
         };
         // Empezamos dentro de 10s 
@@ -2159,19 +2189,15 @@ public void reproducirRESP()
             presSistolica= sistolica;
             presDiastolica= diastolica; 
             presionImprimir.setText(sistolica+ "/" + diastolica );
+            tomarPresion.setText("Tomar Presión"); 
         }
         
     }
-    
-    public void setTextoPresion(String presion)
-    {
-        tomarPresion.setText(presion);
-    }
-     
+       
     @FXML    
     public void tomarPresion()
     {   
-        if(tomarPresion.getText().equals("Tomar Presión"))
+        if(tomarPresion.getText().equals("Tomar presión"))
         {
             tomarPresion.setText("Detener"); 
             Timer timerIniciar;
@@ -2211,9 +2237,9 @@ public void reproducirRESP()
             };
             // Empezamos dentro de 10s 
             timerIniciar.schedule(taskIniciar, 0);
-
-            AlterarInterfaz alterador= new AlterarInterfaz(admin, this);
+            alterador= new AlterarInterfaz(admin, this);
             alterador.setOpcion(1); //Para modificar presión
+            alterador.iniciarProcesos(); //Se habilita el inicio de los procesos.
             alterador.start();
             guardarAfinamiento.setDisable(false);
         }else
@@ -2225,8 +2251,31 @@ public void reproducirRESP()
             Logger.getLogger(MenuController.class.getName()).log(Level.SEVERE, null, ex);
             } 
             admin.enviarComando("stopPressure", 0); 
-            tomarPresion.setText("Tomar Presión");  
+            tomarPresion.setText("Tomar presión");  
         }
+    }
+    
+    //este método permite habilitar o inhabilitar los botones de la sección de mediciones.
+    public void enableMeasure(boolean value)
+    {
+        value= !value;
+        btnIniciarSenales.setDisable(value);
+        iniciarPersonalizada.setDisable(value);
+        intervalo.setDisable(value);
+        duracionMuestra.setDisable(value);        
+        duracionExamen.setDisable(value);        
+    }
+
+    //Este método permite habilitar o inhabilitar los botones de la sección de afinamientos.
+    public void enableTunning(boolean value)
+    {
+        value= !value;
+        tomarPresion.setDisable(value);
+        tomarPeso.setDisable(value);
+        brazoAfinamiento.setDisable(value);
+        posicionAfinamiento.setDisable(value);
+        jornadaAfinamiento.setDisable(value);
+        guardarAfinamiento.setDisable(value);
     }
     
     public void llenarTablaAfinamientos()
@@ -2259,6 +2308,8 @@ public void reproducirRESP()
        admin.ConectarTcp();
        if(admin.isConnectedTCP())
        {
+           enableTunning(true);
+           enableMeasure(true);
            menuConexion.setText("Desconectar");        
        }       
     }
@@ -2283,7 +2334,7 @@ public void reproducirRESP()
             {
                 System.out.println("Debería cambiar el texto");
                 apagarDesdeHilo= false;
-                btnIniciarSeñales.setText("Iniciar medición simple");                
+                btnIniciarSenales.setText("Iniciar medición simple");                
             }
             mensajeDesconexion();
             
@@ -2293,10 +2344,14 @@ public void reproducirRESP()
     //Método que cancela una medición en curso (la medición simple)
     public void cancelarMediciones()
     {
-       if(btnIniciarSeñales.getText().equals("Detener medición"))
+       if(btnIniciarSenales.getText().equals("Detener medición"))
        {
            ActionEvent e= new ActionEvent();
-           iniciarLecturaSeñales(e);           
+           iniciarLecturaSenales(e);           
+       }
+       if(!banderaMedicion)
+       {
+           iniciarMedicionPersonalizada();
        }
     }
     
@@ -2305,10 +2360,11 @@ public void reproducirRESP()
     public void escuchaDesconexion()
     { 
         if(menuConexion.getText().equals("Conectar"))
-        { 
+        {             
             conectar();
-            btnIniciarSeñales.setText("Iniciar medición simple");
-            btnIniciarSeñales.setDisable(false);
+            btnIniciarSenales.setText("Iniciar medición simple");
+            iniciarPersonalizada.setText("Iniciar medición personalizada");
+            
             if(admin.isConnectedTCP())
             {                
                 Alert dialogoAlerta= new Alert(AlertType.INFORMATION);
@@ -2322,11 +2378,16 @@ public void reproducirRESP()
         }else
         {
             desconectar();
+            enableTunning(false);
+            enableMeasure(false);
         }
     }
     
-    //Método para detectar la desconexión
-    public void validadorConexion() throws EmptyStackException //Este método siempre se está ejecutando para detectar cuando se corte la conexión.
+    
+    /**
+     * Este método está en un loop constante para detectar si se corta la conexión con el dispositivo.
+     */
+    public void validadorConexion() throws EmptyStackException 
     {
         Timer timerIniciar;
         timerIniciar = new Timer();
@@ -2336,19 +2397,35 @@ public void reproducirRESP()
             @Override
             public void run() throws EmptyStackException
             {
+                //El siguiente es un while del que no sale si la conexión continúa.
                 while(!admin.isTcpNull())
                 {
                     //No hace nada mientras haya conexion.                    
                 }
                 //En caso de salir del while, se informa que ya no hay conexión.
                 
+                //Se cancelan los procesos
+                
+                //El afinamiento:
+                try
+                {
+                    alterador.detenerProcesos();
+                }catch(java.lang.NullPointerException e)
+                {
+                    System.out.println("Excepción controlada, no hay alterador de interfaz construido.");
+                }
+                
+                
                 //---------Primero se deben cancelar los procesos críticos.
                 //admin.desconectarCliente();                
-                menuConexion.setText("Conectar");                                
+                menuConexion.setText("Conectar");   
+                
+                //Reestablecimiento de botones al sufrir desconexión
+                //tomarPresion.setText("Tomar presión");                
                 
                 //Luego se procede a informar la desconexión.
                 System.out.println("Se ha desconectado el dispositivo");                            
-                
+                //mensajeDesconexion();                
             }
         };
         // Empezamos dentro de 10s 
@@ -2365,4 +2442,10 @@ public void reproducirRESP()
         dialogoAlerta.initStyle(StageStyle.UTILITY);
         dialogoAlerta.showAndWait();  
     }
+    
+    public void correrSC()
+    {
+        
+    }
+       
 }
