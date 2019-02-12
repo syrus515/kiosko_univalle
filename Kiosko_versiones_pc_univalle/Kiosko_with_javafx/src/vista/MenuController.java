@@ -2069,7 +2069,21 @@ public void reproducirRESP()
 
     @FXML
     private void reproducirMedicion()
-    {                 
+    { 
+        Timer timer;
+        timer = new Timer();
+        if(botonReproducir.getText().equals("Detener"))
+        {
+            timer.cancel();
+            timer.purge();
+            reprodSPO2.clear();
+            reprodECG1.clear();
+            reprodECG2.clear();
+            reprodRESP.clear(); 
+            
+            botonReproducir.setText("Reproducir");
+        }else
+        {           
             Medicion medicionReproducir= this.programaPrincipal.getMedicionReproducir();            
             String SPO2= medicionReproducir.getOndaSPO2().substring(1, medicionReproducir.getOndaSPO2().length()-1);
             StringTokenizer tokens= new StringTokenizer(SPO2, ", ");
@@ -2094,13 +2108,19 @@ public void reproducirRESP()
             
             String RESP= medicionReproducir.getOndaRESP().substring(1, medicionReproducir.getOndaRESP().length()-1);
             tokens= new StringTokenizer(RESP, ", ");
+            
+            boolean iniciara =false; //Determina si se cargaron datos para reproducir.
             while(tokens.hasMoreTokens())
             {
                 reprodRESP.add(Integer.parseInt(tokens.nextToken()));
+                iniciara= true;
             }             
+            if(iniciara)
+            {
+                botonReproducir.setText("Detener");
+            }
            
-            Timer timer;
-            timer = new Timer();
+            
             
             TimerTask task = new TimerTask() 
             {
@@ -2127,7 +2147,7 @@ public void reproducirRESP()
             };
             // Empezamos dentro de 0ms y luego lanzamos la tarea cada 30ms
             timer.schedule(task, 0, 30);
-  
+        }  
  
     }                
     
