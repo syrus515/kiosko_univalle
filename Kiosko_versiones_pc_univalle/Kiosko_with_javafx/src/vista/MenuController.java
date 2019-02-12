@@ -10,6 +10,8 @@ import BD.AntecedentespersonalesPK;
 import BD.HistorialAfinamiento;
 import BD.MedicionPersonalizada;
 
+import smartcard.SmartCard;
+
 
 import com.digitalpersona.onetouch.DPFPGlobal;
 import com.digitalpersona.onetouch.DPFPTemplate;
@@ -2463,9 +2465,39 @@ public void reproducirRESP()
         dialogoAlerta.showAndWait();  
     }
     
-    public void correrSC()
+    public String obtenerDatos()
     {
+        String resultado="";
         
+        
+        return resultado;
+    }
+    
+    
+    @FXML
+    public void escribirEnTarjeta()
+    {
+        SmartCard smartCard= new SmartCard();
+        
+        try 
+        {       
+            smartCard.writeOnCard("IdentificaciónNombreApellidoAdministradoraContacto familiarEstatura12345DiabetesHipertensiónInfartosFuma (días)Convive con fumadoresActividad física (minutos)Consume licorDiabetesHipertensiónAccidentes cardiovasculares|");            
+        } catch (Exception ex) {
+            Logger.getLogger(MenuController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    @FXML
+    public void leerTarjeta()
+    {
+        SmartCard smartCard= new SmartCard();
+        
+        try 
+        {       
+            smartCard.readFromCard();
+        } catch (Exception ex) {
+            Logger.getLogger(MenuController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
        
 }
