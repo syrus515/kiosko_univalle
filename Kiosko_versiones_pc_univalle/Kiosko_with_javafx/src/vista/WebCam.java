@@ -82,7 +82,8 @@ public class WebCam extends BorderPane {
         this.primaryStage.centerOnScreen();
         this.primaryStage.setResizable(false);
         this.primaryStage.initOwner(ventanaPrincipal);
-        this.primaryStage.initModality(Modality.APPLICATION_MODAL);
+        this.primaryStage.initModality(Modality.APPLICATION_MODAL);        
+        
 //        this.primaryStage.show();
         Platform.runLater(new Runnable() {
             @Override
@@ -91,13 +92,16 @@ public class WebCam extends BorderPane {
             }
         });
         primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>(){
-            @Override public void handle(WindowEvent event) {
-                primaryStage.hide();
+            @Override public void handle(WindowEvent event) {                
+                
                 refController.openFoto = true;
                 disposeWebCamCamera(); //Comprobar que la cámara sí se apaga
                 stopWebCamCamera();                
+                primaryStage.hide();
             }
         });
+        
+        
     }
     protected void setImageViewSize() {
         double height = webCamPane.getHeight();

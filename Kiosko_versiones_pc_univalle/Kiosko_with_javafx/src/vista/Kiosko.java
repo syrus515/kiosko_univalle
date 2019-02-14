@@ -219,7 +219,7 @@ public class Kiosko extends Application {
         try {
             refController.openFoto = false;
             if (ventanaWebCam==null){
-                ventanaWebCam = new Stage ();
+                ventanaWebCam = new Stage();
                 webCam = new WebCam(primaryStage, ventanaWebCam, refController);
                 Scene scene = new Scene(webCam);                
                 ventanaWebCam.setScene(scene);

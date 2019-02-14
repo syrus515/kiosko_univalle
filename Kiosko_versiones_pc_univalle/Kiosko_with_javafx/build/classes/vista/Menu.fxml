@@ -61,7 +61,7 @@
                                  <items>
                                     <MenuItem mnemonicParsing="false" onAction="#escribirEnTarjeta" text="Crear" />
                                     <MenuItem mnemonicParsing="false" text="Actualizar" />
-                                    <MenuItem mnemonicParsing="false" onAction="#leerTarjeta" text="Iniciar sesión" />
+                                    <MenuItem mnemonicParsing="false" onAction="#iniciarDesdeTarjeta" text="Iniciar sesión" />
                                  </items>
                               </Menu>
                           </menus>

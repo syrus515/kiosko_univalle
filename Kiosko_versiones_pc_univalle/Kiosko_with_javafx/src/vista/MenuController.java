@@ -572,7 +572,7 @@ public class MenuController implements Initializable {
      */
     private Antecedentespersonales buscarAntecedentesPersonales(String id) {
         Antecedentespersonales resultado = null;
-        List<Antecedentespersonales> list = em.createNamedQuery("Antecedentesper sonales.findAll", Antecedentespersonales.class).getResultList();
+        List<Antecedentespersonales> list = em.createNamedQuery("Antecedentespersonales.findAll", Antecedentespersonales.class).getResultList();
         for (int i = 0; i < list.size(); i++) {
             Antecedentespersonales obj = list.get(i);
             if (id.equals(obj.getAntecedentespersonalesPK().getIdentificacion())) {
@@ -2468,36 +2468,112 @@ public void reproducirRESP()
     public String obtenerDatos()
     {
         String resultado="";
+        String identificacion= textIdentificacion1.getText();
+        EntityManager em = Persistence.createEntityManagerFactory("KioskoPU").createEntityManager();
         
+        //Consulta del paciente
+        Query queryPacienteFindOne = em.createNativeQuery("SELECT * from pacientes p WHERE identificacion= '" + identificacion +"'", Pacientes.class);
+        List<Pacientes> listPaciente = queryPacienteFindOne.getResultList();
+        Pacientes paciente= listPaciente.get(0);
+        
+        //Consulta de los antecedentes personales
+        
+        Query queryPersonalesFindOne = em.createNativeQuery("SELECT * from antecedentespersonales a WHERE identificacion= '" + identificacion +"'", Antecedentespersonales.class);
+        List<Antecedentespersonales> listPersonales = queryPersonalesFindOne.getResultList();
+        Antecedentespersonales personales= listPersonales.get(0);
+        
+        //Consulta de los antecedentes familiares
+        Query queryFamiliaresFindOne = em.createNativeQuery("SELECT * from antecedentesfamiliares a WHERE identificacion= '" + identificacion +"'", Antecedentesfamiliares.class);
+        List<Antecedentesfamiliares> listFamiliares = queryFamiliaresFindOne.getResultList();
+        Antecedentesfamiliares familiares= listFamiliares.get(0);
+        
+        //Toma de datos de paciente
+        String tipoId= paciente.getPacientesPK().getTipoid() + ";";
+        String id= paciente.getPacientesPK().getIdentificacion() + ";";
+        String nombre= paciente.getNombre1() + " " + paciente.getNombre2() + ";";
+        String apellido= paciente.getApellido1() + " " + paciente.getApellido2() + ";";
+        String administradora= paciente.getAdministradora() + ";";
+        String estatura= paciente.getEstatura() + ";";
+        
+        //Toma de datos de antecedentes personales
+        String medicamentos1= personales.getMedicamentospermanentes1() + ";";
+        String medicamentos2= personales.getMedicamentospermanentes2() + ";";
+        String medicamentos3= personales.getMedicamentospermanentes3() + ";";
+        String medicamentos4= personales.getMedicamentospermanentes4() + ";";
+        String medicamentos5= personales.getMedicamentospermanentes5() + ";";
+        String diabetes= personales.getDiabetes() + ";";
+        String hipertension= personales.getHipertension() + ";";
+        String infartos= personales.getInfartos()+ ";";
+        String fuma= personales.getFumadias() + ";";
+        String conviveFumadores= personales.getConviveconfumadores() + ";";
+        String actividadFisica= personales.getActividadfisicaminutos() + ";";
+        String consumeLicor= personales.getCosumelicor() + ";";
+        
+        //Toma de datos de antecedentes familiares
+        String familiaresDiabetes= familiares.getDiabetes() + ";";
+        String familiaresHipertension= familiares.getHipertension() + ";";
+        String accidentes= familiares.getAcv() + ";";
+        
+        resultado= tipoId + id+ nombre + apellido + administradora+ "contactoFamiliar(pendiente);" + estatura + 
+                medicamentos1 + medicamentos2 + medicamentos3 + medicamentos4 + medicamentos5 + diabetes + hipertension + infartos + fuma + conviveFumadores +
+                actividadFisica + consumeLicor + familiaresDiabetes + familiaresHipertension + accidentes + "|";                
         
         return resultado;
     }
     
+    public String leerTarjeta()
+    {
+        String resultado="";
+        SmartCard smartCard= new SmartCard();        
+        try 
+        {       
+            resultado= smartCard.readFromCard();
+        } catch (Exception ex) {
+            Logger.getLogger(MenuController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return resultado;
+    }
     
+    @FXML
+    public void iniciarDesdeTarjeta()
+    {
+        String datosTarjeta= leerTarjeta();
+        if(!datosTarjeta.equals("Error"))
+        {
+            StringTokenizer tokenizer= new StringTokenizer(datosTarjeta, ";");
+            tokenizer.nextToken();
+            textIdentificacion1.setText(tokenizer.nextToken());
+            buscarPaciente();
+        }else
+        {
+            System.err.println("Lanzar mensaje de error");
+        }
+    }
+
     @FXML
     public void escribirEnTarjeta()
     {
-        SmartCard smartCard= new SmartCard();
-        
+        SmartCard smartCard= new SmartCard();        
         try 
         {       
-            smartCard.writeOnCard("IdentificaciónNombreApellidoAdministradoraContacto familiarEstatura12345DiabetesHipertensiónInfartosFuma (días)Convive con fumadoresActividad física (minutos)Consume licorDiabetesHipertensiónAccidentes cardiovasculares|");            
+            smartCard.writeOnCard(obtenerDatos());            
         } catch (Exception ex) {
             Logger.getLogger(MenuController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     
     @FXML
-    public void leerTarjeta()
+    public void actualizarTarjeta()
     {
-        SmartCard smartCard= new SmartCard();
-        
+        SmartCard smartCard= new SmartCard();        
         try 
         {       
-            smartCard.readFromCard();
+            smartCard.updateCard(obtenerDatos());            
         } catch (Exception ex) {
             Logger.getLogger(MenuController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+    
+    
        
 }
