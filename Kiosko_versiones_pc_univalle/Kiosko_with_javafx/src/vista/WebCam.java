@@ -95,8 +95,11 @@ public class WebCam extends BorderPane {
             @Override public void handle(WindowEvent event) {                
                 
                 refController.openFoto = true;
-                disposeWebCamCamera(); //Comprobar que la cámara sí se apaga
-                stopWebCamCamera();                
+                if(webCam!=null)
+                {
+                    disposeWebCamCamera(); //Comprobar que la cámara sí se apaga
+                    stopWebCamCamera();                
+                }                
                 primaryStage.hide();
             }
         });
@@ -332,5 +335,5 @@ public class WebCam extends BorderPane {
         public String toString() {
             return webCamName;
         }
-    }
+    }    
 }

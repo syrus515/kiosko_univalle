@@ -258,6 +258,8 @@ public class MenuController implements Initializable {
     private static final int Y_MAX_SPO2 = 256;
     private static final int Y_MAX_ECG = 3000;
     private static final int Y_MAX_RESP = 3000;
+    
+    private static boolean pausar= false;
 
     private XYChart.Series series;
     private XYChart.Series<Number, Number> series1;
@@ -454,6 +456,8 @@ public class MenuController implements Initializable {
     private MenuItem menuConexion;
     @FXML
     private Button iniciarPersonalizada;
+    @FXML
+    private Button pausarReproduccion;
     
     /**
      * Este método administra el cierre del programa para esta clase, ya que soporta la parte prinicipal de la ejecución.
@@ -2006,8 +2010,12 @@ public void reproducirSPO2()
     
         for (int i = 0; i < 3; i++) { //-- add 20 numbers to the plot+
            
-            if (reprodSPO2.isEmpty()) break;
+            if (reprodSPO2.isEmpty()) break;            
             series1.getData().add(new XYChart.Data<>(xSeriesData_spo2++, reprodSPO2.remove()));
+        }
+        while(pausar)
+        {
+            //No hace nada mientras esté pausado
         }
         // remove points to keep us at no more than MAX_DATA_POINTS
         if (series1.getData().size() > MAX_DATA_POINTS_SPO2) {
@@ -2023,9 +2031,13 @@ public void reproducirECG1()
 {
     
         for (int i = 0; i < 3; i++) { //-- add 20 numbers to the plot+
-            if (reprodECG1.isEmpty()) break;
+            if (reprodECG1.isEmpty()) break;            
             series2.getData().add(new XYChart.Data<>(xSeriesData_ecg1++, reprodECG1.remove()));
 
+        }
+        while(pausar)
+        {
+            //No hace nada mientras esté pausado
         }
         // remove points to keep us at no more than MAX_DATA_POINTS
         if (series2.getData().size() > MAX_DATA_POINTS_ECG) {
@@ -2044,6 +2056,10 @@ public void reproducirECG2()
             series3.getData().add(new XYChart.Data<>(xSeriesData_ecg2++, reprodECG2.remove()));
 
         }
+        while(pausar)
+        {
+            //No hace nada mientras esté pausado
+        }
         // remove points to keep us at no more than MAX_DATA_POINTS
         if (series3.getData().size() > MAX_DATA_POINTS_ECG) {
             series3.getData().remove(0, series3.getData().size() - MAX_DATA_POINTS_ECG);
@@ -2059,6 +2075,10 @@ public void reproducirRESP()
             if (reprodRESP.isEmpty()) break;
             series4.getData().add(new XYChart.Data<>(xSeriesData_resp++, reprodRESP.remove()));
 
+        }
+        while(pausar)
+        {
+            //No hace nada mientras esté pausado
         }
         // remove points to keep us at no more than MAX_DATA_POINTS
         if (series4.getData().size() > MAX_DATA_POINTS_RESP) {
@@ -2562,7 +2582,6 @@ public void reproducirRESP()
         }
     }
     
-    @FXML
     public void actualizarTarjeta()
     {
         SmartCard smartCard= new SmartCard();        
@@ -2572,8 +2591,22 @@ public void reproducirRESP()
         } catch (Exception ex) {
             Logger.getLogger(MenuController.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }       
+    
+    @FXML
+    public void pausarReproduccion()
+    {
+        if(pausarReproduccion.getText().equals("Pausar"))
+        {
+            pausarReproduccion.setText("Reanudar");
+            pausar= !pausar;
+        }else
+        {
+            pausarReproduccion.setText("Pausar");
+            pausar= !pausar;
+        }
+                
+        
     }
-    
-    
        
 }
