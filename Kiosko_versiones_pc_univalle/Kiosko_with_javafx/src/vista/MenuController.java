@@ -257,7 +257,7 @@ public class MenuController implements Initializable {
     private static final int MAX_DATA_POINTS_RESP = 500;
     private static final int Y_MAX_SPO2 = 256;
     private static final int Y_MAX_ECG = 3000;
-    private static final int Y_MAX_RESP = 3000;
+    private static final int Y_MAX_RESP = 500;
     
     private static boolean pausar= false;
 
@@ -480,6 +480,7 @@ public class MenuController implements Initializable {
         menuConexion.setText("Conectar");
         enableTunning(false);
         enableMeasure(false);
+        pausarReproduccion.setDisable(true);
         if(admin.isConnectedTCP())
         {
             enableTunning(true);
@@ -1694,6 +1695,7 @@ public void graficar() {
         lc4.getXAxis().setVisible(false);
         lc4.getXAxis().setOpacity(0);
         
+        
         lc1.setAnimated(false);
         //lc1.setId("ondaSPO2");
         lc1.setTitle("Onda SPO2");
@@ -2104,6 +2106,8 @@ public void reproducirRESP()
             reprodRESP.clear(); 
             
             botonReproducir.setText("Reproducir");
+            enableMeasure(true);
+            pausarReproduccion.setDisable(false);
         }else
         {           
             Medicion medicionReproducir= this.programaPrincipal.getMedicionReproducir();            
@@ -2141,6 +2145,8 @@ public void reproducirRESP()
             {
                 botonReproducir.setText("Detener");
             }
+            enableMeasure(false);
+            pausarReproduccion.setDisable(false);
            
             
             
@@ -2158,6 +2164,12 @@ public void reproducirRESP()
                     {
                         if(reprodSPO2.isEmpty() && reprodECG1.isEmpty() && reprodECG2.isEmpty() && reprodRESP.isEmpty())
                         {
+                            reprodSPO2.clear();
+                            reprodECG1.clear();
+                            reprodECG2.clear();
+                            reprodRESP.clear();
+                            enableMeasure(true);
+                            pausarReproduccion.setDisable(true);
                             timer.cancel();
                             timer.purge();
                         }
@@ -2231,7 +2243,7 @@ public void reproducirRESP()
             presSistolica= sistolica;
             presDiastolica= diastolica; 
             presionImprimir.setText(sistolica+ "/" + diastolica );
-            tomarPresion.setText("Tomar Presión"); 
+            //tomarPresion.setText("Tomar Presión"); 
         }
         
     }
@@ -2270,11 +2282,11 @@ public void reproducirRESP()
                         Logger.getLogger(MenuController.class.getName()).log(Level.SEVERE, null, ex);
                     }
                     if(tomarPresion.getText().equals("Detener")) admin.enviarComando("startPressure", 0);
-                    try {
+                    /*try {
                         Thread.sleep(2000);
                     } catch (InterruptedException ex) {
                         Logger.getLogger(MenuController.class.getName()).log(Level.SEVERE, null, ex);
-                    }
+                    }*/
                 }
             };
             // Empezamos dentro de 10s 
@@ -2285,13 +2297,14 @@ public void reproducirRESP()
             alterador.start();
             guardarAfinamiento.setDisable(false);
         }else
-        {
+        { 
             try {               
                 Thread.sleep(10);
                 
             }catch (InterruptedException ex) {
             Logger.getLogger(MenuController.class.getName()).log(Level.SEVERE, null, ex);
             } 
+            alterador.detenerProcesos();
             admin.enviarComando("stopPressure", 0); 
             tomarPresion.setText("Tomar presión");  
         }

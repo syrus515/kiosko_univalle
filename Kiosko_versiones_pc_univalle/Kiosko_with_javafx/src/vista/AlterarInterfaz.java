@@ -37,11 +37,12 @@ public class AlterarInterfaz extends Thread
         switch(opcion)
         {
             case 1:
-                int anterior= admin.staticParameters.readPresDias();
-                while(admin.staticParameters.readPresDias()== anterior && !detenerProcesos)
+                //int anterior= admin.staticParameters.readPresDias();
+                while(admin.staticParameters.readPresDias()== 0 && !detenerProcesos)
                 {
                     //No haga nada mientras la presión no se haya actualizado
                     System.out.println(admin.staticParameters.readPresDias());
+                    
                 }
                 if(!detenerProcesos)
                 {

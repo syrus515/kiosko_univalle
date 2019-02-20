@@ -162,7 +162,7 @@
                                   <NumberAxis fx:id="yAxis_2" side="LEFT" />
                                 </yAxis>
                               </LineChart>
-                              <LineChart fx:id="lc3" alternativeRowFillVisible="false" createSymbols="false" horizontalZeroLineVisible="false" layoutX="627.0" layoutY="9.0" legendVisible="false" prefHeight="320.0" prefWidth="600.0" stylesheets="@graficos.css" verticalZeroLineVisible="false">
+                              <LineChart fx:id="lc3" alternativeRowFillVisible="false" createSymbols="false" horizontalGridLinesVisible="false" horizontalZeroLineVisible="false" layoutX="627.0" layoutY="9.0" legendVisible="false" prefHeight="320.0" prefWidth="600.0" stylesheets="@graficos.css" verticalGridLinesVisible="false" verticalZeroLineVisible="false">
                                 <xAxis>
                                   <NumberAxis side="BOTTOM" fx:id="xAxis_3" />
                                 </xAxis>
