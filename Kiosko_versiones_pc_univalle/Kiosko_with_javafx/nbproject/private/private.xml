@@ -5,7 +5,7 @@
             <url>src/vista/MenuController.java</url>
             <bookmark id="3">
                 <name/>
-                <line>1109</line>
+                <line>1115</line>
                 <key/>
             </bookmark>
         </file>
@@ -14,10 +14,7 @@
         <group>
             <file>file:/C:/Users/Miguel%20Askar/Documents/GitHub/kiosko_univalle/Kiosko_versiones_pc_univalle/Kiosko_with_javafx/src/vista/MenuController.java</file>
             <file>file:/C:/Users/Miguel%20Askar/Documents/GitHub/kiosko_univalle/Kiosko_versiones_pc_univalle/Kiosko_with_javafx/src/smartcard/Prueba.java</file>
-            <file>file:/C:/Users/Miguel%20Askar/Documents/GitHub/kiosko_univalle/Kiosko_versiones_pc_univalle/Kiosko_with_javafx/src/smartcard/SmartCard.java</file>
             <file>file:/C:/Users/Miguel%20Askar/Documents/GitHub/kiosko_univalle/Kiosko_versiones_pc_univalle/Kiosko_with_javafx/src/smartcard/SmartCardManager.java</file>
-            <file>file:/C:/Users/Miguel%20Askar/Documents/GitHub/kiosko_univalle/Kiosko_versiones_pc_univalle/Kiosko_with_javafx/src/smartcard/ACSModule.java</file>
-            <file>file:/C:/Users/Miguel%20Askar/Documents/GitHub/kiosko_univalle/Kiosko_versiones_pc_univalle/Kiosko_with_javafx/src/vista/WebCam.java</file>
             <file>file:/C:/Users/Miguel%20Askar/Documents/GitHub/kiosko_univalle/Kiosko_versiones_pc_univalle/Kiosko_with_javafx/src/vista/Kiosko.java</file>
             <file>file:/C:/Users/Miguel%20Askar/Documents/GitHub/kiosko_univalle/Kiosko_versiones_pc_univalle/Kiosko_with_javafx/src/vista/CapturaHuella.java</file>
             <file>file:/C:/Users/Miguel%20Askar/Documents/GitHub/kiosko_univalle/Kiosko_versiones_pc_univalle/Kiosko_with_javafx/src/vista/AlterarInterfaz.java</file>

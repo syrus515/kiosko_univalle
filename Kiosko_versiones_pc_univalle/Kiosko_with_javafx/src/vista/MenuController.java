@@ -62,6 +62,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.animation.AnimationTimer;
 import javafx.animation.Timeline;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -458,6 +459,10 @@ public class MenuController implements Initializable {
     private Button iniciarPersonalizada;
     @FXML
     private Button pausarReproduccion;
+    @FXML
+    private Button detenerReproduccion;
+    @FXML
+    private Button busquedaMediciones;
     
     /**
      * Este método administra el cierre del programa para esta clase, ya que soporta la parte prinicipal de la ejecución.
@@ -480,6 +485,7 @@ public class MenuController implements Initializable {
         menuConexion.setText("Conectar");
         enableTunning(false);
         enableMeasure(false);
+        detenerReproduccion.setDisable(true);
         pausarReproduccion.setDisable(true);
         if(admin.isConnectedTCP())
         {
@@ -1145,12 +1151,13 @@ public class MenuController implements Initializable {
         if(banderaMedicion)
         {
             btnIniciarSenales.setDisable(true);//Se desactiva el botón de medición simple
+            busquedaMediciones.setDisable(true);
+            botonReproducir.setDisable(true);
             iniciarPersonalizada.setText("Detener medición personalizada");
             
             idMedPersonalizada= crearMedicionPersonalizada(); //Se crea la nueva medición personalizada
             esPersonalizada= true; //Se avisa que se guardará una medición personalizada
-            
-        
+                    
             int intervaloMedicion= obtenerIntervalo();
             int duracionMuestraMedicion= obtenerDuracion();
             int duracionExamenMedicion= obtenerDuracionExamen();
@@ -1159,6 +1166,9 @@ public class MenuController implements Initializable {
             terminaMedicion= false;
             Timer timerTerminar;
             timerTerminar = new Timer();
+            
+            Timer timerMedicion;
+            timerMedicion = new Timer();
 
             TimerTask taskTerminar = new TimerTask() 
             {
@@ -1166,13 +1176,23 @@ public class MenuController implements Initializable {
                 public void run() throws EmptyStackException
                 {                           
                     terminaMedicion= true;
+                    btnIniciarSenales.setDisable(false); //Esto es lo último que hace, cuando ya se acabo el tiempo total de la medición personalizada.
+                    busquedaMediciones.setDisable(false);
+                    botonReproducir.setDisable(false);
+                    esPersonalizada= false;
+                    banderaMedicion= true;
+                    Platform.runLater(new Runnable()
+                    {
+                        @Override
+                        public void run() {                    
+                               iniciarPersonalizada.setText("Iniciar medición personalizada");
+                        }
+                    });                    
+                    timerMedicion.cancel();
                 }
             };
             // Empezamos dentro de 10s 
             timerTerminar.schedule(taskTerminar, (duracionExamenMedicion*60*1000)+10);//Se convierten los minutos en milisegundos.
-
-            Timer timerMedicion;
-            timerMedicion = new Timer();
 
             TimerTask taskMedir = new TimerTask() 
             {
@@ -1185,12 +1205,12 @@ public class MenuController implements Initializable {
                         iniciarLecturaSenales(e);
                         acabarMedicion(duracionMuestraMedicion);//Se termina la muestra iniciada en el tiempo determinado.                    
                     }else
-                    {
+                    {/*
                        btnIniciarSenales.setDisable(false); //Esto es lo último que hace, cuando ya se acabo el tiempo total de la medición personalizada.
                        esPersonalizada= false;
                        banderaMedicion= true;
                        iniciarPersonalizada.setText("Iniciar medición personalizada");
-                       timerMedicion.cancel(); 
+                       timerMedicion.cancel(); */
                     }
                 }
             };
@@ -1198,11 +1218,14 @@ public class MenuController implements Initializable {
             timerMedicion.schedule(taskMedir, 5,intervaloMedicion*60*1000);//Se convierten los minutos en milisegundos.  
             banderaMedicion= false;
         }else
-        {   //En caso de cancelar la medición personalizada:           
+        {   //En caso de cancelar la medición personalizada:  
+            iniciarPersonalizada.setText("Iniciar medición personalizada"); //Se habilita de nuevo el botón para la personalizada
             terminaMedicion= true; //Se informa que se debe cerrar el hilo.
             banderaMedicion= true; //Se habilita un nuevo registro de medición personalizada.
             //iniciarPersonalizada.setText("Iniciar medición personalizada"); //Se reestablece el botón.
             btnIniciarSenales.setDisable(false); //Se habilita el botón de medición simple.
+            busquedaMediciones.setDisable(false);
+            botonReproducir.setDisable(false);
             esPersonalizada= false; //Se habilita el registro de medición genérica (simple).            
         }
                
@@ -2096,20 +2119,33 @@ public void reproducirRESP()
     { 
         Timer timer;
         timer = new Timer();
-        if(botonReproducir.getText().equals("Detener"))
+        if(botonReproducir.isDisable()) //Entra cuando se presiona "Detener"
         {
             timer.cancel();
             timer.purge();
             reprodSPO2.clear();
             reprodECG1.clear();
             reprodECG2.clear();
-            reprodRESP.clear(); 
+            reprodRESP.clear();            
             
-            botonReproducir.setText("Reproducir");
+            detenerReproduccion.setDisable(true);
+            pausarReproduccion.setDisable(true);
+            botonReproducir.setDisable(false);
+            
             enableMeasure(true);
+            
+        }else //Entra cuando se prediona "Reproducir"
+        {
+            detenerReproduccion.setDisable(false);
             pausarReproduccion.setDisable(false);
-        }else
-        {           
+            botonReproducir.setDisable(true);
+            
+            enableMeasure(false);
+
+            pausar= false; //Ya que se detiene la reproducción, ya no se puede pausar, si estaba en pausa, se cancela.
+            pausarReproduccion.setText("Pausar");            
+            
+            
             Medicion medicionReproducir= this.programaPrincipal.getMedicionReproducir();            
             String SPO2= medicionReproducir.getOndaSPO2().substring(1, medicionReproducir.getOndaSPO2().length()-1);
             StringTokenizer tokens= new StringTokenizer(SPO2, ", ");
@@ -2135,19 +2171,10 @@ public void reproducirRESP()
             String RESP= medicionReproducir.getOndaRESP().substring(1, medicionReproducir.getOndaRESP().length()-1);
             tokens= new StringTokenizer(RESP, ", ");
             
-            boolean iniciara =false; //Determina si se cargaron datos para reproducir.
             while(tokens.hasMoreTokens())
             {
-                reprodRESP.add(Integer.parseInt(tokens.nextToken()));
-                iniciara= true;
+                reprodRESP.add(Integer.parseInt(tokens.nextToken()));                
             }             
-            if(iniciara)
-            {
-                botonReproducir.setText("Detener");
-            }
-            enableMeasure(false);
-            pausarReproduccion.setDisable(false);
-           
             
             
             TimerTask task = new TimerTask() 
@@ -2169,6 +2196,7 @@ public void reproducirRESP()
                             reprodECG2.clear();
                             reprodRESP.clear();
                             enableMeasure(true);
+                            detenerReproduccion.setDisable(true);
                             pausarReproduccion.setDisable(true);
                             timer.cancel();
                             timer.purge();
@@ -2232,9 +2260,9 @@ public void reproducirRESP()
     private int presDiastolica= 0;
     
     public void actualizarPresion()
-    {
+    {        
         int diastolica= admin.staticParameters.readPresDias();
-        int sistolica= admin.staticParameters.readPresSist();
+        int sistolica= admin.staticParameters.readPresSist();        
         if(diastolica<=0)
         {
             presionImprimir.setText("---/---");
@@ -2243,9 +2271,20 @@ public void reproducirRESP()
             presSistolica= sistolica;
             presDiastolica= diastolica; 
             presionImprimir.setText(sistolica+ "/" + diastolica );
-            //tomarPresion.setText("Tomar Presión"); 
+            Platform.runLater(new Runnable(){
+                @Override
+                public void run() {                    
+                       tomarPresion.setText("Tomar presión");
+                }
+            });
+            //admin.enviarComando("stopPressure", 0);//Se resetea la toma de presión.
         }
         
+    }
+    
+    public void publicarPresion(String presion)
+    {
+        presionImprimir.setText(presion);
     }
        
     @FXML    
@@ -2254,43 +2293,43 @@ public void reproducirRESP()
         if(tomarPresion.getText().equals("Tomar presión"))
         {
             tomarPresion.setText("Detener"); 
-            Timer timerIniciar;
+            /*Timer timerIniciar;
             timerIniciar = new Timer();
 
-            TimerTask taskIniciar = new TimerTask() 
+            TimerTask taskIniciar = new TimerTask() //Este hilo inicia la toma de presión
             {
 
                 @Override
                 public void run()
-                {
-                    try {
-                        Thread.sleep(10);
-                    } catch (InterruptedException ex) {
-                        Logger.getLogger(MenuController.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-                    if(tomarPresion.getText().equals("Detener")) admin.enviarComando("manualPressure", 0);                    
-                    try {
-                        Thread.sleep(1);
-                    } catch (InterruptedException ex) {
-                        Logger.getLogger(MenuController.class.getName()).log(Level.SEVERE, null, ex);
-                    }
+                {*/
+            try {
+                Thread.sleep(10);
+            } catch (InterruptedException ex) {
+                Logger.getLogger(MenuController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            if(tomarPresion.getText().equals("Detener")) admin.enviarComando("manualPressure", 0);                    
+            try {
+                Thread.sleep(1);
+            } catch (InterruptedException ex) {
+                Logger.getLogger(MenuController.class.getName()).log(Level.SEVERE, null, ex);
+            }
 
-                    if(tomarPresion.getText().equals("Detener")) admin.enviarComando("stopPressure", 0);
-                    try {
-                        Thread.sleep(1);
-                    } catch (InterruptedException ex) {
-                        Logger.getLogger(MenuController.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-                    if(tomarPresion.getText().equals("Detener")) admin.enviarComando("startPressure", 0);
+            if(tomarPresion.getText().equals("Detener")) admin.enviarComando("stopPressure", 0);
+            try {
+                Thread.sleep(1);
+            } catch (InterruptedException ex) {
+                Logger.getLogger(MenuController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            if(tomarPresion.getText().equals("Detener")) admin.enviarComando("startPressure", 0);
                     /*try {
                         Thread.sleep(2000);
                     } catch (InterruptedException ex) {
                         Logger.getLogger(MenuController.class.getName()).log(Level.SEVERE, null, ex);
                     }*/
-                }
-            };
-            // Empezamos dentro de 10s 
-            timerIniciar.schedule(taskIniciar, 0);
+                //}
+            //};
+            // Empezamos dentro de 0s 
+            //timerIniciar.schedule(taskIniciar, 0);
             alterador= new AlterarInterfaz(admin, this);
             alterador.setOpcion(1); //Para modificar presión
             alterador.iniciarProcesos(); //Se habilita el inicio de los procesos.

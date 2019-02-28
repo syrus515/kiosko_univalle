@@ -38,10 +38,15 @@ public class AlterarInterfaz extends Thread
         {
             case 1:
                 //int anterior= admin.staticParameters.readPresDias();
+                while(admin.staticParameters.readPresDias()!=0)
+                {
+                    //No hace nada mientras se resetea
+                }
                 while(admin.staticParameters.readPresDias()== 0 && !detenerProcesos)
                 {
                     //No haga nada mientras la presión no se haya actualizado
-                    System.out.println(admin.staticParameters.readPresDias());
+                    menu.publicarPresion("---/---");
+                    //System.out.println(admin.staticParameters.readPresDias());
                     
                 }
                 if(!detenerProcesos)
