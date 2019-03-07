@@ -1144,6 +1144,7 @@ public class MenuController implements Initializable {
     
     private boolean terminaMedicion; //Determina si la medición ya terminó del todo
     private boolean banderaMedicion= true; //Determina si la medición personalizada inicia o se cancela
+    private static boolean ultimaDeLaSerie= false;
     
     @FXML
     public void iniciarMedicionPersonalizada()
@@ -1176,18 +1177,8 @@ public class MenuController implements Initializable {
                 public void run() throws EmptyStackException
                 {                           
                     terminaMedicion= true;
-                    btnIniciarSenales.setDisable(false); //Esto es lo último que hace, cuando ya se acabo el tiempo total de la medición personalizada.
-                    busquedaMediciones.setDisable(false);
-                    botonReproducir.setDisable(false);
-                    esPersonalizada= false;
-                    banderaMedicion= true;
-                    Platform.runLater(new Runnable()
-                    {
-                        @Override
-                        public void run() {                    
-                               iniciarPersonalizada.setText("Iniciar medición personalizada");
-                        }
-                    });                    
+                    ultimaDeLaSerie= true; //Se determina que es la última medición, para poder saber cuándo termina.
+                                        
                     timerMedicion.cancel();
                 }
             };
@@ -1231,7 +1222,7 @@ public class MenuController implements Initializable {
                
     }
     
-    private int crearMedicionPersonalizada()
+    private int crearMedicionPersonalizada() modificar este método para iniciar con las gráficas
     { 
         em = Persistence.createEntityManagerFactory("KioskoPU").createEntityManager();
         em.getTransaction().begin();
@@ -1276,7 +1267,27 @@ public class MenuController implements Initializable {
             public void run() throws EmptyStackException
             {   
                 ActionEvent e= new ActionEvent();
-                iniciarLecturaSenales(e);
+                if (ultimaDeLaSerie) //Si es la última medición de una serie de personalizadas.
+                {
+                    iniciarLecturaSenales(e);
+                    btnIniciarSenales.setDisable(false); //Esto es lo último que hace, cuando ya se acabo el tiempo total de la medición personalizada.
+                    busquedaMediciones.setDisable(false);
+                    botonReproducir.setDisable(false);
+                    esPersonalizada= false;
+                    banderaMedicion= true;
+                    ultimaDeLaSerie= false;
+                    Platform.runLater(new Runnable()
+                    {
+                        @Override
+                        public void run() {                    
+                               iniciarPersonalizada.setText("Iniciar medición personalizada");
+                        }
+                    });
+                }else
+                {
+                    iniciarLecturaSenales(e);
+                }
+                
             }
         };
         // Empezamos dentro de 10s 
