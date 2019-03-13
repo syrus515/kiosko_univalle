@@ -828,8 +828,8 @@ public class MenuController implements Initializable {
         initChartSignals();
         graficarECG1();
         graficarECG2();
-        graficarSPO2();
-        graficarRESP();
+        //graficarSPO2();
+        //graficarRESP();
         parametros();
         
     }
@@ -1108,8 +1108,8 @@ public class MenuController implements Initializable {
     {
         graficarECG1();
         graficarECG2();
-        graficarSPO2();
-        graficarRESP();
+        //graficarSPO2();
+        //graficarRESP();
         pintarLecturaECG();
 
         executor = Executors.newFixedThreadPool(2); //Cambiar para posiblemente solucionar el otro error.                       
@@ -1130,8 +1130,8 @@ public class MenuController implements Initializable {
     {
         graficarECG1();
         graficarECG2();
-        graficarSPO2();
-        graficarRESP();
+        //graficarSPO2();
+        //graficarRESP();
         pintarLecturaECG();
 
         addToQueue = new AddToQueue();
@@ -1222,7 +1222,7 @@ public class MenuController implements Initializable {
                
     }
     
-    private int crearMedicionPersonalizada() modificar este método para iniciar con las gráficas
+    private int crearMedicionPersonalizada()
     { 
         em = Persistence.createEntityManagerFactory("KioskoPU").createEntityManager();
         em.getTransaction().begin();
@@ -1612,7 +1612,7 @@ public void graficar() {
     }
     
     public void pintarRespiracion(int respRate) {
-        if (respRate== 0)
+        if (respRate== 0 || respRate>1000)
         {
             respTextField.setText("---");              
             
@@ -1714,8 +1714,8 @@ public void graficar() {
         
         /*lc1.getYAxis().setVisible(false);
         lc1.getYAxis().setOpacity(0);
-        lc1.getXAxis().setVisible(false);
-        lc1.getXAxis().setOpacity(0);*/
+        lc1.getXAxis().setVisible(false);*/
+        lc1.getXAxis().setOpacity(0);
         lc2.getYAxis().setVisible(false);
         lc2.getYAxis().setOpacity(0);
         lc2.getXAxis().setVisible(false);
@@ -1738,8 +1738,8 @@ public void graficar() {
         //lc2.setId("ondaECG1");
         lc2.setTitle("Onda ECG CH1");
         
-        lc2.setBorder(new Border(new BorderStroke(Color.BLACK, 
-                BorderStrokeStyle.DASHED, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
+        /*lc2.setBorder(new Border(new BorderStroke(Color.BLACK, 
+                BorderStrokeStyle.DASHED, CornerRadii.EMPTY, BorderWidths.DEFAULT)));*/
         
         lc3.setAnimated(false);
         //lc3.setId("ondaECG2");
@@ -1960,7 +1960,7 @@ private class QueueParametros implements Runnable {
         }
     }
 
-    public void graficarSPO2() {
+    /*public void graficarSPO2() {
         // INICIAL
         int ptoInicialSPO2 = ptoInicial;
         int ptoInicialSPO2_Y = 10;
@@ -1987,10 +1987,11 @@ private class QueueParametros implements Runnable {
         for (int i = 0; i < 6; i++) {
             gc.strokeLine((ptoInicialSPO2 - 5), altoSPO2 + (mitadSPO2 + ptoInicialSPO2) + ((i + 1) * intervalo) + ptoInicialSPO2_Y, (ptoInicialSPO2 + 5), altoSPO2 + (mitadSPO2 + ptoInicialSPO2) + ((i + 1) * intervalo) + ptoInicialSPO2_Y);
             gc.strokeLine((ptoInicialSPO2 - 5), altoSPO2 + (mitadSPO2 + ptoInicialSPO2) - ((i + 1) * intervalo) + ptoInicialSPO2_Y, (ptoInicialSPO2 + 5), altoSPO2 + (mitadSPO2 + ptoInicialSPO2) - ((i + 1) * intervalo) + ptoInicialSPO2_Y);
-        }
-    }
+        }*/
+    //}
     
-    public void graficarRESP() {
+    
+    /*public void graficarRESP() {
         // INICIAL
         int ptoInicialRESP = ptoInicial;
         int ptoInicialRESP_Y = 10;
@@ -2024,7 +2025,7 @@ private class QueueParametros implements Runnable {
             gc.strokeLine(anchoRESP+(ptoInicialRESP - 5), altoRESP+((mitadRESP + ptoInicialRESP) + ((i + 1) * intervalo)) + ptoInicialRESP_Y, anchoRESP+(ptoInicialRESP + 5), altoRESP+((mitadRESP + ptoInicialRESP) + ((i + 1) * intervalo)) + ptoInicialRESP_Y);
             gc.strokeLine(anchoRESP+(ptoInicialRESP - 5), altoRESP+((mitadRESP + ptoInicialRESP) - ((i + 1) * intervalo)) + ptoInicialRESP_Y, anchoRESP+(ptoInicialRESP + 5), altoRESP+((mitadRESP + ptoInicialRESP) - ((i + 1) * intervalo)) + ptoInicialRESP_Y);
         }
-    }
+    }*/
 
 public void customResize(TableView<?> view) {
 

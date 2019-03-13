@@ -198,12 +198,12 @@
                                     <Font size="30.0" />
                                  </font>
                               </Text>
-                              <Text fill="#141414" layoutX="1698.0" layoutY="498.0" strokeType="OUTSIDE" strokeWidth="0.0" text="RESP">
+                              <Text fill="#141414" layoutX="1687.0" layoutY="490.0" strokeType="OUTSIDE" strokeWidth="0.0" text="RESP">
                                  <font>
                                     <Font size="45.0" />
                                  </font>
                               </Text>
-                              <Text fx:id="respTextField" fill="#141414" fontSmoothingType="LCD" layoutX="1696.0" layoutY="564.0" strokeType="OUTSIDE" strokeWidth="0.0" text="000">
+                              <Text fx:id="respTextField" fill="#141414" fontSmoothingType="LCD" layoutX="1685.0" layoutY="556.0" strokeType="OUTSIDE" strokeWidth="0.0" text="000">
                                  <font>
                                     <Font size="53.0" />
                                  </font>
