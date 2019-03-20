@@ -72,6 +72,8 @@ import javafx.scene.chart.XYChart;
 import javafx.scene.control.Accordion;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.MenuItem;
+import javafx.scene.control.Spinner;
+import javafx.scene.control.SpinnerValueFactory;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
@@ -118,9 +120,9 @@ public class MenuController implements Initializable {
     @FXML
     private TextField textDireccion;
     @FXML
-    private TextField textTipoUsuario;
+    private ChoiceBox<String> textTipoUsuario;
     @FXML
-    private TextField textGenero;
+    private ChoiceBox<String> textGenero;
     @FXML
     private DatePicker datePickerFechaNacimiento;
     @FXML
@@ -128,7 +130,7 @@ public class MenuController implements Initializable {
     @FXML
     private TextField textMunicipio;
     @FXML
-    private TextField textZona;
+    private ChoiceBox<String> textZona;
     // Antecedentes personales.
     @FXML
     private TextField textMedicamentosPermanentes1;
@@ -151,28 +153,26 @@ public class MenuController implements Initializable {
     @FXML
     private TextField textOtrasSustancias5;
     @FXML
-    private TextField textDiabetes;
+    private ChoiceBox<String> textDiabetes;    
     @FXML
-    private TextField textHipertension;
+    private ChoiceBox<String> textHipertension;
     @FXML
-    private TextField textInfartos;
+    private Spinner<Integer> textInfartos;
     @FXML
-    private TextField textFumaDias;
+    private Spinner<Integer> textFumaDias;
     @FXML
-    private TextField textConviveConFumadores;
+    private ChoiceBox<String> textConviveConFumadores;
     @FXML
-    private TextField textActividadFisicaMinutos;
+    private ChoiceBox<String> textActividadFisicaMinutos;
     @FXML
-    private TextField textCosumeLicor;
+    private Spinner<Integer> textCosumeLicor;
     // Antecedentes familiares.
     @FXML
-    private TextField textAFDiabetes;
+    private Spinner<Integer> textAFDiabetes;
     @FXML
-    private TextField textAFHipertension;
+    private Spinner<Integer> textAFHipertension;
     @FXML
-    private TextField textAFInfartos;
-    @FXML
-    private TextField textAFAC;
+    private Spinner<Integer> textAFInfartos;    
     
     @FXML
     private Text ecgTextField;
@@ -463,6 +463,8 @@ public class MenuController implements Initializable {
     private Button detenerReproduccion;
     @FXML
     private Button busquedaMediciones;
+    @FXML
+    private Spinner<Integer> textAFAC;
     
     /**
      * Este método administra el cierre del programa para esta clase, ya que soporta la parte prinicipal de la ejecución.
@@ -661,13 +663,13 @@ public class MenuController implements Initializable {
             p.setTelFijo(textTelefonoFijo.getText());
             p.setCelular(textCelular.getText());
             p.setDireccion(textDireccion.getText());
-            p.setTipousuario(Integer.parseInt(textTipoUsuario.getText()));
-            p.setGenero(textGenero.getText());
+            p.setTipousuario(textTipoUsuario.getSelectionModel().getSelectedIndex());
+            p.setGenero(textGenero.getSelectionModel().getSelectedItem().toString());
             Date date = Date.from(datePickerFechaNacimiento.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant());
             p.setFNacimiento(date);
             p.setDepartamento(textDepartamento.getText());
             p.setMunicipio(textMunicipio.getText());
-            p.setZona(textZona.getText());
+            p.setZona(textZona.getSelectionModel().getSelectedItem().toString());
             p.setEstatura(Float.parseFloat(textEstatura.getText()));
             // *************************************************
             p.setFoto(imageInByteFoto);
@@ -697,13 +699,13 @@ public class MenuController implements Initializable {
             ap.setOtrassustancias3(textOtrasSustancias3.getText());
             ap.setOtrassustancias4(textOtrasSustancias4.getText());
             ap.setOtrassustancias5(textOtrasSustancias5.getText());
-            ap.setDiabetes(Integer.parseInt(textDiabetes.getText()));
-            ap.setHipertension(Integer.parseInt(textHipertension.getText()));
-            ap.setInfartos(Integer.parseInt(textInfartos.getText()));
-            ap.setFumadias(Integer.parseInt(textFumaDias.getText()));
-            ap.setConviveconfumadores(Integer.parseInt(textConviveConFumadores.getText()));
-            ap.setActividadfisicaminutos(Integer.parseInt(textActividadFisicaMinutos.getText()));
-            ap.setCosumelicor(Integer.parseInt(textCosumeLicor.getText()));
+            ap.setDiabetes(textDiabetes.getSelectionModel().getSelectedItem().toString());
+            ap.setHipertension(textHipertension.getSelectionModel().getSelectedItem().toString());
+            ap.setInfartos(textInfartos.getValue().toString());
+            ap.setFumadias(textFumaDias.getValue().toString());
+            ap.setConviveconfumadores(textConviveConFumadores.getSelectionModel().getSelectedItem().toString());
+            ap.setActividadfisica(textActividadFisicaMinutos.getSelectionModel().getSelectedItem().toString());
+            ap.setCosumelicor(textCosumeLicor.getValue().toString());
             em = Persistence.createEntityManagerFactory("KioskoPU").createEntityManager();
             em.getTransaction().begin();
             if (opcionNuevo) {
@@ -718,10 +720,10 @@ public class MenuController implements Initializable {
             Antecedentesfamiliares af = new Antecedentesfamiliares();
             AntecedentesfamiliaresPK afpk = new AntecedentesfamiliaresPK(cboxTipoIdentificacion.getValue().toString().substring(0, 2), textIdentificacion1.getText());
             af.setAntecedentesfamiliaresPK(afpk);
-            af.setDiabetes(Integer.parseInt(textAFDiabetes.getText()));
-            af.setHipertension(Integer.parseInt(textAFHipertension.getText()));
-            af.setInfartos(Integer.parseInt(textAFInfartos.getText()));
-            af.setAcv(Integer.parseInt(textAFAC.getText()));
+            af.setDiabetes(Integer.parseInt(textAFDiabetes.getValue().toString()));
+            af.setHipertension(Integer.parseInt(textAFHipertension.getValue().toString()));
+            af.setInfartos(Integer.parseInt(textAFInfartos.getValue().toString()));
+            af.setAcv(Integer.parseInt(textAFAC.getValue().toString()));
             em = Persistence.createEntityManagerFactory("KioskoPU").createEntityManager();
             em.getTransaction().begin();
             if (opcionNuevo) {
@@ -873,17 +875,24 @@ public class MenuController implements Initializable {
         textApellido2.setText(paciente.getApellido2());
         textApellido2.setText(paciente.getApellido2());
         // Datos personales del paciente.
+        textEstatura.setText(String.valueOf(paciente.getEstatura()));
         textTipoIdentificacion2.setText(paciente.getPacientesPK().getTipoid());
         textIdentificacion2.setText(paciente.getPacientesPK().getIdentificacion());
         textTelefonoFijo.setText(paciente.getTelFijo());
         textCelular.setText(paciente.getCelular());
         textDireccion.setText(paciente.getDireccion());
-        textTipoUsuario.setText("" + paciente.getTipousuario());
-        textGenero.setText(paciente.getGenero());
+        textTipoUsuario.getSelectionModel().select(paciente.getTipousuario());
+        
+        int seleccionGenero= 0;
+        if(paciente.getGenero().equals("Masculino"))
+        {
+            seleccionGenero= 1;
+        }
+        textGenero.getSelectionModel().select(seleccionGenero); //(paciente.getGenero());
         datePickerFechaNacimiento.setValue((paciente.getFNacimiento() != null) ? Instant.ofEpochMilli(paciente.getFNacimiento().getTime()).atZone(ZoneId.systemDefault()).toLocalDate() : null);
         textDepartamento.setText(paciente.getDepartamento());
         textMunicipio.setText(paciente.getMunicipio());
-        textZona.setText(paciente.getZona());
+        textZona.getSelectionModel().select(0); //(paciente.getZona());
         // Recupera la plantilla almacenada en la base de datos.
         byte templateBuffer[] = paciente.getHuella();
         if (templateBuffer != null) {
@@ -920,19 +929,19 @@ public class MenuController implements Initializable {
         textOtrasSustancias3.setText(ap.getOtrassustancias3());
         textOtrasSustancias4.setText(ap.getOtrassustancias4());
         textOtrasSustancias5.setText(ap.getOtrassustancias5());
-        textDiabetes.setText(Integer.toString(ap.getDiabetes()));
-        textHipertension.setText(Integer.toString(ap.getHipertension()));
-        textInfartos.setText(Integer.toString(ap.getInfartos()));
-        textFumaDias.setText(Integer.toString(ap.getFumadias()));
-        textConviveConFumadores.setText(Integer.toString(ap.getConviveconfumadores()));
-        textActividadFisicaMinutos.setText(Integer.toString(ap.getActividadfisicaminutos()));
-        textCosumeLicor.setText(Integer.toString(ap.getCosumelicor()));
+        textDiabetes.setValue(ap.getDiabetes());
+        textHipertension.setValue(ap.getHipertension());
+        textInfartos.getValueFactory().setValue(Integer.parseInt(ap.getInfartos())); 
+        textFumaDias.getValueFactory().setValue(Integer.parseInt(ap.getFumadias()));
+        textConviveConFumadores.setValue(ap.getConviveconfumadores());
+        textActividadFisicaMinutos.setValue(ap.getActividadfisica());
+        textCosumeLicor.getValueFactory().setValue(Integer.parseInt(ap.getCosumelicor()));
         // Antecedentes familiares
         Antecedentesfamiliares af = buscarAntecedenteFamiliares(paciente.getPacientesPK().getIdentificacion());
-        textAFDiabetes.setText(Integer.toString(af.getDiabetes()));
-        textAFHipertension.setText(Integer.toString(af.getHipertension()));
-        textAFInfartos.setText(Integer.toString(af.getInfartos()));
-        textAFAC.setText(Integer.toString(af.getAcv()));
+        textAFDiabetes.getValueFactory().setValue(af.getDiabetes());
+        textAFHipertension.getValueFactory().setValue(af.getHipertension());
+        textAFInfartos.getValueFactory().setValue(af.getInfartos());
+        textAFAC.getValueFactory().setValue(af.getAcv());
     }
 
     public void inactivarCampos(boolean estado) {
@@ -993,12 +1002,12 @@ public class MenuController implements Initializable {
         textTelefonoFijo.setText("");
         textCelular.setText("");
         textDireccion.setText("");
-        textTipoUsuario.setText("");
-        textGenero.setText("");
+        textTipoUsuario.getSelectionModel().selectFirst();
+        textGenero.getSelectionModel().selectFirst();
         datePickerFechaNacimiento.setValue(null);
         textDepartamento.setText("");
         textMunicipio.setText("");
-        textZona.setText("");
+        textZona.getSelectionModel().selectFirst();
         // Antecedentes personales
         textMedicamentosPermanentes1.setText("");
         textMedicamentosPermanentes2.setText("");
@@ -1010,18 +1019,18 @@ public class MenuController implements Initializable {
         textOtrasSustancias3.setText("");
         textOtrasSustancias4.setText("");
         textOtrasSustancias5.setText("");
-        textDiabetes.setText("");
-        textHipertension.setText("");
-        textInfartos.setText("");
-        textFumaDias.setText("");
-        textConviveConFumadores.setText("");
-        textActividadFisicaMinutos.setText("");
-        textCosumeLicor.setText("");
+        textDiabetes.getSelectionModel().selectFirst();
+        textHipertension.getSelectionModel().selectFirst();
+        textInfartos.getValueFactory().setValue(0);
+        textFumaDias.getValueFactory().setValue(0);
+        textConviveConFumadores.getSelectionModel().selectFirst();
+        textActividadFisicaMinutos.getSelectionModel().selectFirst();
+        textCosumeLicor.getValueFactory().setValue(0);
         // Antecedentes familiares
-        textAFDiabetes.setText("");
-        textAFHipertension.setText("");
-        textAFInfartos.setText("");
-        textAFAC.setText("");
+        textAFDiabetes.getValueFactory().setValue(0);
+        textAFHipertension.getValueFactory().setValue(0);
+        textAFInfartos.getValueFactory().setValue(0);
+        textAFAC.getValueFactory().setValue(0);
     }
     
     //Variables necesarias para el método
@@ -1524,7 +1533,27 @@ public void graficar() {
     
     public void parametros() {
         
-        // Asignación de parámetros para desplegables        
+        // Asignación de parámetros para spinners 
+        
+        //*******************Spinner de antecedentes personales
+        SpinnerValueFactory<Integer> valueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 5, 0);        
+        textInfartos.setValueFactory(valueFactory);
+        
+        valueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 7, 0);        
+        textFumaDias.setValueFactory(valueFactory);
+        textCosumeLicor.setValueFactory(valueFactory);
+        
+        //*******************Spinner de antecedentes familiares
+        valueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 20, 0);
+
+        textAFDiabetes.setValueFactory(valueFactory);       
+        textAFHipertension.setValueFactory(valueFactory); 
+        textAFInfartos.setValueFactory(valueFactory); 
+        textAFAC.setValueFactory(valueFactory); 
+        
+        
+        // Asignación de parámetros para desplegables       
+        
         ObservableList<String> availableChoices = FXCollections.observableArrayList("5 minutos", "10 minutos", "15 minutos", "20 minutos", "25 minutos", "30 minutos"); 
         intervalo.setItems(availableChoices);
         intervalo.getSelectionModel().selectFirst();        
@@ -1537,7 +1566,38 @@ public void graficar() {
         duracionExamen.setItems(availableChoices);
         duracionExamen.getSelectionModel().selectFirst();
         
-        //Desplegables del afinamiento
+        //*******************Desplegables de datos personales
+       
+        availableChoices = FXCollections.observableArrayList("Femenino", "Masculino"); 
+        textGenero.setItems(availableChoices);
+        textGenero.getSelectionModel().selectFirst();
+        
+        availableChoices = FXCollections.observableArrayList("Administrador", "Médico", "Paciente"); 
+        textTipoUsuario.setItems(availableChoices);
+        textTipoUsuario.getSelectionModel().selectFirst();        
+        
+        availableChoices = FXCollections.observableArrayList("Urbana", "Rural"); 
+        textZona.setItems(availableChoices);
+        textZona.getSelectionModel().selectFirst();
+        
+        //*******************Desplegables de antecedentes personales
+        availableChoices = FXCollections.observableArrayList("No", "Tipo 1", "Tipo 2");        
+        textDiabetes.setItems(availableChoices);
+        textDiabetes.getSelectionModel().selectFirst();
+        
+        availableChoices = FXCollections.observableArrayList("No", "Primaria", "Secundaria");    
+        textHipertension.setItems(availableChoices);
+        textHipertension.getSelectionModel().selectFirst();
+        
+        availableChoices = FXCollections.observableArrayList("Sí", "No");        
+        textConviveConFumadores.setItems(availableChoices);
+        textConviveConFumadores.getSelectionModel().selectFirst();
+        
+        availableChoices = FXCollections.observableArrayList("0 a 30 minutos", "30 a 60 miutos", "1 a 3 horas", "Más de 3 horas");        
+        textActividadFisicaMinutos.setItems(availableChoices);
+        textActividadFisicaMinutos.getSelectionModel().selectFirst();
+        
+        //*******************Desplegables del afinamiento
         availableChoices = FXCollections.observableArrayList("Derecho", "Izquierdo");  
         brazoAfinamiento.setItems(availableChoices);
         brazoAfinamiento.getSelectionModel().selectFirst();
@@ -2590,7 +2650,7 @@ public void reproducirRESP()
         String infartos= personales.getInfartos()+ ";";
         String fuma= personales.getFumadias() + ";";
         String conviveFumadores= personales.getConviveconfumadores() + ";";
-        String actividadFisica= personales.getActividadfisicaminutos() + ";";
+        String actividadFisica= personales.getActividadfisica() + ";";
         String consumeLicor= personales.getCosumelicor() + ";";
         
         //Toma de datos de antecedentes familiares

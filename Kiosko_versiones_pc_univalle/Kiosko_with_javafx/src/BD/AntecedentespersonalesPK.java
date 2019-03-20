@@ -12,7 +12,7 @@ import javax.persistence.Embeddable;
 
 /**
  *
- * @author Familia
+ * @author Miguel Askar
  */
 @Embeddable
 public class AntecedentespersonalesPK implements Serializable {

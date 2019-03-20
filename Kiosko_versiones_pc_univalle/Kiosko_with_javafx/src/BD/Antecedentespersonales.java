@@ -17,43 +17,43 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author Familia
+ * @author Miguel Askar
  */
 @Entity
 @Table(name = "antecedentespersonales")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Antecedentespersonales.findAll", query = "SELECT a FROM Antecedentespersonales a"),
-    @NamedQuery(name = "Antecedentespersonales.findByTipoid", query = "SELECT a FROM Antecedentespersonales a WHERE a.antecedentespersonalesPK.tipoid = :tipoid"),
-    @NamedQuery(name = "Antecedentespersonales.findByIdentificacion", query = "SELECT a FROM Antecedentespersonales a WHERE a.antecedentespersonalesPK.identificacion = :identificacion"),
-    @NamedQuery(name = "Antecedentespersonales.findByDiabetes", query = "SELECT a FROM Antecedentespersonales a WHERE a.diabetes = :diabetes"),
-    @NamedQuery(name = "Antecedentespersonales.findByHipertension", query = "SELECT a FROM Antecedentespersonales a WHERE a.hipertension = :hipertension"),
-    @NamedQuery(name = "Antecedentespersonales.findByInfartos", query = "SELECT a FROM Antecedentespersonales a WHERE a.infartos = :infartos"),
-    @NamedQuery(name = "Antecedentespersonales.findByMedicamentospermanentes1", query = "SELECT a FROM Antecedentespersonales a WHERE a.medicamentospermanentes1 = :medicamentospermanentes1"),
-    @NamedQuery(name = "Antecedentespersonales.findByMedicamentospermanentes2", query = "SELECT a FROM Antecedentespersonales a WHERE a.medicamentospermanentes2 = :medicamentospermanentes2"),
-    @NamedQuery(name = "Antecedentespersonales.findByMedicamentospermanentes3", query = "SELECT a FROM Antecedentespersonales a WHERE a.medicamentospermanentes3 = :medicamentospermanentes3"),
-    @NamedQuery(name = "Antecedentespersonales.findByMedicamentospermanentes4", query = "SELECT a FROM Antecedentespersonales a WHERE a.medicamentospermanentes4 = :medicamentospermanentes4"),
-    @NamedQuery(name = "Antecedentespersonales.findByMedicamentospermanentes5", query = "SELECT a FROM Antecedentespersonales a WHERE a.medicamentospermanentes5 = :medicamentospermanentes5"),
-    @NamedQuery(name = "Antecedentespersonales.findByActividadfisicaminutos", query = "SELECT a FROM Antecedentespersonales a WHERE a.actividadfisicaminutos = :actividadfisicaminutos"),
-    @NamedQuery(name = "Antecedentespersonales.findByCosumelicor", query = "SELECT a FROM Antecedentespersonales a WHERE a.cosumelicor = :cosumelicor"),
-    @NamedQuery(name = "Antecedentespersonales.findByOtrassustancias1", query = "SELECT a FROM Antecedentespersonales a WHERE a.otrassustancias1 = :otrassustancias1"),
-    @NamedQuery(name = "Antecedentespersonales.findByOtrassustancias2", query = "SELECT a FROM Antecedentespersonales a WHERE a.otrassustancias2 = :otrassustancias2"),
-    @NamedQuery(name = "Antecedentespersonales.findByOtrassustancias3", query = "SELECT a FROM Antecedentespersonales a WHERE a.otrassustancias3 = :otrassustancias3"),
-    @NamedQuery(name = "Antecedentespersonales.findByOtrassustancias4", query = "SELECT a FROM Antecedentespersonales a WHERE a.otrassustancias4 = :otrassustancias4"),
-    @NamedQuery(name = "Antecedentespersonales.findByOtrassustancias5", query = "SELECT a FROM Antecedentespersonales a WHERE a.otrassustancias5 = :otrassustancias5"),
-    @NamedQuery(name = "Antecedentespersonales.findByFumadias", query = "SELECT a FROM Antecedentespersonales a WHERE a.fumadias = :fumadias"),
-    @NamedQuery(name = "Antecedentespersonales.findByConviveconfumadores", query = "SELECT a FROM Antecedentespersonales a WHERE a.conviveconfumadores = :conviveconfumadores")})
+    @NamedQuery(name = "Antecedentespersonales.findAll", query = "SELECT a FROM Antecedentespersonales a")
+    , @NamedQuery(name = "Antecedentespersonales.findByTipoid", query = "SELECT a FROM Antecedentespersonales a WHERE a.antecedentespersonalesPK.tipoid = :tipoid")
+    , @NamedQuery(name = "Antecedentespersonales.findByIdentificacion", query = "SELECT a FROM Antecedentespersonales a WHERE a.antecedentespersonalesPK.identificacion = :identificacion")
+    , @NamedQuery(name = "Antecedentespersonales.findByDiabetes", query = "SELECT a FROM Antecedentespersonales a WHERE a.diabetes = :diabetes")
+    , @NamedQuery(name = "Antecedentespersonales.findByHipertension", query = "SELECT a FROM Antecedentespersonales a WHERE a.hipertension = :hipertension")
+    , @NamedQuery(name = "Antecedentespersonales.findByInfartos", query = "SELECT a FROM Antecedentespersonales a WHERE a.infartos = :infartos")
+    , @NamedQuery(name = "Antecedentespersonales.findByMedicamentospermanentes1", query = "SELECT a FROM Antecedentespersonales a WHERE a.medicamentospermanentes1 = :medicamentospermanentes1")
+    , @NamedQuery(name = "Antecedentespersonales.findByMedicamentospermanentes2", query = "SELECT a FROM Antecedentespersonales a WHERE a.medicamentospermanentes2 = :medicamentospermanentes2")
+    , @NamedQuery(name = "Antecedentespersonales.findByMedicamentospermanentes3", query = "SELECT a FROM Antecedentespersonales a WHERE a.medicamentospermanentes3 = :medicamentospermanentes3")
+    , @NamedQuery(name = "Antecedentespersonales.findByMedicamentospermanentes4", query = "SELECT a FROM Antecedentespersonales a WHERE a.medicamentospermanentes4 = :medicamentospermanentes4")
+    , @NamedQuery(name = "Antecedentespersonales.findByMedicamentospermanentes5", query = "SELECT a FROM Antecedentespersonales a WHERE a.medicamentospermanentes5 = :medicamentospermanentes5")
+    , @NamedQuery(name = "Antecedentespersonales.findByActividadfisica", query = "SELECT a FROM Antecedentespersonales a WHERE a.actividadfisica = :actividadfisica")
+    , @NamedQuery(name = "Antecedentespersonales.findByCosumelicor", query = "SELECT a FROM Antecedentespersonales a WHERE a.cosumelicor = :cosumelicor")
+    , @NamedQuery(name = "Antecedentespersonales.findByOtrassustancias1", query = "SELECT a FROM Antecedentespersonales a WHERE a.otrassustancias1 = :otrassustancias1")
+    , @NamedQuery(name = "Antecedentespersonales.findByOtrassustancias2", query = "SELECT a FROM Antecedentespersonales a WHERE a.otrassustancias2 = :otrassustancias2")
+    , @NamedQuery(name = "Antecedentespersonales.findByOtrassustancias3", query = "SELECT a FROM Antecedentespersonales a WHERE a.otrassustancias3 = :otrassustancias3")
+    , @NamedQuery(name = "Antecedentespersonales.findByOtrassustancias4", query = "SELECT a FROM Antecedentespersonales a WHERE a.otrassustancias4 = :otrassustancias4")
+    , @NamedQuery(name = "Antecedentespersonales.findByOtrassustancias5", query = "SELECT a FROM Antecedentespersonales a WHERE a.otrassustancias5 = :otrassustancias5")
+    , @NamedQuery(name = "Antecedentespersonales.findByFumadias", query = "SELECT a FROM Antecedentespersonales a WHERE a.fumadias = :fumadias")
+    , @NamedQuery(name = "Antecedentespersonales.findByConviveconfumadores", query = "SELECT a FROM Antecedentespersonales a WHERE a.conviveconfumadores = :conviveconfumadores")})
 public class Antecedentespersonales implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @EmbeddedId
     protected AntecedentespersonalesPK antecedentespersonalesPK;
     @Column(name = "diabetes")
-    private Integer diabetes;
+    private String diabetes;
     @Column(name = "hipertension")
-    private Integer hipertension;
+    private String hipertension;
     @Column(name = "infartos")
-    private Integer infartos;
+    private String infartos;
     @Basic(optional = false)
     @Column(name = "medicamentospermanentes1")
     private String medicamentospermanentes1;
@@ -69,10 +69,10 @@ public class Antecedentespersonales implements Serializable {
     @Basic(optional = false)
     @Column(name = "medicamentospermanentes5")
     private String medicamentospermanentes5;
-    @Column(name = "actividadfisicaminutos")
-    private Integer actividadfisicaminutos;
+    @Column(name = "actividadfisica")
+    private String actividadfisica;
     @Column(name = "cosumelicor")
-    private Integer cosumelicor;
+    private String cosumelicor;
     @Column(name = "otrassustancias1")
     private String otrassustancias1;
     @Column(name = "otrassustancias2")
@@ -84,9 +84,9 @@ public class Antecedentespersonales implements Serializable {
     @Column(name = "otrassustancias5")
     private String otrassustancias5;
     @Column(name = "fumadias")
-    private Integer fumadias;
+    private String fumadias;
     @Column(name = "conviveconfumadores")
-    private Integer conviveconfumadores;
+    private String conviveconfumadores;
 
     public Antecedentespersonales() {
     }
@@ -116,27 +116,27 @@ public class Antecedentespersonales implements Serializable {
         this.antecedentespersonalesPK = antecedentespersonalesPK;
     }
 
-    public Integer getDiabetes() {
+    public String getDiabetes() {
         return diabetes;
     }
 
-    public void setDiabetes(Integer diabetes) {
+    public void setDiabetes(String diabetes) {
         this.diabetes = diabetes;
     }
 
-    public Integer getHipertension() {
+    public String getHipertension() {
         return hipertension;
     }
 
-    public void setHipertension(Integer hipertension) {
+    public void setHipertension(String hipertension) {
         this.hipertension = hipertension;
     }
 
-    public Integer getInfartos() {
+    public String getInfartos() {
         return infartos;
     }
 
-    public void setInfartos(Integer infartos) {
+    public void setInfartos(String infartos) {
         this.infartos = infartos;
     }
 
@@ -180,19 +180,19 @@ public class Antecedentespersonales implements Serializable {
         this.medicamentospermanentes5 = medicamentospermanentes5;
     }
 
-    public Integer getActividadfisicaminutos() {
-        return actividadfisicaminutos;
+    public String getActividadfisica() {
+        return actividadfisica;
     }
 
-    public void setActividadfisicaminutos(Integer actividadfisicaminutos) {
-        this.actividadfisicaminutos = actividadfisicaminutos;
+    public void setActividadfisica(String actividadfisica) {
+        this.actividadfisica = actividadfisica;
     }
 
-    public Integer getCosumelicor() {
+    public String getCosumelicor() {
         return cosumelicor;
     }
 
-    public void setCosumelicor(Integer cosumelicor) {
+    public void setCosumelicor(String cosumelicor) {
         this.cosumelicor = cosumelicor;
     }
 
@@ -236,19 +236,19 @@ public class Antecedentespersonales implements Serializable {
         this.otrassustancias5 = otrassustancias5;
     }
 
-    public Integer getFumadias() {
+    public String getFumadias() {
         return fumadias;
     }
 
-    public void setFumadias(Integer fumadias) {
+    public void setFumadias(String fumadias) {
         this.fumadias = fumadias;
     }
 
-    public Integer getConviveconfumadores() {
+    public String getConviveconfumadores() {
         return conviveconfumadores;
     }
 
-    public void setConviveconfumadores(Integer conviveconfumadores) {
+    public void setConviveconfumadores(String conviveconfumadores) {
         this.conviveconfumadores = conviveconfumadores;
     }
 

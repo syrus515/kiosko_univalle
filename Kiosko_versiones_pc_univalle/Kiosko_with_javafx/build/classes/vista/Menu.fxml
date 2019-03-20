@@ -13,6 +13,7 @@
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.Spinner?>
 <?import javafx.scene.control.SplitPane?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
@@ -227,7 +228,7 @@
                               <ChoiceBox fx:id="duracionMuestra" layoutX="1319.0" layoutY="431.0" prefHeight="50.0" prefWidth="150.0" />
                               <Label layoutX="1319.0" layoutY="486.0" prefHeight="17.0" prefWidth="167.0" text="Duración examen:" />
                               <ChoiceBox fx:id="duracionExamen" layoutX="1319.0" layoutY="517.0" prefHeight="54.0" prefWidth="150.0" />
-                              <TextArea fx:id="detallesMedicion" layoutX="1317.0" layoutY="37.0" prefHeight="175.0" prefWidth="240.0" />
+                              <TextArea fx:id="detallesMedicion" layoutX="1317.0" layoutY="37.0" prefHeight="175.0" prefWidth="240.0" wrapText="true" />
                               <Button fx:id="busquedaMediciones" layoutX="1648.0" layoutY="585.0" mnemonicParsing="false" onAction="#buscarMedicion" prefHeight="72.0" prefWidth="229.0" text="Buscar mediciones anteriores" />
                               <Button fx:id="botonReproducir" layoutX="45.0" layoutY="638.0" mnemonicParsing="false" onAction="#reproducirMedicion" prefHeight="49.0" prefWidth="113.0" text="Reproducir" />
                               <Button fx:id="pausarReproduccion" layoutX="315.0" layoutY="638.0" mnemonicParsing="false" onAction="#pausarReproduccion" prefHeight="49.0" prefWidth="113.0" text="Pausar" />
@@ -270,7 +271,7 @@
                                     <Label fx:id="labOtrasSustancias3" text="Otras sustancias 3 " GridPane.columnIndex="2" GridPane.halignment="RIGHT" GridPane.rowIndex="2" />
                                     <Label fx:id="labOtrasSustancias4" text="Otras sustancias 4 " GridPane.columnIndex="2" GridPane.halignment="RIGHT" GridPane.rowIndex="3" />
                                     <Label fx:id="labOtrasSustancias5" text="Otras sustancias 5 " GridPane.columnIndex="2" GridPane.halignment="RIGHT" GridPane.rowIndex="4" />
-                                    <Label fx:id="labActividadFisicaMinutos" text="Actividad física en minutos " GridPane.columnIndex="6" GridPane.halignment="RIGHT" />
+                                    <Label fx:id="labActividadFisicaMinutos" text="Actividad física" GridPane.columnIndex="6" GridPane.halignment="RIGHT" />
                                     <Label fx:id="labSumaDias" text="Cada cuanto fuma (días) " GridPane.columnIndex="4" GridPane.halignment="RIGHT" GridPane.rowIndex="3" />
                                     <Label fx:id="labConviveConFumadores" text="Convive con fumadores " GridPane.columnIndex="4" GridPane.halignment="RIGHT" GridPane.rowIndex="4" />
                                     <TextField fx:id="textMedicamentosPermanentes1" GridPane.columnIndex="1" />
@@ -278,22 +279,22 @@
                                     <TextField fx:id="textMedicamentosPermanentes3" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                                     <TextField fx:id="textMedicamentosPermanentes4" GridPane.columnIndex="1" GridPane.rowIndex="3" />
                                     <TextField fx:id="textMedicamentosPermanentes5" GridPane.columnIndex="1" GridPane.rowIndex="4" />
-                                    <TextField fx:id="textActividadFisicaMinutos" GridPane.columnIndex="7" />
                                     <TextField fx:id="textOtrasSustancias1" GridPane.columnIndex="3" />
                                     <TextField fx:id="textOtrasSustancias2" GridPane.columnIndex="3" GridPane.rowIndex="1" />
                                     <TextField fx:id="textOtrasSustancias3" GridPane.columnIndex="3" GridPane.rowIndex="2" />
                                     <TextField fx:id="textOtrasSustancias4" GridPane.columnIndex="3" GridPane.rowIndex="3" />
                                     <TextField fx:id="textOtrasSustancias5" GridPane.columnIndex="3" GridPane.rowIndex="4" />
-                                    <TextField fx:id="textCosumeLicor" GridPane.columnIndex="7" GridPane.rowIndex="1" />
-                                    <TextField fx:id="textDiabetes" GridPane.columnIndex="5" />
-                                    <TextField fx:id="textHipertension" GridPane.columnIndex="5" GridPane.rowIndex="1" />
-                                    <TextField fx:id="textInfartos" GridPane.columnIndex="5" GridPane.rowIndex="2" />
-                                    <TextField fx:id="textFumaDias" GridPane.columnIndex="5" GridPane.rowIndex="3" />
-                                    <TextField fx:id="textConviveConFumadores" GridPane.columnIndex="5" GridPane.rowIndex="4" />
                                     <Label fx:id="labDiabetes" text="Diabetes " GridPane.columnIndex="4" GridPane.halignment="RIGHT" />
                                     <Label fx:id="labHipertension" text="Hipertension " GridPane.columnIndex="4" GridPane.halignment="RIGHT" GridPane.rowIndex="1" />
-                                    <Label fx:id="labConsumeLicor" text="Cosume licor " GridPane.columnIndex="6" GridPane.halignment="RIGHT" GridPane.rowIndex="1" />
+                                    <Label fx:id="labConsumeLicor" text="Cosume licor (días)" GridPane.columnIndex="6" GridPane.halignment="RIGHT" GridPane.rowIndex="1" />
                                     <Label fx:id="labInfartos" text="Infartos " GridPane.columnIndex="4" GridPane.halignment="RIGHT" GridPane.rowIndex="2" />
+                                    <ChoiceBox fx:id="textDiabetes" prefHeight="25.0" prefWidth="185.0" GridPane.columnIndex="5" />
+                                    <ChoiceBox fx:id="textHipertension" prefHeight="25.0" prefWidth="190.0" GridPane.columnIndex="5" GridPane.rowIndex="1" />
+                                    <ChoiceBox fx:id="textConviveConFumadores" prefHeight="25.0" prefWidth="181.0" GridPane.columnIndex="5" GridPane.rowIndex="4" />
+                                    <ChoiceBox fx:id="textActividadFisicaMinutos" prefWidth="150.0" GridPane.columnIndex="7" />
+                                    <Spinner fx:id="textCosumeLicor" GridPane.columnIndex="7" GridPane.rowIndex="1" />
+                                    <Spinner fx:id="textInfartos" prefHeight="25.0" prefWidth="180.0" GridPane.columnIndex="5" GridPane.rowIndex="2" />
+                                    <Spinner fx:id="textFumaDias" prefHeight="25.0" prefWidth="180.0" GridPane.columnIndex="5" GridPane.rowIndex="3" />
                                  </children>
                               </GridPane>
                            </children></AnchorPane>
@@ -322,10 +323,10 @@
                                     <Label fx:id="labAFHipertension" text="Hipertensión " GridPane.columnIndex="2" GridPane.halignment="RIGHT" />
                                     <Label fx:id="labAFInfartos" text="Infartos " GridPane.columnIndex="4" GridPane.halignment="RIGHT" />
                                     <Label fx:id="labAFAC" text="AC " GridPane.columnIndex="6" GridPane.halignment="RIGHT" />
-                                    <TextField fx:id="textAFDiabetes" GridPane.columnIndex="1" />
-                                    <TextField fx:id="textAFHipertension" prefHeight="25.0" prefWidth="71.0" GridPane.columnIndex="3" />
-                                    <TextField fx:id="textAFInfartos" GridPane.columnIndex="5" />
-                                    <TextField fx:id="textAFAC" GridPane.columnIndex="7" />
+                                    <Spinner fx:id="textAFDiabetes" GridPane.columnIndex="1" />
+                                    <Spinner fx:id="textAFHipertension" GridPane.columnIndex="3" />
+                                    <Spinner fx:id="textAFInfartos" GridPane.columnIndex="5" />
+                                    <Spinner fx:id="textAFAC" GridPane.columnIndex="7" />
                                  </children>
                               </GridPane>
                            </children></AnchorPane>
@@ -380,7 +381,7 @@
                                     <Font size="24.0" />
                                  </font>
                               </Label>
-                              <TextArea fx:id="detallesAfinamiento" layoutX="1133.0" layoutY="348.0" prefHeight="122.0" prefWidth="373.0" />
+                              <TextArea fx:id="detallesAfinamiento" layoutX="1133.0" layoutY="348.0" prefHeight="122.0" prefWidth="373.0" wrapText="true" />
                               <Button fx:id="tomarPeso" layoutX="1574.0" layoutY="33.0" mnemonicParsing="false" onAction="#tomarPeso" text="Tomar peso">
                                  <font>
                                     <Font size="18.0" />
@@ -459,11 +460,6 @@
                            </children></AnchorPane>
                      </content>
                   </TitledPane>
-                  <TitledPane animated="false" layoutX="10.0" layoutY="110.0" text="Historial Parámetros">
-                     <content>
-                        <AnchorPane minHeight="0.0" minWidth="0.0" />
-                     </content>
-                  </TitledPane>
                 <TitledPane animated="false" text="Datos personales">
                   <content>
                     <AnchorPane>
@@ -496,18 +492,18 @@
                                     <Label fx:id="labFechaNacimiento" text="Fecha nacimiento " GridPane.columnIndex="4" GridPane.halignment="RIGHT" GridPane.rowIndex="2" />
                                     <Label fx:id="labZona" text="Zona " GridPane.columnIndex="4" GridPane.halignment="RIGHT" GridPane.rowIndex="3" />
                                     <Label text="Estatura (cm)" GridPane.columnIndex="4" GridPane.halignment="RIGHT" />
-                                    <TextField fx:id="textTipoIdentificacion2" editable="false" prefHeight="25.0" prefWidth="155.0" GridPane.columnIndex="1" />
                                     <TextField fx:id="textIdentificacion2" editable="false" GridPane.columnIndex="3" />
-                                    <TextField fx:id="textTipoUsuario" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                                    <TextField fx:id="textGenero" GridPane.columnIndex="3" GridPane.rowIndex="2" />
                                     <TextField fx:id="textDepartamento" GridPane.columnIndex="1" GridPane.rowIndex="3" />
                                     <TextField fx:id="textMunicipio" GridPane.columnIndex="3" GridPane.rowIndex="3" />
-                                    <TextField fx:id="textZona" GridPane.columnIndex="5" GridPane.rowIndex="3" />
                                     <TextField fx:id="textTelefonoFijo" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                                     <TextField fx:id="textCelular" GridPane.columnIndex="3" GridPane.rowIndex="1" />
                                     <TextField fx:id="textDireccion" GridPane.columnIndex="5" GridPane.rowIndex="1" />
                                     <TextField fx:id="textEstatura" GridPane.columnIndex="5" />
                                     <DatePicker fx:id="datePickerFechaNacimiento" nodeOrientation="LEFT_TO_RIGHT" prefHeight="25.0" prefWidth="284.0" GridPane.columnIndex="5" GridPane.rowIndex="2" />
+                                    <ChoiceBox fx:id="textGenero" prefHeight="25.0" prefWidth="199.0" GridPane.columnIndex="3" GridPane.rowIndex="2" />
+                                    <ChoiceBox fx:id="textZona" prefHeight="25.0" prefWidth="295.0" GridPane.columnIndex="5" GridPane.rowIndex="3" />
+                                    <TextField fx:id="textTipoIdentificacion2" GridPane.columnIndex="1" />
+                                    <ChoiceBox fx:id="textTipoUsuario" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                                  </children>
                               </GridPane>
                            </children></AnchorPane>
