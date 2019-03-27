@@ -94,6 +94,10 @@ import javax.swing.BorderFactory;
 public class MenuController implements Initializable {
 
    
+    //Banderas
+    private static boolean almacenarMedicion= false;
+    
+    
     // Datos personales.
     @FXML
     private ComboBox cboxTipoIdentificacion;
@@ -281,7 +285,7 @@ public class MenuController implements Initializable {
     private ConcurrentLinkedQueue<Number> reprodECG2 = new ConcurrentLinkedQueue<Number>();
     private ConcurrentLinkedQueue<Number> reprodRESP = new ConcurrentLinkedQueue<Number>();
     
-    private ExecutorService executor;
+    private static ExecutorService executor= Executors.newFixedThreadPool(2);;
     private ExecutorService executorPresion;
     private AddToQueue addToQueue;
     private QueueParametros queueParam;
@@ -465,6 +469,8 @@ public class MenuController implements Initializable {
     private Button busquedaMediciones;
     @FXML
     private Spinner<Integer> textAFAC;
+    @FXML
+    private ChoiceBox<String> choiceIntervaloSubmuestreo;
     
     /**
      * Este método administra el cierre del programa para esta clase, ya que soporta la parte prinicipal de la ejecución.
@@ -491,6 +497,7 @@ public class MenuController implements Initializable {
         pausarReproduccion.setDisable(true);
         if(admin.isConnectedTCP())
         {
+            iniciarLecturaSenales();//Se inicia la graficación constante;
             enableTunning(true);
             enableMeasure(true);
             menuConexion.setText("Desconectar"); //Se habilita la desconexión manual en el menú superior.
@@ -504,7 +511,9 @@ public class MenuController implements Initializable {
                     btnIniciarSenales.setText("Iniciar medición simple");
                     iniciarPersonalizada.setText("Iniciar medición personalizada");
                 }
+                detenerLecturaSenales();
                 mensajeDesconexion();
+                
             }
         }        
     }
@@ -1042,9 +1051,164 @@ public class MenuController implements Initializable {
         apagarDesdeHilo= true;
     }
     
+    
+    private static Timer timerIniciar;
+    private void iniciarLecturaSenales() 
+    {   
+        /*timerIniciar = new Timer();
+        admin.switchLectura(); //Se habilita el hilo de lectura.
+        TimerTask taskIniciar = new TimerTask() 
+        {
+
+            @Override
+            public void run()
+            {
+                hiloPrimeraVez();
+            }
+        }; 
+        // Empezamos dentro de 0s 
+        timerIniciar.schedule(taskIniciar, 0);*/
+        admin.switchLectura(); //Se habilita el hilo de lectura.
+        graficarECG1();
+        graficarECG2();
+        //graficarSPO2();
+        //graficarRESP();
+        pintarLecturaECG();
+
+        
+
+        addToQueue = new AddToQueue();
+        queueParam= new QueueParametros();
+
+        //addToQueue.run();
+        //queueParam.run(); //Mirar si esto soluciona el error de concurrencia.
+
+        executor.execute(addToQueue);
+        executor.execute(queueParam);
+        prepareTimeline();
+        //btnIniciarSenales.setText("Parar"); 
+    }
+    
+    private void detenerLecturaSenales()
+    {
+        //timerIniciar.cancel();
+        //timerIniciar.purge();
+        executor.shutdownNow();
+
+        executor = Executors.newFixedThreadPool(2);
+
+        //pararLecturaECG(); //Este método no está cumpliendo función alguna
+        addToQueue=null;
+        queueParam=null;
+    }
+    
+    private static boolean cancelarMedicionSimple= false; //Bandera para saber cuándo la función debe cancelar el proceso.
+    @FXML 
+    private void medicionSimple()
+    {
+        if(cancelarMedicionSimple) //Aquí sólo entra si el usuario cancela la medición simple
+        {
+            cancelarMedicionSimple= false; //Se reestablece la bandera para que pueda iniciarse una nueva medición
+            almacenarMedicion= false; //Se desactiva el registro de la medición.
+            enableMeasure(true); //Se activan los botones de medición.
+            btnIniciarSenales.setText("Iniciar medición simple");
+            resetVectores();
+            mensajePersonalizado("La medición simple ha sido cancelada", "Medición simple cancelada");
+                        
+        }else
+        {
+            cancelarMedicionSimple= true;
+            //Se activa el almacenado de la medición
+            
+            //Insertar método de testigo de medición simple
+            
+            
+            
+            //*********************************************
+            almacenarMedicion= true;
+            enableMeasure(false);
+            btnIniciarSenales.setDisable(false);
+            btnIniciarSenales.setText("Detener medición");
+            
+            //Se crea el método que almacenará las señales dentro de un minuto.
+            Timer timerMedicionUnMinuto;
+            timerMedicionUnMinuto = new Timer();             
+            TimerTask taskIniciar = new TimerTask() 
+            {
+
+                @Override
+                public void run()
+                {
+                    cancelarMedicionSimple= false; //Se reestablece la bandera para que pueda iniciarse una nueva medición                    
+                    almacenarSenales(); //Se almacenan las señales.
+                    almacenarMedicion= false; //Se desactiva el registro de la medición.
+                    enableMeasure(true); //Se activan los botones de medición.
+                    Platform.runLater(new Runnable(){
+                        @Override
+                        public void run() {                    
+                               mensajePersonalizado("La medición simple ha finalizado", "Medición simple terminada");
+                        }
+                    });
+                    
+                }
+            }; 
+            // Empezamos dentro de 60s 
+            timerMedicionUnMinuto.schedule(taskIniciar, 60000);
+        }
+    }
+    
+    private static boolean cancelarMedicionPersonalizada= false; //Bandera para saber cuándo la función debe cancelar el proceso.
     @FXML
-    void iniciarLecturaSenales(ActionEvent event) 
-    {  
+    private void medicionPersonalizada()
+    {
+        int intervalo= obtenerIntervalo()*60*1000;
+        int duracionMuestra= obtenerDuracion()*1000;
+        int duracionExamen= obtenerDuracionExamen()*60*1000;
+        int subMuestreo= obtenerSubmuestreo()*1000;
+        if (cancelarMedicionPersonalizada)
+        {
+            cancelarMedicionPersonalizada= false;
+        }else
+        {
+            cancelarMedicionPersonalizada= true;
+            
+            //Insertar testigo que advierte de medición personalizada
+            
+            
+            
+            //*******************************************************            
+            
+            //Se crea el método que almacenará las señales dentro de los intervalos determinados.
+            Timer timerMedicionPersonalizada;
+            timerMedicionPersonalizada = new Timer();             
+            TimerTask taskIniciar = new TimerTask() 
+            {
+
+                @Override
+                public void run()
+                {
+                    cancelarMedicionSimple= false; //Se reestablece la bandera para que pueda iniciarse una nueva medición                    
+                    almacenarSenales(); //Se almacenan las señales.
+                    almacenarMedicion= false; //Se desactiva el registro de la medición.
+                    enableMeasure(true); //Se activan los botones de medición.
+                    Platform.runLater(new Runnable(){
+                        @Override
+                        public void run() {                    
+                               mensajePersonalizado("La medición simple ha finalizado", "Medición simple terminada");
+                        }
+                    });
+                    
+                }
+            }; 
+            // Empezamos dentro de 60s 
+            timerMedicionPersonalizada.schedule(taskIniciar, 60000);
+            
+        }
+    }
+    
+    /*
+    private void iniciarSenalesViejo()
+    {
         Timer timerIniciar;
         timerIniciar = new Timer();  
         admin.switchLectura();
@@ -1111,8 +1275,9 @@ public class MenuController implements Initializable {
             }
         }
         banderaInicio = !banderaInicio;
-    }
+    }*/
     
+    /*
     private void hiloPrimeraVez()
     {
         graficarECG1();
@@ -1121,7 +1286,7 @@ public class MenuController implements Initializable {
         //graficarRESP();
         pintarLecturaECG();
 
-        executor = Executors.newFixedThreadPool(2); //Cambiar para posiblemente solucionar el otro error.                       
+        
 
         addToQueue = new AddToQueue();
         queueParam= new QueueParametros();
@@ -1149,7 +1314,7 @@ public class MenuController implements Initializable {
         executor.execute(addToQueue);
         executor.execute(queueParam);
         prepareTimeline();
-    }
+    }*/
     
     private boolean terminaMedicion; //Determina si la medición ya terminó del todo
     private boolean banderaMedicion= true; //Determina si la medición personalizada inicia o se cancela
@@ -1157,78 +1322,9 @@ public class MenuController implements Initializable {
     
     @FXML
     public void iniciarMedicionPersonalizada()
-    {
-        if(banderaMedicion)
-        {
-            btnIniciarSenales.setDisable(true);//Se desactiva el botón de medición simple
-            busquedaMediciones.setDisable(true);
-            botonReproducir.setDisable(true);
-            iniciarPersonalizada.setText("Detener medición personalizada");
-            
-            idMedPersonalizada= crearMedicionPersonalizada(); //Se crea la nueva medición personalizada
-            esPersonalizada= true; //Se avisa que se guardará una medición personalizada
-                    
-            int intervaloMedicion= obtenerIntervalo();
-            int duracionMuestraMedicion= obtenerDuracion();
-            int duracionExamenMedicion= obtenerDuracionExamen();
-
-            //A continuación se programa una tarea que acaba la medición al final del examen.
-            terminaMedicion= false;
-            Timer timerTerminar;
-            timerTerminar = new Timer();
-            
-            Timer timerMedicion;
-            timerMedicion = new Timer();
-
-            TimerTask taskTerminar = new TimerTask() 
-            {
-                @Override
-                public void run() throws EmptyStackException
-                {                           
-                    terminaMedicion= true;
-                    ultimaDeLaSerie= true; //Se determina que es la última medición, para poder saber cuándo termina.
-                                        
-                    timerMedicion.cancel();
-                }
-            };
-            // Empezamos dentro de 10s 
-            timerTerminar.schedule(taskTerminar, (duracionExamenMedicion*60*1000)+10);//Se convierten los minutos en milisegundos.
-
-            TimerTask taskMedir = new TimerTask() 
-            {
-                @Override
-                public void run() throws EmptyStackException
-                {
-                    if(!terminaMedicion)
-                    {
-                        ActionEvent e= new ActionEvent();
-                        iniciarLecturaSenales(e);
-                        acabarMedicion(duracionMuestraMedicion);//Se termina la muestra iniciada en el tiempo determinado.                    
-                    }else
-                    {/*
-                       btnIniciarSenales.setDisable(false); //Esto es lo último que hace, cuando ya se acabo el tiempo total de la medición personalizada.
-                       esPersonalizada= false;
-                       banderaMedicion= true;
-                       iniciarPersonalizada.setText("Iniciar medición personalizada");
-                       timerMedicion.cancel(); */
-                    }
-                }
-            };
-            // Empezamos dentro de 10s 
-            timerMedicion.schedule(taskMedir, 5,intervaloMedicion*60*1000);//Se convierten los minutos en milisegundos.  
-            banderaMedicion= false;
-        }else
-        {   //En caso de cancelar la medición personalizada:  
-            iniciarPersonalizada.setText("Iniciar medición personalizada"); //Se habilita de nuevo el botón para la personalizada
-            terminaMedicion= true; //Se informa que se debe cerrar el hilo.
-            banderaMedicion= true; //Se habilita un nuevo registro de medición personalizada.
-            //iniciarPersonalizada.setText("Iniciar medición personalizada"); //Se reestablece el botón.
-            btnIniciarSenales.setDisable(false); //Se habilita el botón de medición simple.
-            busquedaMediciones.setDisable(false);
-            botonReproducir.setDisable(false);
-            esPersonalizada= false; //Se habilita el registro de medición genérica (simple).            
-        }
-               
+    {               
+        
+        
     }
     
     private int crearMedicionPersonalizada()
@@ -1266,41 +1362,7 @@ public class MenuController implements Initializable {
     
     private void acabarMedicion(int tiempo)
     {
-        int duracionMuestra= tiempo*1000; //Se convierte a milisegundos.
-        Timer timerMedicion;
-        timerMedicion = new Timer();
         
-        TimerTask taskMedir = new TimerTask() 
-        {
-            @Override
-            public void run() throws EmptyStackException
-            {   
-                ActionEvent e= new ActionEvent();
-                if (ultimaDeLaSerie) //Si es la última medición de una serie de personalizadas.
-                {
-                    iniciarLecturaSenales(e);
-                    btnIniciarSenales.setDisable(false); //Esto es lo último que hace, cuando ya se acabo el tiempo total de la medición personalizada.
-                    busquedaMediciones.setDisable(false);
-                    botonReproducir.setDisable(false);
-                    esPersonalizada= false;
-                    banderaMedicion= true;
-                    ultimaDeLaSerie= false;
-                    Platform.runLater(new Runnable()
-                    {
-                        @Override
-                        public void run() {                    
-                               iniciarPersonalizada.setText("Iniciar medición personalizada");
-                        }
-                    });
-                }else
-                {
-                    iniciarLecturaSenales(e);
-                }
-                
-            }
-        };
-        // Empezamos dentro de 10s 
-        timerMedicion.schedule(taskMedir, duracionMuestra);
     }
     
     private int obtenerIntervalo()
@@ -1357,6 +1419,12 @@ public class MenuController implements Initializable {
        int resultado= 30;
        switch(valor)
        {
+           case "20 minutos":
+               resultado= 20;
+               break;
+           case "30 minutos":
+               resultado= 30;
+               break;
            case "1 hora":
                resultado= 60;
                break;
@@ -1364,10 +1432,36 @@ public class MenuController implements Initializable {
                resultado= 90;
                break;
            case "2 horas": //Modificar esto, en este momento está para pruebas.
-               resultado= 10;
-               System.err.println("Eureka!!!!!!!!!!!!!!!!!!");
+               resultado= 120;               
                break;
-           default: resultado= 30;
+           default: resultado= 10;
+               break;
+       }       
+       return resultado;
+    }
+    
+     private int obtenerSubmuestreo()
+    {
+       String valor= this.choiceIntervaloSubmuestreo.getSelectionModel().getSelectedItem();
+       int resultado= 10;
+       switch(valor)
+       {
+           case "20 minutos":
+               resultado= 20;
+               break;
+           case "30 minutos":
+               resultado= 30;
+               break;
+           case "40 minutos":
+               resultado= 40;
+               break;
+           case "50 minutos":
+               resultado= 50;
+               break;
+           case "60 minutos": //Modificar esto, en este momento está para pruebas.
+               resultado= 60;               
+               break;
+           default: resultado= 10;
                break;
        }       
        return resultado;
@@ -1562,7 +1656,11 @@ public void graficar() {
         duracionMuestra.setItems(availableChoices);
         duracionMuestra.getSelectionModel().selectFirst();
         
-        availableChoices = FXCollections.observableArrayList("30 minutos", "1 hora", "1 hora, 30 minutos", "2 horas"); 
+        availableChoices = FXCollections.observableArrayList("10 segundos", "20 segundos", "30 segundos", "40 segundos", "50 segundos",  "60 segundos"); 
+        choiceIntervaloSubmuestreo.setItems(availableChoices);
+        choiceIntervaloSubmuestreo.getSelectionModel().selectFirst();
+        
+        availableChoices = FXCollections.observableArrayList("10 minutos", "20 minutos", "30 minutos", "1 hora", "1 hora, 30 minutos", "2 horas"); 
         duracionExamen.setItems(availableChoices);
         duracionExamen.getSelectionModel().selectFirst();
         
@@ -1633,15 +1731,19 @@ public void graficar() {
     
         public void asignarStaticParameters(int hr, int respRate, int spo2Oxi, int spo2Hr, int presRate, int presDias, int presMed, int presSist) {       
         
-        //Se guardan los datos en el vector para luego ser almacenados en BD    
-        vsistolica.add(presSist);
-        vdiastolica.add(presDias);
-        vpulso.add(presRate);
-        vmed.add(presMed);
-        vSPO2text.add(spo2Oxi);
-        vHR.add(spo2Hr);
-        vRESPtext.add(respRate);
-        vECG.add(hr);
+        //Se guardan los datos en el vector para luego ser almacenados en BD 
+        if(almacenarMedicion)
+        {
+            vsistolica.add(presSist);
+            vdiastolica.add(presDias);
+            vpulso.add(presRate);
+            vmed.add(presMed);
+            vSPO2text.add(spo2Oxi);
+            vHR.add(spo2Hr);
+            vRESPtext.add(respRate);
+            vECG.add(hr);
+        }
+        
         //Se pintan los datos    
         pintarHR(hr);
         pintarSPO2(spo2Oxi, spo2Hr);
@@ -1836,7 +1938,7 @@ public void graficar() {
 
                 if (!admin.ecg1Signal.isEmpty()){
                     int auxEcg1= admin.ecg1Signal.readWave();
-                    vECG1.add(auxEcg1);
+                    if(almacenarMedicion) vECG1.add(auxEcg1);
                      dataECG1.add(auxEcg1);
                     // System.out.println(ecg1); 
                  } else{
@@ -1844,14 +1946,14 @@ public void graficar() {
                   }
                  if (!admin.ecg2Signal.isEmpty()){
                      int auxEcg2= admin.ecg2Signal.readWave();
-                     vECG2.add(auxEcg2);
+                     if(almacenarMedicion) vECG2.add(auxEcg2);
                      dataECG2.add(auxEcg2);
                  } else{
                      //monitor.getData();
                  }
                  if (!admin.respSignal.isEmpty()){
                      int auxResp= admin.respSignal.readWave();
-                     vRESP.add(auxResp);
+                     if(almacenarMedicion) vRESP.add(auxResp);
                      dataRESP.add(auxResp);
                  }  else{
                      //monitor.getData();
@@ -1860,7 +1962,7 @@ public void graficar() {
                      //Con la ayuda de esta sección se guardarán los datos mostrados en pantalla dentro de los vectores.
                       
                      int auxSpo2= admin.spo2Signal.readWave();
-                     vSPO2.add(auxSpo2);
+                     if(almacenarMedicion) vSPO2.add(auxSpo2);
                      dataSPO2.add(auxSpo2);
                      
                  }else{
@@ -2429,7 +2531,8 @@ public void reproducirRESP()
         iniciarPersonalizada.setDisable(value);
         intervalo.setDisable(value);
         duracionMuestra.setDisable(value);        
-        duracionExamen.setDisable(value);        
+        duracionExamen.setDisable(value);
+        choiceIntervaloSubmuestreo.setDisable(value);
     }
 
     //Este método permite habilitar o inhabilitar los botones de la sección de afinamientos.
@@ -2502,6 +2605,7 @@ public void reproducirRESP()
                 apagarDesdeHilo= false;
                 btnIniciarSenales.setText("Iniciar medición simple");                
             }
+            detenerLecturaSenales();
             mensajeDesconexion();
             
         }
@@ -2511,9 +2615,8 @@ public void reproducirRESP()
     public void cancelarMediciones()
     {
        if(btnIniciarSenales.getText().equals("Detener medición"))
-       {
-           ActionEvent e= new ActionEvent();
-           iniciarLecturaSenales(e);           
+       {           
+           medicionSimple(); //Se cancela la medición simple en caso de desconexión.
        }
        if(!banderaMedicion)
        {
@@ -2537,6 +2640,7 @@ public void reproducirRESP()
                 dialogoAlerta.setTitle("Conexión exitosa");
                 dialogoAlerta.setHeaderText(null);
                 dialogoAlerta.setContentText("El dispositivo se ha conectado correctamente");
+                iniciarLecturaSenales();
                 dialogoAlerta.initStyle(StageStyle.UTILITY);
                 dialogoAlerta.showAndWait();                
             }   
@@ -2591,11 +2695,22 @@ public void reproducirRESP()
                 
                 //Luego se procede a informar la desconexión.
                 System.out.println("Se ha desconectado el dispositivo");                            
-                //mensajeDesconexion();                
+                //mensajeDesconexion();   
+                detenerLecturaSenales();
             }
         };
         // Empezamos dentro de 10s 
         timerIniciar.schedule(taskIniciar, 0);
+    }
+    
+    public void mensajePersonalizado(String mensaje, String titulo)
+    {
+        Alert dialogoAlerta= new Alert(AlertType.INFORMATION);
+        dialogoAlerta.setTitle(titulo);
+        dialogoAlerta.setHeaderText(null);
+        dialogoAlerta.setContentText(mensaje);
+        dialogoAlerta.initStyle(StageStyle.UTILITY);
+        dialogoAlerta.showAndWait(); 
     }
     
     public void mensajeDesconexion()

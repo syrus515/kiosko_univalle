@@ -265,7 +265,7 @@ public class ThreadCliente extends Thread {
                             }
                             if (dato[18].equals("temp")) {
                                 staticParameter.getTemp(dato[19]);
-                                System.out.println("ESTATICOS RECIBIDO");
+                                //System.out.println("ESTATICOS RECIBIDO");
                             }
                         } else if (dato[1].equals("tanita")) { //"KUV!tanita!peso!%s!fat!%s!agua!%s!musculo!%s"
                             System.out.println(linea);
