@@ -1290,6 +1290,7 @@ public class MenuController implements Initializable {
                         @Override
                         public void run() {                    
                                iniciarPersonalizada.setText("Iniciar medición personalizada");
+                               mensajePersonalizado("Medición personalizada terminada con éxito", "Medición terminada");
                         }
                     });
                 }else
@@ -1357,6 +1358,12 @@ public class MenuController implements Initializable {
        int resultado= 30;
        switch(valor)
        {
+           case "20 minutos":
+               resultado= 20;
+               break;
+           case "30 minutos":
+               resultado= 30;
+               break;               
            case "1 hora":
                resultado= 60;
                break;
@@ -1364,10 +1371,9 @@ public class MenuController implements Initializable {
                resultado= 90;
                break;
            case "2 horas": //Modificar esto, en este momento está para pruebas.
-               resultado= 10;
-               System.err.println("Eureka!!!!!!!!!!!!!!!!!!");
+               resultado= 120;               
                break;
-           default: resultado= 30;
+           default: resultado= 10;
                break;
        }       
        return resultado;
@@ -1546,9 +1552,12 @@ public void graficar() {
         //*******************Spinner de antecedentes familiares
         valueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 20, 0);
 
-        textAFDiabetes.setValueFactory(valueFactory);       
+        textAFDiabetes.setValueFactory(valueFactory);
+        valueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 20, 0);
         textAFHipertension.setValueFactory(valueFactory); 
+        valueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 20, 0);
         textAFInfartos.setValueFactory(valueFactory); 
+        valueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 20, 0);
         textAFAC.setValueFactory(valueFactory); 
         
         
@@ -1562,7 +1571,7 @@ public void graficar() {
         duracionMuestra.setItems(availableChoices);
         duracionMuestra.getSelectionModel().selectFirst();
         
-        availableChoices = FXCollections.observableArrayList("30 minutos", "1 hora", "1 hora, 30 minutos", "2 horas"); 
+        availableChoices = FXCollections.observableArrayList("10 minutos", "20 minutos", "30 minutos", "1 hora", "1 hora, 30 minutos", "2 horas"); 
         duracionExamen.setItems(availableChoices);
         duracionExamen.getSelectionModel().selectFirst();
         
@@ -2334,10 +2343,19 @@ public void reproducirRESP()
     public void actualizarPresion()
     {        
         int diastolica= admin.staticParameters.readPresDias();
-        int sistolica= admin.staticParameters.readPresSist();        
-        if(diastolica<=0)
+        int sistolica= admin.staticParameters.readPresSist();  
+        System.out.println("*************************"+diastolica  + "/"+ sistolica);
+        if(diastolica<=0 || diastolica>500 || sistolica>500)
         {
             presionImprimir.setText("---/---");
+            tomarPresion.setText("Tomar presión");
+            Platform.runLater(new Runnable(){
+                @Override
+                public void run() {
+                       mensajePersonalizado("Ha habido un error al tomar la presión, por favor verifique\nel tensiómetro y reinicie la medición", "Error en la toma de presión");
+                }
+            });                
+            
         }else
         {
             presSistolica= sistolica;
@@ -2347,6 +2365,7 @@ public void reproducirRESP()
                 @Override
                 public void run() {                    
                        tomarPresion.setText("Tomar presión");
+                       mensajePersonalizado("Toma de presión arterial terminada con éxito", "Presión registrada");
                 }
             });
             //admin.enviarComando("stopPressure", 0);//Se resetea la toma de presión.
@@ -2502,7 +2521,7 @@ public void reproducirRESP()
                 apagarDesdeHilo= false;
                 btnIniciarSenales.setText("Iniciar medición simple");                
             }
-            mensajeDesconexion();
+            
             
         }
     }
@@ -2532,7 +2551,7 @@ public void reproducirRESP()
             iniciarPersonalizada.setText("Iniciar medición personalizada");
             
             if(admin.isConnectedTCP())
-            {                
+            {   
                 Alert dialogoAlerta= new Alert(AlertType.INFORMATION);
                 dialogoAlerta.setTitle("Conexión exitosa");
                 dialogoAlerta.setHeaderText(null);
@@ -2590,12 +2609,29 @@ public void reproducirRESP()
                 //tomarPresion.setText("Tomar presión");                
                 
                 //Luego se procede a informar la desconexión.
-                System.out.println("Se ha desconectado el dispositivo");                            
+                System.out.println("Se ha desconectado el dispositivo"); 
+                Platform.runLater(new Runnable()
+                {
+                    @Override
+                    public void run() {                    
+                           mensajePersonalizado("Conexión perdida, por favor verifique el cable del dispositivo y acceda a\n Conexión -> Conectar para intentar de nuevo", "Conexión perdida");
+                    }
+                });
                 //mensajeDesconexion();                
             }
         };
         // Empezamos dentro de 10s 
         timerIniciar.schedule(taskIniciar, 0);
+    }
+    
+    public void mensajePersonalizado(String mensaje, String titulo)
+    {
+        Alert dialogoAlerta= new Alert(AlertType.INFORMATION);
+        dialogoAlerta.setTitle(titulo);
+        dialogoAlerta.setHeaderText(null);
+        dialogoAlerta.setContentText(mensaje);
+        dialogoAlerta.initStyle(StageStyle.UTILITY);
+        dialogoAlerta.showAndWait(); 
     }
     
     public void mensajeDesconexion()
