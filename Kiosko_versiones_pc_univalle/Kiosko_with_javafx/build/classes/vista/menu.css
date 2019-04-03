@@ -21,5 +21,9 @@
     -fx-stroke-width: 2px;
     -fx-effect: null;
 }
+
+.first-name-col.table-cell {
+    -fx-font-size: 25pt ;
+}
  
 .default-color0.chart-series-line { -fx-stroke: #060000; }

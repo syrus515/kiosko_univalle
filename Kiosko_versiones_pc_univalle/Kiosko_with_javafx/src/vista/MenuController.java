@@ -1563,15 +1563,15 @@ public void graficar() {
         
         // Asignación de parámetros para desplegables       
         
-        ObservableList<String> availableChoices = FXCollections.observableArrayList("5 minutos", "10 minutos", "15 minutos", "20 minutos", "25 minutos", "30 minutos"); 
+        ObservableList<String> availableChoices = FXCollections.observableArrayList("5 minutes", "10 minutos", "15 minutos", "20 minutos", "25 minutos", "30 minutos"); 
         intervalo.setItems(availableChoices);
         intervalo.getSelectionModel().selectFirst();        
         
-        availableChoices = FXCollections.observableArrayList("15 segundos", "30 segundos", "45 segundos", "60 segundos"); 
+        availableChoices = FXCollections.observableArrayList("15 seconds", "30 segundos", "45 segundos", "60 segundos"); 
         duracionMuestra.setItems(availableChoices);
         duracionMuestra.getSelectionModel().selectFirst();
         
-        availableChoices = FXCollections.observableArrayList("10 minutos", "20 minutos", "30 minutos", "1 hora", "1 hora, 30 minutos", "2 horas"); 
+        availableChoices = FXCollections.observableArrayList("10 minutes", "20 minutos", "30 minutos", "1 hora", "1 hora, 30 minutos", "2 horas"); 
         duracionExamen.setItems(availableChoices);
         duracionExamen.getSelectionModel().selectFirst();
         
@@ -1607,15 +1607,15 @@ public void graficar() {
         textActividadFisicaMinutos.getSelectionModel().selectFirst();
         
         //*******************Desplegables del afinamiento
-        availableChoices = FXCollections.observableArrayList("Derecho", "Izquierdo");  
+        availableChoices = FXCollections.observableArrayList("Right", "Izquierdo");  
         brazoAfinamiento.setItems(availableChoices);
         brazoAfinamiento.getSelectionModel().selectFirst();
         
-        availableChoices = FXCollections.observableArrayList("Sentado", "De pie", "Acostado");  
+        availableChoices = FXCollections.observableArrayList("Seated", "De pie", "Acostado");  
         posicionAfinamiento.setItems(availableChoices);
         posicionAfinamiento.getSelectionModel().selectFirst();
         
-        availableChoices = FXCollections.observableArrayList("Mañana", "Tarde", "Noche");  
+        availableChoices = FXCollections.observableArrayList("Morning", "Tarde", "Noche");  
         jornadaAfinamiento.setItems(availableChoices);
         jornadaAfinamiento.getSelectionModel().selectFirst();
         
@@ -1698,12 +1698,12 @@ public void graficar() {
         gc.setFill(Color.BLACK);
         Font fontLarge = Font.font("Verdana", FontWeight.BOLD, 20);
         gc.setFont(fontLarge);
-        gc.fillText("PRESIÓN", 1700, 50);
+        gc.fillText("PRESSURE", 1700, 50);
         fontLarge = Font.font("Verdana", FontWeight.BOLD, 10);
         gc.setFont(fontLarge);
-        gc.fillText("Sistólica", 1600, 90);
-        gc.fillText("Diastólica", 1600, 150);
-        gc.fillText("Pulso", 1750, 90);
+        gc.fillText("Sistolic", 1600, 90);
+        gc.fillText("Diastolic", 1600, 150);
+        gc.fillText("Pulse", 1750, 90);
         gc.fillText("Med", 1750, 150);
         fontLarge = Font.font("Verdana", FontWeight.BOLD, 34);
         gc.setFont(fontLarge);
@@ -1801,22 +1801,22 @@ public void graficar() {
         
         lc1.setAnimated(false);
         //lc1.setId("ondaSPO2");
-        lc1.setTitle("Onda SPO2");
+        lc1.setTitle("SPO2 wave");
         
         lc2.setAnimated(false);
         //lc2.setId("ondaECG1");
-        lc2.setTitle("Onda ECG CH1");
+        lc2.setTitle("ECG wave CH1");
         
         /*lc2.setBorder(new Border(new BorderStroke(Color.BLACK, 
                 BorderStrokeStyle.DASHED, CornerRadii.EMPTY, BorderWidths.DEFAULT)));*/
         
         lc3.setAnimated(false);
         //lc3.setId("ondaECG2");
-        lc3.setTitle("Onda ECG CH2");
+        lc3.setTitle("ECG wave CH2");
         
         lc4.setAnimated(false);
         //lc4.setId("ondaRESP");
-        lc4.setTitle("Onda RESP");
+        lc4.setTitle("RESP wave");
 
         //-- Chart Series
         series1= new XYChart.Series<>();
@@ -2017,9 +2017,9 @@ private class QueueParametros implements Runnable {
         gc.fillText("L", anchoECG2 + 2, ptoInicialECG2_Y + mitadECG2);
         gc.fillText("T", anchoECG2 + 2, ptoInicialECG2_Y + (mitadECG2 + 15));
         gc.fillText("A", anchoECG2 + 2, ptoInicialECG2_Y + (mitadECG2 + 30));
-        gc.fillText("J", anchoECG2 + 2, ptoInicialECG2_Y + (mitadECG2 + 45));
+        gc.fillText("G", anchoECG2 + 2, ptoInicialECG2_Y + (mitadECG2 + 45));
         gc.fillText("E", anchoECG2 + 2, ptoInicialECG2_Y + (mitadECG2 + 60));
-        gc.fillText("-1.4   Segundos", anchoECG2 + (ptoInicialECG2 - 5), (altoECG2 - 5) + ptoInicialECG2_Y);
+        gc.fillText("-1.4   Seconds", anchoECG2 + (ptoInicialECG2 - 5), (altoECG2 - 5) + ptoInicialECG2_Y);
 
         // lines of voltage.
         double intervalo = (altoECG2 - (ptoInicialECG2 * 2)) / 14;
