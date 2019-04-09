@@ -1158,50 +1158,153 @@ public class MenuController implements Initializable {
     }
     
     private static boolean cancelarMedicionPersonalizada= false; //Bandera para saber cuándo la función debe cancelar el proceso.
+    private static boolean terminaMedicion= false; //Bandera que controla que no se ejecuten más registros de los necesarios.
+    //Timerse necesarios
+    private static Timer timerCancelarGuardado;
+    private static Timer timerMuestra;
+    private static Timer timerMedicion;
+    private static Timer TimerSubmuestreo;
     @FXML
     private void medicionPersonalizada()
-    {
-        int intervalo= obtenerIntervalo()*60*1000;
-        int duracionMuestra= obtenerDuracion()*1000;
-        int duracionExamen= obtenerDuracionExamen()*60*1000;
-        int subMuestreo= obtenerSubmuestreo()*1000;
+    {        
         if (cancelarMedicionPersonalizada)
         {
             cancelarMedicionPersonalizada= false;
+            terminaMedicion= true;            
+            //Se cancelan los timers de la medición personalizada
+            timerCancelarGuardado.cancel();
+            timerMuestra.cancel();        
+            timerMedicion.cancel();
+            //Se informa que se ya NO se almacenará una medición personalizada
+            esPersonalizada= false;
+            //Se genera mensaje
+            mensajePersonalizado("La medición personalizada ha sido cancelada", "Medición personalizada cancelada");
+
+            //Se cambia el testigo de medición personalizada
+
+            //Se habilita la medición
+            enableMeasure(true);
+
         }else
         {
             cancelarMedicionPersonalizada= true;
+            terminaMedicion= false;
+            int intervalo= obtenerIntervalo()*60*1000;
+            int duracionMuestra= obtenerDuracion()*1000;
+            int duracionExamen= obtenerDuracionExamen()*60*1000;
+            int subMuestreo= obtenerSubmuestreo()*1000;
+            
+            //Se crea la medición personalizada
+            idMedPersonalizada= crearMedicionPersonalizada();
+            //Se informa que se almacenará una medición personalizada
+            esPersonalizada= true;
             
             //Insertar testigo que advierte de medición personalizada
             
             
             
             //*******************************************************            
+                        
+            //Control de duración de muestra.            
+            timerMedicion = new Timer();             
+            TimerTask taskMedicion = new TimerTask() 
+            {
+                @Override
+                public void run()
+                {                    
+                    cancelarMedicionPersonalizada= false; //Se habilita que se pueda hacer nuevo medición personalizada
+                    terminaMedicion= true;
+                    almacenarMedicion= false; //Se desactiva el registro de la medición.
+                    //Se cancelan los timers de la medición personalizada
+                    timerCancelarGuardado.cancel();
+                    timerMuestra.cancel(); 
+                    //Se informa que se ya NO se almacenará una medición personalizada
+                    esPersonalizada= false;
+                    //Se genera mensaje
+                    Platform.runLater(new Runnable(){
+                        @Override
+                        public void run() {                    
+                               mensajePersonalizado("La medición personalizada ha terminado con éxito", "Medición personalizada terminada");
+                        }
+                    });
+                    //Se cambia el testigo de medición personalizada
+                    
+                    //Se habilita la medición
+                    enableMeasure(true);
+                                 
+                }
+            };   
+            //Se lanza el timer que detiene todo el examen.
+            timerMedicion.schedule(taskMedicion, duracionExamen); 
             
-            //Se crea el método que almacenará las señales dentro de los intervalos determinados.
-            Timer timerMedicionPersonalizada;
-            timerMedicionPersonalizada = new Timer();             
-            TimerTask taskIniciar = new TimerTask() 
+            //Timer de la muestra
+            
+            timerMuestra = new Timer();             
+            TimerTask taskMuestra = new TimerTask() 
+            {
+
+                @Override
+                public void run() 
+                {
+                    if(!terminaMedicion) //Si la medición personalizada no ha terminado, continúe
+                    {
+                       //Se activa el registro de señales
+                        almacenarMedicion= true;
+                        //Activar testigo de muestreo
+                        Platform.runLater(new Runnable(){
+                            @Override
+                            public void run() {                    
+                                   mensajePersonalizado("iniciado", "Medición personalizada terminada");
+                            }
+                        }); 
+                    }
+                }
+            };   
+            //Se lanza el timer que habilita el registro de datos.
+            timerMuestra.schedule(taskMuestra, 0, intervalo);
+            
+            //Timer para cancelar guardado
+            
+            timerCancelarGuardado = new Timer();             
+            TimerTask taskCancelar = new TimerTask() 
             {
 
                 @Override
                 public void run()
                 {
-                    cancelarMedicionSimple= false; //Se reestablece la bandera para que pueda iniciarse una nueva medición                    
-                    almacenarSenales(); //Se almacenan las señales.
-                    almacenarMedicion= false; //Se desactiva el registro de la medición.
-                    enableMeasure(true); //Se activan los botones de medición.
-                    Platform.runLater(new Runnable(){
-                        @Override
-                        public void run() {                    
-                               mensajePersonalizado("La medición simple ha finalizado", "Medición simple terminada");
-                        }
-                    });
+                    if(!terminaMedicion) //Si la medición personalizada no ha terminado, continúe
+                    {
+                        almacenarMedicion= false; //Se desactiva el registro de la medición.
                     
+                        //Desactivar testigo de muestreo
+                        Platform.runLater(new Runnable(){
+                            @Override
+                            public void run() {                    
+                                   mensajePersonalizado("terminado", "Medición personalizada terminada");
+                            }
+                        });
+
+
+                        almacenarSenales(); //Se almacenan las señales.
+                    }                                        
                 }
-            }; 
-            // Empezamos dentro de 60s 
-            timerMedicionPersonalizada.schedule(taskIniciar, 60000);
+            };   
+            //Se lanza el timer que cancela el guardado y almacena lo registrado.
+            timerCancelarGuardado.schedule(taskCancelar, duracionMuestra, intervalo);
+/*
+            //Control de duración de submuestreo.            
+            TimerSubmuestreo = new Timer();             
+            TimerTask taskSubmuestreo = new TimerTask() 
+            {
+
+                @Override
+                public void run()
+                {   
+                                 
+                }
+            };   
+            //Se lanza el timer controla el submuestreo.
+            TimerSubmuestreo.schedule(taskSubmuestreo, subMuestreo, subMuestreo); */
             
         }
     }
@@ -1316,7 +1419,7 @@ public class MenuController implements Initializable {
         prepareTimeline();
     }*/
     
-    private boolean terminaMedicion; //Determina si la medición ya terminó del todo
+    //private boolean terminaMedicion; //Determina si la medición ya terminó del todo
     private boolean banderaMedicion= true; //Determina si la medición personalizada inicia o se cancela
     private static boolean ultimaDeLaSerie= false;
     
