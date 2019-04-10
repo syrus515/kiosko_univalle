@@ -235,6 +235,8 @@
                               <Button fx:id="detenerReproduccion" layoutX="181.0" layoutY="638.0" mnemonicParsing="false" onAction="#reproducirMedicion" prefHeight="49.0" prefWidth="113.0" text="Detener" />
                               <Label layoutX="1320.0" layoutY="501.0" text="Intervalo submuestreo:" />
                               <ChoiceBox fx:id="choiceIntervaloSubmuestreo" layoutX="1320.0" layoutY="522.0" prefHeight="51.0" prefWidth="150.0" />
+                              <Label fx:id="indicadorPersonalizada" layoutX="1054.0" layoutY="639.0" prefHeight="47.0" prefWidth="173.0" />
+                              <Label fx:id="indicadorMuestra" layoutX="852.0" layoutY="639.0" minHeight="47.0" prefWidth="173.0" />
                               
                            </children>
                         </AnchorPane>

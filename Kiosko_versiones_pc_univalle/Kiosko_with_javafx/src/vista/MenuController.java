@@ -66,6 +66,7 @@ import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.geometry.Insets;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
@@ -78,6 +79,8 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.Border;
 import javafx.scene.layout.BorderStroke;
 import javafx.scene.layout.BorderStrokeStyle;
@@ -471,6 +474,10 @@ public class MenuController implements Initializable {
     private Spinner<Integer> textAFAC;
     @FXML
     private ChoiceBox<String> choiceIntervaloSubmuestreo;
+    @FXML
+    private Label indicadorPersonalizada;
+    @FXML
+    private Label indicadorMuestra;
     
     /**
      * Este método administra el cierre del programa para esta clase, ya que soporta la parte prinicipal de la ejecución.
@@ -1113,6 +1120,8 @@ public class MenuController implements Initializable {
             enableMeasure(true); //Se activan los botones de medición.
             btnIniciarSenales.setText("Iniciar medición simple");
             resetVectores();
+            //Método de testigo de medición simple
+            indicador(false, "");
             mensajePersonalizado("La medición simple ha sido cancelada", "Medición simple cancelada");
                         
         }else
@@ -1120,8 +1129,8 @@ public class MenuController implements Initializable {
             cancelarMedicionSimple= true;
             //Se activa el almacenado de la medición
             
-            //Insertar método de testigo de medición simple
-            
+            //Método de testigo de medición simple
+            indicador(true, "Medición simple en curso");
             
             
             //*********************************************
@@ -1146,7 +1155,9 @@ public class MenuController implements Initializable {
                     Platform.runLater(new Runnable(){
                         @Override
                         public void run() {                    
-                               mensajePersonalizado("La medición simple ha finalizado", "Medición simple terminada");
+                            //Método de testigo de medición simple
+                            indicador(false, "");
+                            mensajePersonalizado("La medición simple ha finalizado", "Medición simple terminada");                               
                         }
                     });
                     
@@ -1181,6 +1192,7 @@ public class MenuController implements Initializable {
             mensajePersonalizado("La medición personalizada ha sido cancelada", "Medición personalizada cancelada");
 
             //Se cambia el testigo de medición personalizada
+            indicador(false, "");
 
             //Se habilita la medición
             enableMeasure(true);
@@ -1199,8 +1211,8 @@ public class MenuController implements Initializable {
             //Se informa que se almacenará una medición personalizada
             esPersonalizada= true;
             
-            //Insertar testigo que advierte de medición personalizada
-            
+            //Testigo que advierte de medición personalizada
+            indicador(true, "Medición personalizada en curso");
             
             
             //*******************************************************            
@@ -1224,10 +1236,11 @@ public class MenuController implements Initializable {
                     Platform.runLater(new Runnable(){
                         @Override
                         public void run() {                    
-                               mensajePersonalizado("La medición personalizada ha terminado con éxito", "Medición personalizada terminada");
+                                //Se cambia el testigo de medición personalizada
+                               indicador(false, "");
+                               mensajePersonalizado("La medición personalizada ha terminado con éxito", "Medición personalizada terminada");                               
                         }
-                    });
-                    //Se cambia el testigo de medición personalizada
+                    });                    
                     
                     //Se habilita la medición
                     enableMeasure(true);
@@ -1245,7 +1258,7 @@ public class MenuController implements Initializable {
 
                 @Override
                 public void run() 
-                {
+                {                    
                     if(!terminaMedicion) //Si la medición personalizada no ha terminado, continúe
                     {
                        //Se activa el registro de señales
@@ -1254,14 +1267,15 @@ public class MenuController implements Initializable {
                         Platform.runLater(new Runnable(){
                             @Override
                             public void run() {                    
-                                   mensajePersonalizado("iniciado", "Medición personalizada terminada");
+                                //Testigo que advierte de medición personalizada
+                                indicadorMuestreo(true, "Medición en curso \nno retire los dispositivos");
                             }
                         }); 
                     }
                 }
             };   
             //Se lanza el timer que habilita el registro de datos.
-            timerMuestra.schedule(taskMuestra, 0, intervalo);
+            timerMuestra.schedule(taskMuestra, 10, intervalo); //Se inicia en 10 para que alcance a verificar si ya se temrinó la medición.
             
             //Timer para cancelar guardado
             
@@ -1280,7 +1294,8 @@ public class MenuController implements Initializable {
                         Platform.runLater(new Runnable(){
                             @Override
                             public void run() {                    
-                                   mensajePersonalizado("terminado", "Medición personalizada terminada");
+                                   //Testigo que advierte de medición personalizada
+                                   indicadorMuestreo(false, "");
                             }
                         });
 
@@ -1423,7 +1438,6 @@ public class MenuController implements Initializable {
     private boolean banderaMedicion= true; //Determina si la medición personalizada inicia o se cancela
     private static boolean ultimaDeLaSerie= false;
     
-    @FXML
     public void iniciarMedicionPersonalizada()
     {               
         
@@ -2947,8 +2961,31 @@ public void reproducirRESP()
             pausarReproduccion.setText("Pausar");
             pausar= !pausar;
         }
-                
-        
     }
-       
+    
+    public void indicador(boolean activar, String mensaje)
+    {
+        if(activar)
+        {
+            indicadorPersonalizada.setText(mensaje);
+            indicadorPersonalizada.setBackground(new Background(new BackgroundFill(Color.GREEN, CornerRadii.EMPTY, Insets.EMPTY)));
+        }else
+        {
+           indicadorPersonalizada.setText("");
+           indicadorPersonalizada.setBackground(null); 
+        }
+    } 
+    
+    public void indicadorMuestreo(boolean activar, String mensaje)
+    {
+        if(activar)
+        {
+            indicadorMuestra.setText(mensaje);
+            indicadorMuestra.setBackground(new Background(new BackgroundFill(Color.GREEN, CornerRadii.EMPTY, Insets.EMPTY)));
+        }else
+        {
+            indicadorMuestra.setText("");
+            indicadorMuestra.setBackground(null);
+        }
+    } 
 }
