@@ -259,6 +259,15 @@ public class MenuController implements Initializable {
     Vector<Integer> vHR = new Vector(0,1);
     Vector<Integer> vRESPtext = new Vector(0,1);
     
+    Vector<Integer> SubmuestreoSistolica = new Vector(0,1);
+    Vector<Integer> SubmuestreoDiastolica = new Vector(0,1);
+    Vector<Integer> SubmuestreoPulso = new Vector(0,1);
+    Vector<Integer> SubmuestreoMed = new Vector(0,1);
+    Vector<Integer> SubmuestreoECG = new Vector(0,1);
+    Vector<Integer> SubmuestreoSPO2text = new Vector(0,1);
+    Vector<Integer> SubmuestreoHR = new Vector(0,1);
+    Vector<Integer> SubmuestreoRESPtext = new Vector(0,1);
+    
     
     private static final int MAX_DATA_POINTS_SPO2 = 500;
     private static final int MAX_DATA_POINTS_ECG = 500;
@@ -1175,6 +1184,7 @@ public class MenuController implements Initializable {
     private static Timer timerMuestra;
     private static Timer timerMedicion;
     private static Timer TimerSubmuestreo;
+    private static Timer timerSubMuestra;
     @FXML
     private void medicionPersonalizada()
     {        
@@ -1186,6 +1196,9 @@ public class MenuController implements Initializable {
             timerCancelarGuardado.cancel();
             timerMuestra.cancel();        
             timerMedicion.cancel();
+            timerSubMuestra.cancel();
+            //Se almacenan los datos que se hayan alcanzado a tomar del submuestreo
+            
             //Se informa que se ya NO se almacenará una medición personalizada
             esPersonalizada= false;
             //Se genera mensaje
@@ -1230,6 +1243,9 @@ public class MenuController implements Initializable {
                     //Se cancelan los timers de la medición personalizada
                     timerCancelarGuardado.cancel();
                     timerMuestra.cancel(); 
+                    timerSubMuestra.cancel();
+                    //Se almacenan los datos del submuestreo
+                    
                     //Se informa que se ya NO se almacenará una medición personalizada
                     esPersonalizada= false;
                     //Se genera mensaje
@@ -1277,8 +1293,25 @@ public class MenuController implements Initializable {
             //Se lanza el timer que habilita el registro de datos.
             timerMuestra.schedule(taskMuestra, 10, intervalo); //Se inicia en 10 para que alcance a verificar si ya se temrinó la medición.
             
-            //Timer para cancelar guardado
+            //Timer para guardar los datos durante el submuestreo
             
+            timerSubMuestra = new Timer();             
+            TimerTask taskSubMuestra = new TimerTask() 
+            {
+
+                @Override
+                public void run() 
+                {                    
+                    if(!terminaMedicion) //Si la medición personalizada no ha terminado, continúe
+                    {
+                       actualizarVectoresSubmuestreo(); 
+                    }
+                }
+            };   
+            //Se lanza el timer que registra los datos del submuestreo periodicamente.
+            timerSubMuestra.schedule(taskSubMuestra, 10, intervalo); //Se inicia en 10 para que alcance a verificar si ya se temrinó la medición.
+            
+            //Timer para cancelar guardado            
             timerCancelarGuardado = new Timer();             
             TimerTask taskCancelar = new TimerTask() 
             {
@@ -1475,6 +1508,14 @@ public class MenuController implements Initializable {
         List<MedicionPersonalizada> listMedicion = queryMedicionFindAll.getResultList();
         
         return listMedicion.get(0).getId();     
+    }
+    
+    private void actualizarMedicionPersonalizada()
+    {
+        MedicionPersonalizada medicionPersonalizada= em.find(MedicionPersonalizada.class, idMedPersonalizada);
+        em.getTransaction().begin();
+        medicionPersonalizada.setECG(SubmuestreoECG.toString());
+        medicionPersonalizada.setECGMinutes(error);
     }
     
     private void acabarMedicion(int tiempo)
@@ -2987,5 +3028,29 @@ public void reproducirRESP()
             indicadorMuestra.setText("");
             indicadorMuestra.setBackground(null);
         }
-    } 
+    }
+    
+    public void actualizarVectoresSubmuestreo()
+    {   
+        SubmuestreoSistolica.add(admin.staticParameters.readPresSist());
+        SubmuestreoDiastolica.add(admin.staticParameters.readPresDias());
+        SubmuestreoPulso.add(admin.staticParameters.readPresR());
+        SubmuestreoMed.add(admin.staticParameters.readPresMed());
+        SubmuestreoECG.add(admin.staticParameters.readHr());
+        SubmuestreoSPO2text.add(admin.staticParameters.readSpo2Oxi());
+        SubmuestreoHR.add(admin.staticParameters.readSpo2Hr());
+        SubmuestreoRESPtext.add(admin.staticParameters.readResp());
+    }
+    
+    public void resetVectoresSubmuestreo()
+    {   
+        SubmuestreoSistolica= new Vector(0,1);
+        SubmuestreoDiastolica= new Vector(0,1);
+        SubmuestreoPulso= new Vector(0,1);
+        SubmuestreoMed= new Vector(0,1);
+        SubmuestreoECG= new Vector(0,1);
+        SubmuestreoSPO2text= new Vector(0,1);
+        SubmuestreoHR= new Vector(0,1);
+        SubmuestreoRESPtext= new Vector(0,1);
+    }
 }

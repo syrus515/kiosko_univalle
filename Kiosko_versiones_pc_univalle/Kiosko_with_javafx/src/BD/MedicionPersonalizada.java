@@ -6,23 +6,20 @@
 package BD;
 
 import java.io.Serializable;
-import java.util.Collection;
 import java.util.Date;
 import javax.persistence.Basic;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Lob;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -63,8 +60,46 @@ public class MedicionPersonalizada implements Serializable {
     @Basic(optional = false)
     @Column(name = "detalles")
     private String detalles;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idPersonalizada")
-    private Collection<Medicion> medicionCollection;
+    @Basic(optional = false)
+    @Lob
+    @Column(name = "pulso")
+    private String pulso;
+    @Basic(optional = false)
+    @Lob
+    @Column(name = "pulsoMinutes")
+    private String pulsoMinutes;
+    @Basic(optional = false)
+    @Lob
+    @Column(name = "eCG")
+    private String eCG;
+    @Basic(optional = false)
+    @Lob
+    @Column(name = "eCGMinutes")
+    private String eCGMinutes;
+    @Basic(optional = false)
+    @Lob
+    @Column(name = "sPO2")
+    private String sPO2;
+    @Basic(optional = false)
+    @Lob
+    @Column(name = "sPO2Minutes")
+    private String sPO2Minutes;
+    @Basic(optional = false)
+    @Lob
+    @Column(name = "heartRate")
+    private String heartRate;
+    @Basic(optional = false)
+    @Lob
+    @Column(name = "heartRateMinutes")
+    private String heartRateMinutes;
+    @Basic(optional = false)
+    @Lob
+    @Column(name = "rESP")
+    private String rESP;
+    @Basic(optional = false)
+    @Lob
+    @Column(name = "rESPMinutes")
+    private String rESPMinutes;
 
     public MedicionPersonalizada() {
     }
@@ -73,13 +108,23 @@ public class MedicionPersonalizada implements Serializable {
         this.id = id;
     }
 
-    public MedicionPersonalizada(Integer id, int intervalo, int duracionMuestra, int duracionExamen, Date fecha, String detalles) {
+    public MedicionPersonalizada(Integer id, int intervalo, int duracionMuestra, int duracionExamen, Date fecha, String detalles, String pulso, String pulsoMinutes, String eCG, String eCGMinutes, String sPO2, String sPO2Minutes, String heartRate, String heartRateMinutes, String rESP, String rESPMinutes) {
         this.id = id;
         this.intervalo = intervalo;
         this.duracionMuestra = duracionMuestra;
         this.duracionExamen = duracionExamen;
         this.fecha = fecha;
         this.detalles = detalles;
+        this.pulso = pulso;
+        this.pulsoMinutes = pulsoMinutes;
+        this.eCG = eCG;
+        this.eCGMinutes = eCGMinutes;
+        this.sPO2 = sPO2;
+        this.sPO2Minutes = sPO2Minutes;
+        this.heartRate = heartRate;
+        this.heartRateMinutes = heartRateMinutes;
+        this.rESP = rESP;
+        this.rESPMinutes = rESPMinutes;
     }
 
     public Integer getId() {
@@ -130,13 +175,84 @@ public class MedicionPersonalizada implements Serializable {
         this.detalles = detalles;
     }
 
-    @XmlTransient
-    public Collection<Medicion> getMedicionCollection() {
-        return medicionCollection;
+    public String getPulso() {
+        return pulso;
     }
 
-    public void setMedicionCollection(Collection<Medicion> medicionCollection) {
-        this.medicionCollection = medicionCollection;
+    public void setPulso(String pulso) {
+        this.pulso = pulso;
+    }
+
+    public String getPulsoMinutes() {
+        return pulsoMinutes;
+    }
+
+    public void setPulsoMinutes(String pulsoMinutes) {
+        this.pulsoMinutes = pulsoMinutes;
+    }
+
+    public String getECG() {
+        return eCG;
+    }
+
+    public void setECG(String eCG) {
+        this.eCG = eCG;
+    }
+
+    public String getECGMinutes() {
+        return eCGMinutes;
+    }
+
+    public void setECGMinutes(String eCGMinutes) {
+        this.eCGMinutes = eCGMinutes;
+    }
+
+    public String getSPO2() {
+        return sPO2;
+    }
+
+    public void setSPO2(String sPO2) {
+        this.sPO2 = sPO2;
+    }
+
+    public String getSPO2Minutes() {
+        return sPO2Minutes;
+    }
+
+    public void setSPO2Minutes(String sPO2Minutes) {
+        this.sPO2Minutes = sPO2Minutes;
+    }
+
+    public String getHeartRate() {
+        return heartRate;
+    }
+
+    public void setHeartRate(String heartRate) {
+        this.heartRate = heartRate;
+    }
+
+    public String getHeartRateMinutes() {
+        return heartRateMinutes;
+    }
+
+    public void setHeartRateMinutes(String heartRateMinutes) {
+        this.heartRateMinutes = heartRateMinutes;
+    }
+
+    public String getRESP() {
+        return rESP;
+    }
+
+    public void setRESP(String rESP) {
+        this.rESP = rESP;
+    }
+
+    public String getRESPMinutes() {
+        return rESPMinutes;
+    }
+
+    public void setRESPMinutes(String rESPMinutes) {
+        this.rESPMinutes = rESPMinutes;
     }
 
     @Override
