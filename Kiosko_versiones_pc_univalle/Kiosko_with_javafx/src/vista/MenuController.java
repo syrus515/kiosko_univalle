@@ -266,7 +266,9 @@ public class MenuController implements Initializable {
     Vector<Integer> SubmuestreoECG = new Vector(0,1);
     Vector<Integer> SubmuestreoSPO2text = new Vector(0,1);
     Vector<Integer> SubmuestreoHR = new Vector(0,1);
-    Vector<Integer> SubmuestreoRESPtext = new Vector(0,1);
+    Vector<Integer> SubmuestreoRESPtext = new Vector(0,1);    
+    Vector<Integer> Submuestreominutos = new Vector(0,1);
+
     
     
     private static final int MAX_DATA_POINTS_SPO2 = 500;
@@ -1198,6 +1200,8 @@ public class MenuController implements Initializable {
             timerMedicion.cancel();
             timerSubMuestra.cancel();
             //Se almacenan los datos que se hayan alcanzado a tomar del submuestreo
+            actualizarMedicionPersonalizada();
+            resetVectoresSubmuestreo();
             
             //Se informa que se ya NO se almacenará una medición personalizada
             esPersonalizada= false;
@@ -1245,6 +1249,8 @@ public class MenuController implements Initializable {
                     timerMuestra.cancel(); 
                     timerSubMuestra.cancel();
                     //Se almacenan los datos del submuestreo
+                    actualizarMedicionPersonalizada();
+                    resetVectoresSubmuestreo();
                     
                     //Se informa que se ya NO se almacenará una medición personalizada
                     esPersonalizada= false;
@@ -1309,7 +1315,7 @@ public class MenuController implements Initializable {
                 }
             };   
             //Se lanza el timer que registra los datos del submuestreo periodicamente.
-            timerSubMuestra.schedule(taskSubMuestra, 10, intervalo); //Se inicia en 10 para que alcance a verificar si ya se temrinó la medición.
+            timerSubMuestra.schedule(taskSubMuestra, 10, subMuestreo); //Se inicia en 10 para que alcance a verificar si ya se temrinó la medición.
             
             //Timer para cancelar guardado            
             timerCancelarGuardado = new Timer();             
@@ -1484,6 +1490,7 @@ public class MenuController implements Initializable {
         int intervaloMedicion= obtenerIntervalo();
         int duracionMuestraMedicion= obtenerDuracion();
         int duracionExamenMedicion= obtenerDuracionExamen();
+        int duracionSubmuestreo= obtenerSubmuestreo();
         //AquÃ­ colocas tu objeto tipo Date
         Date date= new Date();
         try {                        
@@ -1497,8 +1504,18 @@ public class MenuController implements Initializable {
         med.setIntervalo(intervaloMedicion);
         med.setDuracionExamen(duracionExamenMedicion);
         med.setDuracionMuestra(duracionMuestraMedicion);
+        med.setSubintervalo(duracionSubmuestreo);
         med.setFecha(fechaGuardar);
         med.setDetalles(detallesMedicion.getText());
+        med.setSistolica("");
+        med.setDiastolica("");
+        med.setPulso("");
+        med.setECG("");
+        med.setSPO2("");
+        med.setHeartRate("");
+        med.setRESP("");
+        med.setMinutos("");
+        
         em.persist(med);                
         em.getTransaction().commit();  
         
@@ -1512,10 +1529,20 @@ public class MenuController implements Initializable {
     
     private void actualizarMedicionPersonalizada()
     {
+        em = Persistence.createEntityManagerFactory("KioskoPU").createEntityManager();
         MedicionPersonalizada medicionPersonalizada= em.find(MedicionPersonalizada.class, idMedPersonalizada);
         em.getTransaction().begin();
+        medicionPersonalizada.setSistolica(SubmuestreoSistolica.toString());
+        medicionPersonalizada.setDiastolica(SubmuestreoDiastolica.toString());
+        medicionPersonalizada.setPulso(SubmuestreoPulso.toString());
         medicionPersonalizada.setECG(SubmuestreoECG.toString());
-        medicionPersonalizada.setECGMinutes(error);
+        medicionPersonalizada.setSPO2(SubmuestreoSPO2text.toString());
+        medicionPersonalizada.setHeartRate(SubmuestreoHR.toString());
+        medicionPersonalizada.setRESP(SubmuestreoRESPtext.toString());
+        medicionPersonalizada.setMinutos(Submuestreominutos.toString());
+        em.getTransaction().commit();
+        System.out.println("Se guardó registro del submuestreo");
+        
     }
     
     private void acabarMedicion(int tiempo)
@@ -3030,16 +3057,33 @@ public void reproducirRESP()
         }
     }
     
+    //Contador necesario para guardar los segundos del submuestreo
+    private static int contadorSubmuestreo= 1;
     public void actualizarVectoresSubmuestreo()
     {   
+        int tiempo= contadorSubmuestreo*obtenerSubmuestreo();
         SubmuestreoSistolica.add(admin.staticParameters.readPresSist());
         SubmuestreoDiastolica.add(admin.staticParameters.readPresDias());
         SubmuestreoPulso.add(admin.staticParameters.readPresR());
         SubmuestreoMed.add(admin.staticParameters.readPresMed());
-        SubmuestreoECG.add(admin.staticParameters.readHr());
+        if(admin.staticParameters.readHr()==65436)
+        {
+            SubmuestreoECG.add(0);
+        }else
+        {
+            SubmuestreoECG.add(admin.staticParameters.readHr());
+        }        
         SubmuestreoSPO2text.add(admin.staticParameters.readSpo2Oxi());
         SubmuestreoHR.add(admin.staticParameters.readSpo2Hr());
-        SubmuestreoRESPtext.add(admin.staticParameters.readResp());
+        if(admin.staticParameters.readResp()==65436)
+        {
+            SubmuestreoRESPtext.add(0);
+        }else
+        {
+            SubmuestreoRESPtext.add(admin.staticParameters.readResp());
+        }        
+        Submuestreominutos.add(tiempo);
+        contadorSubmuestreo++;
     }
     
     public void resetVectoresSubmuestreo()
@@ -3052,5 +3096,6 @@ public void reproducirRESP()
         SubmuestreoSPO2text= new Vector(0,1);
         SubmuestreoHR= new Vector(0,1);
         SubmuestreoRESPtext= new Vector(0,1);
+        contadorSubmuestreo= 1;
     }
 }
