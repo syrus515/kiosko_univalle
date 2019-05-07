@@ -489,6 +489,10 @@ public class MenuController implements Initializable {
     private Label indicadorPersonalizada;
     @FXML
     private Label indicadorMuestra;
+    @FXML
+    private ChoiceBox<String> grupoSanguineo;
+    @FXML
+    private ChoiceBox<String> raza;
     
     /**
      * Este método administra el cierre del programa para esta clase, ya que soporta la parte prinicipal de la ejecución.
@@ -698,6 +702,8 @@ public class MenuController implements Initializable {
             p.setMunicipio(textMunicipio.getText());
             p.setZona(textZona.getSelectionModel().getSelectedItem().toString());
             p.setEstatura(Float.parseFloat(textEstatura.getText()));
+            p.setGrupoSanguineo(grupoSanguineo.getSelectionModel().getSelectedItem());
+            p.setRaza(raza.getSelectionModel().getSelectedItem());
             // *************************************************
             p.setFoto(imageInByteFoto);
             p.setHuella(plantillaHuella.serialize());
@@ -903,6 +909,8 @@ public class MenuController implements Initializable {
         textApellido2.setText(paciente.getApellido2());
         // Datos personales del paciente.
         textEstatura.setText(String.valueOf(paciente.getEstatura()));
+        grupoSanguineo.getSelectionModel().select(paciente.getGrupoSanguineo());
+        raza.getSelectionModel().select(paciente.getRaza());
         textTipoIdentificacion2.setText(paciente.getPacientesPK().getTipoid());
         textIdentificacion2.setText(paciente.getPacientesPK().getIdentificacion());
         textTelefonoFijo.setText(paciente.getTelFijo());
@@ -1014,6 +1022,11 @@ public class MenuController implements Initializable {
         textAFHipertension.setDisable(estado);
         textAFInfartos.setDisable(estado);
         textAFAC.setDisable(estado);
+        
+        //nuevos
+        textEstatura.setDisable(estado);
+        grupoSanguineo.setDisable(estado);
+        raza.setDisable(estado);
     }
 
     public void limpiarCampos() {
@@ -1058,6 +1071,11 @@ public class MenuController implements Initializable {
         textAFHipertension.getValueFactory().setValue(0);
         textAFInfartos.getValueFactory().setValue(0);
         textAFAC.getValueFactory().setValue(0);
+        
+        //nuevo
+        textEstatura.setText("");
+        grupoSanguineo.getSelectionModel().selectFirst();
+        raza.getSelectionModel().selectFirst();
     }
     
     //Variables necesarias para el método
@@ -1820,14 +1838,18 @@ public void graficar() {
         
         valueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 7, 0);        
         textFumaDias.setValueFactory(valueFactory);
+        valueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 7, 0);        
         textCosumeLicor.setValueFactory(valueFactory);
         
         //*******************Spinner de antecedentes familiares
         valueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 20, 0);
 
-        textAFDiabetes.setValueFactory(valueFactory);       
+        textAFDiabetes.setValueFactory(valueFactory);  
+        valueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 20, 0);
         textAFHipertension.setValueFactory(valueFactory); 
+        valueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 20, 0);
         textAFInfartos.setValueFactory(valueFactory); 
+        valueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 20, 0);
         textAFAC.setValueFactory(valueFactory); 
         
         
@@ -1862,6 +1884,15 @@ public void graficar() {
         availableChoices = FXCollections.observableArrayList("Urbana", "Rural"); 
         textZona.setItems(availableChoices);
         textZona.getSelectionModel().selectFirst();
+        
+        availableChoices = FXCollections.observableArrayList("O+", "0-", "A+", "A-", "B+", "B-", "AB+", "AB-"); 
+        grupoSanguineo.setItems(availableChoices);
+        grupoSanguineo.getSelectionModel().selectFirst();
+        
+        availableChoices = FXCollections.observableArrayList( "Blanca", "Indígena", "Negra o afroamericana", "Amerindia o nativo de Alaska", "Indioasiática", "China", "Filipina",
+                "Japonesa", "Coreana", "Vietnamita");
+        raza.setItems(availableChoices);
+        raza.getSelectionModel().selectFirst();
         
         //*******************Desplegables de antecedentes personales
         availableChoices = FXCollections.observableArrayList("No", "Tipo 1", "Tipo 2");        

@@ -235,8 +235,11 @@
                               <Button fx:id="detenerReproduccion" layoutX="181.0" layoutY="638.0" mnemonicParsing="false" onAction="#reproducirMedicion" prefHeight="49.0" prefWidth="113.0" text="Detener" />
                               <Label layoutX="1320.0" layoutY="501.0" text="Intervalo submuestreo:" />
                               <ChoiceBox fx:id="choiceIntervaloSubmuestreo" layoutX="1320.0" layoutY="522.0" prefHeight="51.0" prefWidth="150.0" />
-                              <Label fx:id="indicadorPersonalizada" layoutX="1054.0" layoutY="639.0" prefHeight="47.0" prefWidth="173.0" />
-                              <Label fx:id="indicadorMuestra" layoutX="852.0" layoutY="639.0" minHeight="47.0" prefWidth="173.0" />
+                              <Label fx:id="indicadorPersonalizada" layoutX="1054.0" layoutY="639.0" prefHeight="47.0" prefWidth="173.0" textFill="WHITE" />
+                              <Label fx:id="indicadorMuestra" layoutX="852.0" layoutY="639.0" minHeight="47.0" prefWidth="173.0" textFill="WHITE">
+                                 <font>
+                                    <Font name="System Bold" size="12.0" />
+                                 </font></Label>
                               
                            </children>
                         </AnchorPane>
@@ -275,7 +278,7 @@
                                     <Label fx:id="labOtrasSustancias3" text="Otras sustancias 3 " GridPane.columnIndex="2" GridPane.halignment="RIGHT" GridPane.rowIndex="2" />
                                     <Label fx:id="labOtrasSustancias4" text="Otras sustancias 4 " GridPane.columnIndex="2" GridPane.halignment="RIGHT" GridPane.rowIndex="3" />
                                     <Label fx:id="labOtrasSustancias5" text="Otras sustancias 5 " GridPane.columnIndex="2" GridPane.halignment="RIGHT" GridPane.rowIndex="4" />
-                                    <Label fx:id="labActividadFisicaMinutos" text="Actividad física" GridPane.columnIndex="6" GridPane.halignment="RIGHT" />
+                                    <Label fx:id="labActividadFisicaMinutos" text="Actividad física (semanal)" GridPane.columnIndex="6" GridPane.halignment="RIGHT" />
                                     <Label fx:id="labSumaDias" text="Cada cuanto fuma (días) " GridPane.columnIndex="4" GridPane.halignment="RIGHT" GridPane.rowIndex="3" />
                                     <Label fx:id="labConviveConFumadores" text="Convive con fumadores " GridPane.columnIndex="4" GridPane.halignment="RIGHT" GridPane.rowIndex="4" />
                                     <TextField fx:id="textMedicamentosPermanentes1" GridPane.columnIndex="1" />
@@ -326,7 +329,7 @@
                                     <Label fx:id="labAFDiabetes" text="Diabetes " GridPane.halignment="RIGHT" />
                                     <Label fx:id="labAFHipertension" text="Hipertensión " GridPane.columnIndex="2" GridPane.halignment="RIGHT" />
                                     <Label fx:id="labAFInfartos" text="Infartos " GridPane.columnIndex="4" GridPane.halignment="RIGHT" />
-                                    <Label fx:id="labAFAC" text="AC " GridPane.columnIndex="6" GridPane.halignment="RIGHT" />
+                                    <Label fx:id="labAFAC" text="ACV" GridPane.columnIndex="6" GridPane.halignment="RIGHT" />
                                     <Spinner fx:id="textAFDiabetes" GridPane.columnIndex="1" />
                                     <Spinner fx:id="textAFHipertension" GridPane.columnIndex="3" />
                                     <Spinner fx:id="textAFInfartos" GridPane.columnIndex="5" />
@@ -468,14 +471,16 @@
                   <content>
                     <AnchorPane>
                            <children>
-                              <GridPane id="datosPacientes" alignment="CENTER" prefHeight="120.0" prefWidth="943.0">
+                              <GridPane id="datosPacientes" alignment="CENTER" layoutY="2.0" prefHeight="118.0" prefWidth="1181.0">
                                 <columnConstraints>
-                                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="139.0" minWidth="10.0" prefWidth="114.0" />
-                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="235.0" minWidth="10.0" prefWidth="142.0" />
-                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="182.0" minWidth="10.0" prefWidth="92.0" />
-                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="270.0" minWidth="10.0" prefWidth="195.0" />
-                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="169.0" minWidth="0.0" prefWidth="112.0" />
-                                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="283.0" minWidth="10.0" prefWidth="283.0" />
+                                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="276.0" minWidth="10.0" prefWidth="162.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="398.0" minWidth="10.0" prefWidth="148.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="320.0" minWidth="7.0" prefWidth="84.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="407.0" minWidth="0.0" prefWidth="198.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="300.0" minWidth="0.0" prefWidth="111.0" />
+                                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="434.0" minWidth="10.0" prefWidth="197.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="315.0" minWidth="10.0" prefWidth="163.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="306.0" minWidth="10.0" prefWidth="157.0" />
                                 </columnConstraints>
                                 <rowConstraints>
                                     <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
@@ -508,6 +513,10 @@
                                     <ChoiceBox fx:id="textZona" prefHeight="25.0" prefWidth="295.0" GridPane.columnIndex="5" GridPane.rowIndex="3" />
                                     <TextField fx:id="textTipoIdentificacion2" GridPane.columnIndex="1" />
                                     <ChoiceBox fx:id="textTipoUsuario" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                                    <Label text="Grupo sanguíneo" GridPane.columnIndex="6" />
+                                    <Label text="Raza" GridPane.columnIndex="6" GridPane.rowIndex="1" />
+                                    <ChoiceBox fx:id="grupoSanguineo" prefWidth="150.0" GridPane.columnIndex="7" />
+                                    <ChoiceBox fx:id="raza" prefWidth="150.0" GridPane.columnIndex="7" GridPane.rowIndex="1" />
                                  </children>
                               </GridPane>
                            </children></AnchorPane>
