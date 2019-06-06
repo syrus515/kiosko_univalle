@@ -634,6 +634,8 @@ public class MenuController implements Initializable {
     @FXML
     private void nuevoPaciente() {
         inactivarCampos(false);
+        textTipoIdentificacion2.setDisable(true);
+        textIdentificacion2.setDisable(true);
         limpiarCampos();
         opcionGuardar(true);
         opcionNuevo = true;
@@ -776,7 +778,10 @@ public class MenuController implements Initializable {
                 em.merge(af);
             }
             em.getTransaction().commit();
+            String iniciar= textIdentificacion1.getText();
             opcionCancelar();
+            textIdentificacion1.setText(iniciar);
+            buscarPaciente();
         }
     }
     
@@ -1889,9 +1894,9 @@ public void graficar() {
         textGenero.setItems(availableChoices);
         textGenero.getSelectionModel().selectFirst();
         
-        availableChoices = FXCollections.observableArrayList("Administrador", "Médico", "Paciente"); 
+        availableChoices = FXCollections.observableArrayList("Paciente", "Administrador", "Médico"); 
         textTipoUsuario.setItems(availableChoices);
-        textTipoUsuario.getSelectionModel().selectFirst();        
+        textTipoUsuario.getSelectionModel().selectFirst();
         
         availableChoices = FXCollections.observableArrayList("Urbana", "Rural"); 
         textZona.setItems(availableChoices);
@@ -1901,7 +1906,7 @@ public void graficar() {
         grupoSanguineo.setItems(availableChoices);
         grupoSanguineo.getSelectionModel().selectFirst();
         
-        availableChoices = FXCollections.observableArrayList( "Blanca", "Indígena", "Negra o afroamericana", "Amerindia o nativo de Alaska", "Indioasiática", "China", "Filipina",
+        availableChoices = FXCollections.observableArrayList( "Blanca", "Indígena", "Afroamericana", "Mulato", "Mestizo", "Amerindia o nativo de Alaska", "Indioasiática", "China", "Filipina",
                 "Japonesa", "Coreana", "Vietnamita");
         raza.setItems(availableChoices);
         raza.getSelectionModel().selectFirst();
@@ -1915,7 +1920,7 @@ public void graficar() {
         textHipertension.setItems(availableChoices);
         textHipertension.getSelectionModel().selectFirst();
         
-        availableChoices = FXCollections.observableArrayList("Sí", "No");        
+        availableChoices = FXCollections.observableArrayList("No", "Sí");        
         textConviveConFumadores.setItems(availableChoices);
         textConviveConFumadores.getSelectionModel().selectFirst();
         
