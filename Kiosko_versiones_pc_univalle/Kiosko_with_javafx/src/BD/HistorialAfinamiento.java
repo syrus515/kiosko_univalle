@@ -38,6 +38,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     , @NamedQuery(name = "HistorialAfinamiento.findByPosicion", query = "SELECT h FROM HistorialAfinamiento h WHERE h.posicion = :posicion")
     , @NamedQuery(name = "HistorialAfinamiento.findByJornada", query = "SELECT h FROM HistorialAfinamiento h WHERE h.jornada = :jornada")
     , @NamedQuery(name = "HistorialAfinamiento.findByEstadoInicial", query = "SELECT h FROM HistorialAfinamiento h WHERE h.estadoInicial = :estadoInicial")
+    , @NamedQuery(name = "HistorialAfinamiento.findByPerimetroAbdominal", query = "SELECT h FROM HistorialAfinamiento h WHERE h.perimetroAbdominal = :perimetroAbdominal")
     , @NamedQuery(name = "HistorialAfinamiento.findByPresDiastolica", query = "SELECT h FROM HistorialAfinamiento h WHERE h.presDiastolica = :presDiastolica")
     , @NamedQuery(name = "HistorialAfinamiento.findByPresSistolica", query = "SELECT h FROM HistorialAfinamiento h WHERE h.presSistolica = :presSistolica")
     , @NamedQuery(name = "HistorialAfinamiento.findByDetalles", query = "SELECT h FROM HistorialAfinamiento h WHERE h.detalles = :detalles")
@@ -78,6 +79,8 @@ public class HistorialAfinamiento implements Serializable {
     @Basic(optional = false)
     @Column(name = "estadoInicial")
     private String estadoInicial;
+    @Column(name = "perimetroAbdominal")
+    private Integer perimetroAbdominal;
     @Basic(optional = false)
     @Column(name = "presDiastolica")
     private int presDiastolica;
@@ -196,6 +199,14 @@ public class HistorialAfinamiento implements Serializable {
 
     public void setEstadoInicial(String estadoInicial) {
         this.estadoInicial = estadoInicial;
+    }
+
+    public Integer getPerimetroAbdominal() {
+        return perimetroAbdominal;
+    }
+
+    public void setPerimetroAbdominal(Integer perimetroAbdominal) {
+        this.perimetroAbdominal = perimetroAbdominal;
     }
 
     public int getPresDiastolica() {

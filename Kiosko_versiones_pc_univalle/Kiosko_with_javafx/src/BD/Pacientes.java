@@ -49,7 +49,8 @@ import javax.xml.bind.annotation.XmlRootElement;
     , @NamedQuery(name = "Pacientes.findByZona", query = "SELECT p FROM Pacientes p WHERE p.zona = :zona")
     , @NamedQuery(name = "Pacientes.findByEstado", query = "SELECT p FROM Pacientes p WHERE p.estado = :estado")
     , @NamedQuery(name = "Pacientes.findByFModificacion", query = "SELECT p FROM Pacientes p WHERE p.fModificacion = :fModificacion")
-    , @NamedQuery(name = "Pacientes.findByFCreacion", query = "SELECT p FROM Pacientes p WHERE p.fCreacion = :fCreacion")})
+    , @NamedQuery(name = "Pacientes.findByFCreacion", query = "SELECT p FROM Pacientes p WHERE p.fCreacion = :fCreacion")
+    , @NamedQuery(name = "Pacientes.findByAutorizacion", query = "SELECT p FROM Pacientes p WHERE p.autorizacion = :autorizacion")})
 public class Pacientes implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -113,6 +114,9 @@ public class Pacientes implements Serializable {
     @Column(name = "f_creacion")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fCreacion;
+    @Basic(optional = false)
+    @Column(name = "autorizacion")
+    private int autorizacion;
 
     public Pacientes() {
     }
@@ -121,7 +125,7 @@ public class Pacientes implements Serializable {
         this.pacientesPK = pacientesPK;
     }
 
-    public Pacientes(PacientesPK pacientesPK, String administradora, float estatura, String grupoSanguineo, String raza, String departamento, String municipio) {
+    public Pacientes(PacientesPK pacientesPK, String administradora, float estatura, String grupoSanguineo, String raza, String departamento, String municipio, int autorizacion) {
         this.pacientesPK = pacientesPK;
         this.administradora = administradora;
         this.estatura = estatura;
@@ -129,6 +133,7 @@ public class Pacientes implements Serializable {
         this.raza = raza;
         this.departamento = departamento;
         this.municipio = municipio;
+        this.autorizacion = autorizacion;
     }
 
     public Pacientes(String tipoid, String identificacion) {
@@ -325,6 +330,14 @@ public class Pacientes implements Serializable {
 
     public void setFCreacion(Date fCreacion) {
         this.fCreacion = fCreacion;
+    }
+
+    public int getAutorizacion() {
+        return autorizacion;
+    }
+
+    public void setAutorizacion(int autorizacion) {
+        this.autorizacion = autorizacion;
     }
 
     @Override

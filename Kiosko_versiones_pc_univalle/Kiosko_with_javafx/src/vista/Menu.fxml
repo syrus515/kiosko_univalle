@@ -6,6 +6,7 @@
 <?import javafx.scene.chart.NumberAxis?>
 <?import javafx.scene.control.Accordion?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.DatePicker?>
@@ -245,6 +246,196 @@
                         </AnchorPane>
                      </content>
                   </TitledPane>
+                  <TitledPane animated="false" layoutX="10.0" layoutY="85.0" prefHeight="668.0" prefWidth="2002.0" text="Historial Afinamientos">
+                     <content>
+                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="568.0" prefWidth="2000.0">
+                           <children>
+                              <TableView fx:id="tablaAfinamientos" layoutX="44.0" layoutY="34.0" prefHeight="440.0" prefWidth="1035.0">
+                                <columns>
+                                  <TableColumn fx:id="columnaFechaAfinamiento" prefWidth="77.00003051757812" text="Fecha" />
+                                  <TableColumn fx:id="columnaPesoAfinamiento" prefWidth="52.00006103515625" text="Peso" />
+                                    <TableColumn fx:id="columnaPosicionAfinamiento" prefWidth="75.99996948242188" text="Posición" />
+                                    <TableColumn fx:id="columnaJornadaAfinamiento" prefWidth="64.0" text="Jornada" />
+                                    <TableColumn fx:id="columnaDiastolicaAfinamiento" prefWidth="62.0" text="Diastólica" />
+                                    <TableColumn fx:id="columnaSistolicaAfinamiento" prefWidth="64.0" text="Sistólica" />
+                                    <TableColumn fx:id="columnaGrasaAfinamiento" prefWidth="100.0" text="Grasa corporal" />
+                                    <TableColumn fx:id="columnaAguaAfinamiento" prefWidth="116.0" text="Porcentaje de agua" />
+                                    <TableColumn fx:id="columnaMuscularAfinamiento" prefWidth="96.0" text="Masa muscular" />
+                                    <TableColumn fx:id="columnaIMCAfinamiento" prefWidth="42.0" text="IMC" />
+                                    <TableColumn fx:id="columnaEstadoAfinamiento" prefWidth="102.0" text="Estado Inicial" />
+                                    <TableColumn fx:id="columnaDetallesAfinamiento" prefWidth="181.0" text="Detalles" />
+                                </columns>
+                              </TableView>
+                              <Label layoutX="1130.0" layoutY="33.0" text="Brazo:">
+                                 <font>
+                                    <Font size="24.0" />
+                                 </font>
+                              </Label>
+                              <ChoiceBox fx:id="brazoAfinamiento" layoutX="1291.0" layoutY="33.0" prefHeight="35.0" prefWidth="208.0" />
+                              <Label layoutX="1130.0" layoutY="104.0" text="Posición:">
+                                 <font>
+                                    <Font size="24.0" />
+                                 </font>
+                              </Label>
+                              <ChoiceBox fx:id="posicionAfinamiento" layoutX="1291.0" layoutY="104.0" prefHeight="35.0" prefWidth="208.0" />
+                              <Label layoutX="1133.0" layoutY="173.0" text="Jornada:">
+                                 <font>
+                                    <Font size="24.0" />
+                                 </font>
+                              </Label>
+                              <ChoiceBox fx:id="jornadaAfinamiento" layoutX="1291.0" layoutY="173.0" prefHeight="35.0" prefWidth="208.0" />
+                              <Label layoutX="1130.0" layoutY="236.0" prefHeight="35.0" prefWidth="152.0" text="Estado inicial:">
+                                 <font>
+                                    <Font size="24.0" />
+                                 </font>
+                              </Label>
+                              <TextField fx:id="estadoAfinamiento" layoutX="1291.0" layoutY="230.0" prefHeight="47.0" prefWidth="208.0" />
+                              <Label layoutX="1132.0" layoutY="361.0" text="Detalles:">
+                                 <font>
+                                    <Font size="24.0" />
+                                 </font>
+                              </Label>
+                              <TextArea fx:id="detallesAfinamiento" layoutX="1133.0" layoutY="403.0" prefHeight="67.0" prefWidth="373.0" wrapText="true" />
+                              <Button fx:id="tomarPeso" layoutX="1574.0" layoutY="33.0" mnemonicParsing="false" onAction="#tomarPeso" text="Tomar peso">
+                                 <font>
+                                    <Font size="18.0" />
+                                 </font>
+                              </Button>
+                              <Button fx:id="tomarPresion" layoutX="1758.0" layoutY="33.0" mnemonicParsing="false" onAction="#tomarPresion" text="Tomar presión">
+                                 <font>
+                                    <Font size="18.0" />
+                                 </font>
+                              </Button>
+                              <Label layoutX="1568.0" layoutY="121.0" text="Peso:">
+                                 <font>
+                                    <Font size="15.0" />
+                                 </font>
+                              </Label>
+                              <Label layoutX="1759.0" layoutY="121.0" text="Presión:">
+                                 <font>
+                                    <Font size="15.0" />
+                                 </font>
+                              </Label>
+                              <Button fx:id="guardarAfinamiento" layoutX="1664.0" layoutY="422.0" mnemonicParsing="false" onAction="#almacenarAfinamiento" prefWidth="128.0" text="Guardar">
+                                 <font>
+                                    <Font size="22.0" />
+                                 </font>
+                              </Button>
+                              <Text fx:id="presionImprimir" layoutX="1759.0" layoutY="199.0" strokeType="OUTSIDE" strokeWidth="0.0" text="---/---" wrappingWidth="160.13671875">
+                                 <font>
+                                    <Font size="35.0" />
+                                 </font>
+                              </Text>
+                              <Text fx:id="pesoImprimir" layoutX="1568.0" layoutY="199.0" strokeType="OUTSIDE" strokeWidth="0.0" text="---" wrappingWidth="160.13671875">
+                                 <font>
+                                    <Font size="35.0" />
+                                 </font>
+                              </Text>
+                              <Label layoutX="1568.0" layoutY="220.0" text="Grasa corporal:">
+                                 <font>
+                                    <Font size="15.0" />
+                                 </font>
+                              </Label>
+                              <Text fx:id="grasaImprimir" layoutX="1568.0" layoutY="284.0" strokeType="OUTSIDE" strokeWidth="0.0" text="---" wrappingWidth="184.13671875">
+                                 <font>
+                                    <Font size="35.0" />
+                                 </font>
+                              </Text>
+                              <Label layoutX="1568.0" layoutY="294.0" text="Masa muscular:">
+                                 <font>
+                                    <Font size="15.0" />
+                                 </font>
+                              </Label>
+                              <Text fx:id="masaImprimir" layoutX="1568.0" layoutY="352.0" strokeType="OUTSIDE" strokeWidth="0.0" text="---" wrappingWidth="184.13671875">
+                                 <font>
+                                    <Font size="35.0" />
+                                 </font>
+                              </Text>
+                              <Label layoutX="1758.0" layoutY="221.0" text="Porcentaje de agua:">
+                                 <font>
+                                    <Font size="15.0" />
+                                 </font>
+                              </Label>
+                              <Text fx:id="pAguaImprimir" layoutX="1758.0" layoutY="279.0" strokeType="OUTSIDE" strokeWidth="0.0" text="---" wrappingWidth="184.13671875">
+                                 <font>
+                                    <Font size="35.0" />
+                                 </font>
+                              </Text>
+                              <Label layoutX="1758.0" layoutY="295.0" text="IMC:">
+                                 <font>
+                                    <Font size="15.0" />
+                                 </font>
+                              </Label>
+                              <Text fx:id="iMCImprimir" layoutX="1758.0" layoutY="353.0" strokeType="OUTSIDE" strokeWidth="0.0" text="---" wrappingWidth="184.13671875">
+                                 <font>
+                                    <Font size="35.0" />
+                                 </font>
+                              </Text>
+                              <Label layoutX="1130.0" layoutY="269.0" prefHeight="94.0" prefWidth="161.0" text="Perímetro abdominal (cm):" wrapText="true">
+                                 <font>
+                                    <Font size="22.0" />
+                                 </font>
+                              </Label>
+                              <TextField fx:id="perimetroAbdominal" layoutX="1291.0" layoutY="293.0" prefHeight="49.0" prefWidth="208.0" />
+                           </children></AnchorPane>
+                     </content>
+                  </TitledPane>
+                <TitledPane animated="false" text="Datos personales">
+                  <content>
+                    <AnchorPane>
+                           <children>
+                              <GridPane id="datosPacientes" alignment="CENTER" layoutY="2.0" prefHeight="118.0" prefWidth="1181.0">
+                                <columnConstraints>
+                                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="276.0" minWidth="10.0" prefWidth="162.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="398.0" minWidth="10.0" prefWidth="148.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="320.0" minWidth="7.0" prefWidth="84.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="407.0" minWidth="0.0" prefWidth="198.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="300.0" minWidth="0.0" prefWidth="111.0" />
+                                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="434.0" minWidth="10.0" prefWidth="197.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="315.0" minWidth="10.0" prefWidth="163.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="306.0" minWidth="10.0" prefWidth="157.0" />
+                                </columnConstraints>
+                                <rowConstraints>
+                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                </rowConstraints>
+                                 <children>
+                                    <Label fx:id="labTipoIdentificacion2" text="Tipo identificación " GridPane.halignment="RIGHT" />
+                                    <Label fx:id="labTelefonoFijo" text="Teléfono Fijo " GridPane.halignment="RIGHT" GridPane.rowIndex="1" />
+                                    <Label fx:id="labTipoUsuario" text="Tipo Usuario " GridPane.halignment="RIGHT" GridPane.rowIndex="2" />
+                                    <Label fx:id="labDepartamento" text="Departamento " GridPane.halignment="RIGHT" GridPane.rowIndex="3" />
+                                    <Label fx:id="labIdentificacion2" text="Identificación " GridPane.columnIndex="2" GridPane.halignment="RIGHT" />
+                                    <Label fx:id="labCelular" text="Celular " GridPane.columnIndex="2" GridPane.halignment="RIGHT" GridPane.rowIndex="1" />
+                                    <Label fx:id="labGenero" text="Genero " GridPane.columnIndex="2" GridPane.halignment="RIGHT" GridPane.rowIndex="2" />
+                                    <Label fx:id="labMunicipio" text="Municipio " GridPane.columnIndex="2" GridPane.halignment="RIGHT" GridPane.rowIndex="3" />
+                                    <Label fx:id="labDireccion" text="Dirección " GridPane.columnIndex="4" GridPane.halignment="RIGHT" GridPane.rowIndex="1" />
+                                    <Label fx:id="labFechaNacimiento" text="Fecha nacimiento " GridPane.columnIndex="4" GridPane.halignment="RIGHT" GridPane.rowIndex="2" />
+                                    <Label fx:id="labZona" text="Zona " GridPane.columnIndex="4" GridPane.halignment="RIGHT" GridPane.rowIndex="3" />
+                                    <Label text="Estatura (cm)" GridPane.columnIndex="4" GridPane.halignment="RIGHT" />
+                                    <TextField fx:id="textIdentificacion2" editable="false" GridPane.columnIndex="3" />
+                                    <TextField fx:id="textDepartamento" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                                    <TextField fx:id="textMunicipio" GridPane.columnIndex="3" GridPane.rowIndex="3" />
+                                    <TextField fx:id="textTelefonoFijo" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                                    <TextField fx:id="textCelular" GridPane.columnIndex="3" GridPane.rowIndex="1" />
+                                    <TextField fx:id="textDireccion" GridPane.columnIndex="5" GridPane.rowIndex="1" />
+                                    <TextField fx:id="textEstatura" GridPane.columnIndex="5" />
+                                    <DatePicker fx:id="datePickerFechaNacimiento" nodeOrientation="LEFT_TO_RIGHT" prefHeight="25.0" prefWidth="284.0" GridPane.columnIndex="5" GridPane.rowIndex="2" />
+                                    <ChoiceBox fx:id="textGenero" prefHeight="25.0" prefWidth="199.0" GridPane.columnIndex="3" GridPane.rowIndex="2" />
+                                    <ChoiceBox fx:id="textZona" prefHeight="25.0" prefWidth="295.0" GridPane.columnIndex="5" GridPane.rowIndex="3" />
+                                    <TextField fx:id="textTipoIdentificacion2" GridPane.columnIndex="1" />
+                                    <ChoiceBox fx:id="textTipoUsuario" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                                    <Label text="Grupo sanguíneo" GridPane.columnIndex="6" />
+                                    <Label text="Raza" GridPane.columnIndex="6" GridPane.rowIndex="1" />
+                                    <ChoiceBox fx:id="grupoSanguineo" prefWidth="150.0" GridPane.columnIndex="7" />
+                                    <ChoiceBox fx:id="raza" prefWidth="150.0" GridPane.columnIndex="7" GridPane.rowIndex="1" />
+                                 </children>
+                              </GridPane>
+                              <CheckBox fx:id="aceptacionDatos" layoutX="76.0" layoutY="165.0" mnemonicParsing="false" selected="true" text="Acepto los términos y condiciones presentados sobre el tratamiento de mis datos" />
+                           </children></AnchorPane>
+                  </content>
+                </TitledPane>
                 <TitledPane animated="false" prefHeight="82132.0" prefWidth="1937.0" text="Antecedentes personales">
                   <content>
                     <AnchorPane>
@@ -334,189 +525,6 @@
                                     <Spinner fx:id="textAFHipertension" GridPane.columnIndex="3" />
                                     <Spinner fx:id="textAFInfartos" GridPane.columnIndex="5" />
                                     <Spinner fx:id="textAFAC" GridPane.columnIndex="7" />
-                                 </children>
-                              </GridPane>
-                           </children></AnchorPane>
-                  </content>
-                </TitledPane>
-                  <TitledPane animated="false" layoutX="10.0" layoutY="85.0" prefHeight="668.0" prefWidth="2002.0" text="Historial Afinamientos">
-                     <content>
-                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="568.0" prefWidth="2000.0">
-                           <children>
-                              <TableView fx:id="tablaAfinamientos" layoutX="44.0" layoutY="34.0" prefHeight="440.0" prefWidth="1035.0">
-                                <columns>
-                                  <TableColumn fx:id="columnaFechaAfinamiento" prefWidth="77.00003051757812" text="Fecha" />
-                                  <TableColumn fx:id="columnaPesoAfinamiento" prefWidth="52.00006103515625" text="Peso" />
-                                    <TableColumn fx:id="columnaPosicionAfinamiento" prefWidth="75.99996948242188" text="Posición" />
-                                    <TableColumn fx:id="columnaJornadaAfinamiento" prefWidth="64.0" text="Jornada" />
-                                    <TableColumn fx:id="columnaDiastolicaAfinamiento" prefWidth="62.0" text="Diastólica" />
-                                    <TableColumn fx:id="columnaSistolicaAfinamiento" prefWidth="64.0" text="Sistólica" />
-                                    <TableColumn fx:id="columnaGrasaAfinamiento" prefWidth="100.0" text="Grasa corporal" />
-                                    <TableColumn fx:id="columnaAguaAfinamiento" prefWidth="116.0" text="Porcentaje de agua" />
-                                    <TableColumn fx:id="columnaMuscularAfinamiento" prefWidth="96.0" text="Masa muscular" />
-                                    <TableColumn fx:id="columnaIMCAfinamiento" prefWidth="42.0" text="IMC" />
-                                    <TableColumn fx:id="columnaEstadoAfinamiento" prefWidth="102.0" text="Estado Inicial" />
-                                    <TableColumn fx:id="columnaDetallesAfinamiento" prefWidth="181.0" text="Detalles" />
-                                </columns>
-                              </TableView>
-                              <Label layoutX="1130.0" layoutY="33.0" text="Brazo:">
-                                 <font>
-                                    <Font size="24.0" />
-                                 </font>
-                              </Label>
-                              <ChoiceBox fx:id="brazoAfinamiento" layoutX="1291.0" layoutY="33.0" prefHeight="35.0" prefWidth="208.0" />
-                              <Label layoutX="1130.0" layoutY="104.0" text="Posición:">
-                                 <font>
-                                    <Font size="24.0" />
-                                 </font>
-                              </Label>
-                              <ChoiceBox fx:id="posicionAfinamiento" layoutX="1291.0" layoutY="104.0" prefHeight="35.0" prefWidth="208.0" />
-                              <Label layoutX="1133.0" layoutY="173.0" text="Jornada:">
-                                 <font>
-                                    <Font size="24.0" />
-                                 </font>
-                              </Label>
-                              <ChoiceBox fx:id="jornadaAfinamiento" layoutX="1291.0" layoutY="173.0" prefHeight="35.0" prefWidth="208.0" />
-                              <Label layoutX="1130.0" layoutY="236.0" prefHeight="35.0" prefWidth="152.0" text="Estado inicial:">
-                                 <font>
-                                    <Font size="24.0" />
-                                 </font>
-                              </Label>
-                              <TextField fx:id="estadoAfinamiento" layoutX="1291.0" layoutY="230.0" prefHeight="47.0" prefWidth="208.0" />
-                              <Label layoutX="1132.0" layoutY="304.0" text="Detalles:">
-                                 <font>
-                                    <Font size="24.0" />
-                                 </font>
-                              </Label>
-                              <TextArea fx:id="detallesAfinamiento" layoutX="1133.0" layoutY="348.0" prefHeight="122.0" prefWidth="373.0" wrapText="true" />
-                              <Button fx:id="tomarPeso" layoutX="1574.0" layoutY="33.0" mnemonicParsing="false" onAction="#tomarPeso" text="Tomar peso">
-                                 <font>
-                                    <Font size="18.0" />
-                                 </font>
-                              </Button>
-                              <Button fx:id="tomarPresion" layoutX="1758.0" layoutY="33.0" mnemonicParsing="false" onAction="#tomarPresion" text="Tomar presión">
-                                 <font>
-                                    <Font size="18.0" />
-                                 </font>
-                              </Button>
-                              <Label layoutX="1568.0" layoutY="121.0" text="Peso:">
-                                 <font>
-                                    <Font size="15.0" />
-                                 </font>
-                              </Label>
-                              <Label layoutX="1759.0" layoutY="121.0" text="Presión:">
-                                 <font>
-                                    <Font size="15.0" />
-                                 </font>
-                              </Label>
-                              <Button fx:id="guardarAfinamiento" layoutX="1664.0" layoutY="422.0" mnemonicParsing="false" onAction="#almacenarAfinamiento" prefWidth="128.0" text="Guardar">
-                                 <font>
-                                    <Font size="22.0" />
-                                 </font>
-                              </Button>
-                              <Text fx:id="presionImprimir" layoutX="1759.0" layoutY="199.0" strokeType="OUTSIDE" strokeWidth="0.0" text="---/---" wrappingWidth="160.13671875">
-                                 <font>
-                                    <Font size="35.0" />
-                                 </font>
-                              </Text>
-                              <Text fx:id="pesoImprimir" layoutX="1568.0" layoutY="199.0" strokeType="OUTSIDE" strokeWidth="0.0" text="---" wrappingWidth="160.13671875">
-                                 <font>
-                                    <Font size="35.0" />
-                                 </font>
-                              </Text>
-                              <Label layoutX="1568.0" layoutY="220.0" text="Grasa corporal:">
-                                 <font>
-                                    <Font size="15.0" />
-                                 </font>
-                              </Label>
-                              <Text fx:id="grasaImprimir" layoutX="1568.0" layoutY="284.0" strokeType="OUTSIDE" strokeWidth="0.0" text="---" wrappingWidth="184.13671875">
-                                 <font>
-                                    <Font size="35.0" />
-                                 </font>
-                              </Text>
-                              <Label layoutX="1568.0" layoutY="294.0" text="Masa muscular:">
-                                 <font>
-                                    <Font size="15.0" />
-                                 </font>
-                              </Label>
-                              <Text fx:id="masaImprimir" layoutX="1568.0" layoutY="352.0" strokeType="OUTSIDE" strokeWidth="0.0" text="---" wrappingWidth="184.13671875">
-                                 <font>
-                                    <Font size="35.0" />
-                                 </font>
-                              </Text>
-                              <Label layoutX="1758.0" layoutY="221.0" text="Porcentaje de agua:">
-                                 <font>
-                                    <Font size="15.0" />
-                                 </font>
-                              </Label>
-                              <Text fx:id="pAguaImprimir" layoutX="1758.0" layoutY="279.0" strokeType="OUTSIDE" strokeWidth="0.0" text="---" wrappingWidth="184.13671875">
-                                 <font>
-                                    <Font size="35.0" />
-                                 </font>
-                              </Text>
-                              <Label layoutX="1758.0" layoutY="295.0" text="IMC:">
-                                 <font>
-                                    <Font size="15.0" />
-                                 </font>
-                              </Label>
-                              <Text fx:id="iMCImprimir" layoutX="1758.0" layoutY="353.0" strokeType="OUTSIDE" strokeWidth="0.0" text="---" wrappingWidth="184.13671875">
-                                 <font>
-                                    <Font size="35.0" />
-                                 </font>
-                              </Text>
-                           </children></AnchorPane>
-                     </content>
-                  </TitledPane>
-                <TitledPane animated="false" text="Datos personales">
-                  <content>
-                    <AnchorPane>
-                           <children>
-                              <GridPane id="datosPacientes" alignment="CENTER" layoutY="2.0" prefHeight="118.0" prefWidth="1181.0">
-                                <columnConstraints>
-                                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="276.0" minWidth="10.0" prefWidth="162.0" />
-                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="398.0" minWidth="10.0" prefWidth="148.0" />
-                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="320.0" minWidth="7.0" prefWidth="84.0" />
-                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="407.0" minWidth="0.0" prefWidth="198.0" />
-                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="300.0" minWidth="0.0" prefWidth="111.0" />
-                                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="434.0" minWidth="10.0" prefWidth="197.0" />
-                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="315.0" minWidth="10.0" prefWidth="163.0" />
-                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="306.0" minWidth="10.0" prefWidth="157.0" />
-                                </columnConstraints>
-                                <rowConstraints>
-                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                </rowConstraints>
-                                 <children>
-                                    <Label fx:id="labTipoIdentificacion2" text="Tipo identificación " GridPane.halignment="RIGHT" />
-                                    <Label fx:id="labTelefonoFijo" text="Teléfono Fijo " GridPane.halignment="RIGHT" GridPane.rowIndex="1" />
-                                    <Label fx:id="labTipoUsuario" text="Tipo Usuario " GridPane.halignment="RIGHT" GridPane.rowIndex="2" />
-                                    <Label fx:id="labDepartamento" text="Departamento " GridPane.halignment="RIGHT" GridPane.rowIndex="3" />
-                                    <Label fx:id="labIdentificacion2" text="Identificación " GridPane.columnIndex="2" GridPane.halignment="RIGHT" />
-                                    <Label fx:id="labCelular" text="Celular " GridPane.columnIndex="2" GridPane.halignment="RIGHT" GridPane.rowIndex="1" />
-                                    <Label fx:id="labGenero" text="Genero " GridPane.columnIndex="2" GridPane.halignment="RIGHT" GridPane.rowIndex="2" />
-                                    <Label fx:id="labMunicipio" text="Municipio " GridPane.columnIndex="2" GridPane.halignment="RIGHT" GridPane.rowIndex="3" />
-                                    <Label fx:id="labDireccion" text="Dirección " GridPane.columnIndex="4" GridPane.halignment="RIGHT" GridPane.rowIndex="1" />
-                                    <Label fx:id="labFechaNacimiento" text="Fecha nacimiento " GridPane.columnIndex="4" GridPane.halignment="RIGHT" GridPane.rowIndex="2" />
-                                    <Label fx:id="labZona" text="Zona " GridPane.columnIndex="4" GridPane.halignment="RIGHT" GridPane.rowIndex="3" />
-                                    <Label text="Estatura (cm)" GridPane.columnIndex="4" GridPane.halignment="RIGHT" />
-                                    <TextField fx:id="textIdentificacion2" editable="false" GridPane.columnIndex="3" />
-                                    <TextField fx:id="textDepartamento" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-                                    <TextField fx:id="textMunicipio" GridPane.columnIndex="3" GridPane.rowIndex="3" />
-                                    <TextField fx:id="textTelefonoFijo" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                                    <TextField fx:id="textCelular" GridPane.columnIndex="3" GridPane.rowIndex="1" />
-                                    <TextField fx:id="textDireccion" GridPane.columnIndex="5" GridPane.rowIndex="1" />
-                                    <TextField fx:id="textEstatura" GridPane.columnIndex="5" />
-                                    <DatePicker fx:id="datePickerFechaNacimiento" nodeOrientation="LEFT_TO_RIGHT" prefHeight="25.0" prefWidth="284.0" GridPane.columnIndex="5" GridPane.rowIndex="2" />
-                                    <ChoiceBox fx:id="textGenero" prefHeight="25.0" prefWidth="199.0" GridPane.columnIndex="3" GridPane.rowIndex="2" />
-                                    <ChoiceBox fx:id="textZona" prefHeight="25.0" prefWidth="295.0" GridPane.columnIndex="5" GridPane.rowIndex="3" />
-                                    <TextField fx:id="textTipoIdentificacion2" GridPane.columnIndex="1" />
-                                    <ChoiceBox fx:id="textTipoUsuario" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                                    <Label text="Grupo sanguíneo" GridPane.columnIndex="6" />
-                                    <Label text="Raza" GridPane.columnIndex="6" GridPane.rowIndex="1" />
-                                    <ChoiceBox fx:id="grupoSanguineo" prefWidth="150.0" GridPane.columnIndex="7" />
-                                    <ChoiceBox fx:id="raza" prefWidth="150.0" GridPane.columnIndex="7" GridPane.rowIndex="1" />
                                  </children>
                               </GridPane>
                            </children></AnchorPane>

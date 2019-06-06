@@ -71,6 +71,7 @@ import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.Accordion;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.Spinner;
@@ -493,6 +494,10 @@ public class MenuController implements Initializable {
     private ChoiceBox<String> grupoSanguineo;
     @FXML
     private ChoiceBox<String> raza;
+    @FXML
+    private CheckBox aceptacionDatos;
+    @FXML
+    private TextField perimetroAbdominal;
     
     /**
      * Este método administra el cierre del programa para esta clase, ya que soporta la parte prinicipal de la ejecución.
@@ -657,7 +662,7 @@ public class MenuController implements Initializable {
         boolean banderaGuardar = true;
         byte[] imageInByteFoto = null;
         byte[] imageInByteHuella = null;
-        if (fotoHuella != null) {
+        /*if (fotoHuella != null) {
             try {
                 Image imageHuella = fotoHuella.getImage();
                 BufferedImage bImageHuella = SwingFXUtils.fromFXImage(imageHuella, null);
@@ -680,7 +685,7 @@ public class MenuController implements Initializable {
             } catch (IOException ex) {
                 banderaGuardar = false;
             }
-        }
+        }*/
         if (banderaGuardar) {
             Pacientes p = new Pacientes();
             PacientesPK ppk = new PacientesPK(cboxTipoIdentificacion.getValue().toString().substring(0, 2), textIdentificacion1.getText());
@@ -704,10 +709,16 @@ public class MenuController implements Initializable {
             p.setEstatura(Float.parseFloat(textEstatura.getText()));
             p.setGrupoSanguineo(grupoSanguineo.getSelectionModel().getSelectedItem());
             p.setRaza(raza.getSelectionModel().getSelectedItem());
+            int autorizacion = 1;
+            if(!aceptacionDatos.isSelected())
+            {
+                autorizacion= 0;
+            }
+            p.setAutorizacion(autorizacion); 
             // *************************************************
-            p.setFoto(imageInByteFoto);
-            p.setHuella(plantillaHuella.serialize());
-            p.setHuella2(imageInByteHuella);
+            //p.setFoto(imageInByteFoto);
+            //p.setHuella(plantillaHuella.serialize());
+            //p.setHuella2(imageInByteHuella);
             em = Persistence.createEntityManagerFactory("KioskoPU").createEntityManager();
             em.getTransaction().begin();
             if (opcionNuevo) {
@@ -1699,6 +1710,7 @@ public class MenuController implements Initializable {
                     afi.setPosicion(posicionAfinamiento.getSelectionModel().getSelectedItem());
                     afi.setJornada(jornadaAfinamiento.getSelectionModel().getSelectedItem());
                     afi.setEstadoInicial(estadoAfinamiento.getText());
+                    afi.setPerimetroAbdominal(Integer.parseInt(perimetroAbdominal.getText()));
                     afi.setPresDiastolica(this.presDiastolica);
                     afi.setPresSistolica(this.presSistolica);
                     afi.setDetalles(detallesAfinamiento.getText());
