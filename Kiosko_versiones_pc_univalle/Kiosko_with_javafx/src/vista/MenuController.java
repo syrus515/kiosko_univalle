@@ -634,6 +634,8 @@ public class MenuController implements Initializable {
     @FXML
     private void nuevoPaciente() {
         inactivarCampos(false);
+        textTipoIdentificacion2.setDisable(true);
+        textIdentificacion2.setDisable(true);
         limpiarCampos();
         opcionGuardar(true);
         opcionNuevo = true;
@@ -776,7 +778,10 @@ public class MenuController implements Initializable {
                 em.merge(af);
             }
             em.getTransaction().commit();
+            String iniciar= textIdentificacion1.getText();
             opcionCancelar();
+            textIdentificacion1.setText(iniciar);
+            buscarPaciente();
         }
     }
     
@@ -1730,7 +1735,7 @@ public class MenuController implements Initializable {
                     em.persist(afi);
                 }catch(Exception e)
                 {
-                    System.out.println(e);
+                    e.printStackTrace();
                 } 
             }
         }
@@ -1897,9 +1902,9 @@ public void graficar() {
         textGenero.setItems(availableChoices);
         textGenero.getSelectionModel().selectFirst();
         
-        availableChoices = FXCollections.observableArrayList("Administrador", "Médico", "Paciente"); 
+        availableChoices = FXCollections.observableArrayList("Paciente", "Administrador", "Médico"); 
         textTipoUsuario.setItems(availableChoices);
-        textTipoUsuario.getSelectionModel().selectFirst();        
+        textTipoUsuario.getSelectionModel().selectFirst();
         
         availableChoices = FXCollections.observableArrayList("Urbana", "Rural"); 
         textZona.setItems(availableChoices);
@@ -1909,7 +1914,7 @@ public void graficar() {
         grupoSanguineo.setItems(availableChoices);
         grupoSanguineo.getSelectionModel().selectFirst();
         
-        availableChoices = FXCollections.observableArrayList( "Blanca", "Indígena", "Negra o afroamericana", "Amerindia o nativo de Alaska", "Indioasiática", "China", "Filipina",
+        availableChoices = FXCollections.observableArrayList( "Blanca", "Indígena", "Afroamericana", "Mulato", "Mestizo", "Amerindia o nativo de Alaska", "Indioasiática", "China", "Filipina",
                 "Japonesa", "Coreana", "Vietnamita");
         raza.setItems(availableChoices);
         raza.getSelectionModel().selectFirst();
@@ -1923,7 +1928,7 @@ public void graficar() {
         textHipertension.setItems(availableChoices);
         textHipertension.getSelectionModel().selectFirst();
         
-        availableChoices = FXCollections.observableArrayList("Sí", "No");        
+        availableChoices = FXCollections.observableArrayList("No", "Sí");        
         textConviveConFumadores.setItems(availableChoices);
         textConviveConFumadores.getSelectionModel().selectFirst();
         
@@ -2038,8 +2043,22 @@ public void graficar() {
         gc.setFont(fontLarge);
         if (presSist < 1 || presSist > 999) {
             gc.fillText("---", 1660, 100);            
+            Platform.runLater(new Runnable(){
+                @Override
+                public void run() {                    
+                       presionImprimir.setText("---/---");
+                }
+            });
         } else {
             gc.fillText(Integer.toString(presSist), 1660, 100);
+            Platform.runLater(new Runnable(){
+                @Override
+                public void run() {                    
+                       presionImprimir.setText(presSist + "/" + presDias);
+                       setPresiones(presSist, presDias);                       
+                       tomarPresion.setText("Tomar presión");  
+                }
+            });
         }
         if (presDias < 1 || presDias > 999) {
             gc.fillText("---", 1660, 160);
@@ -2669,10 +2688,16 @@ public void reproducirRESP()
     private int presSistolica= 0;
     private int presDiastolica= 0;
     
-    public void actualizarPresion()
+    public void setPresiones(int sist, int diast)
+    {
+        presSistolica= sist;
+        presDiastolica= diast;        
+    }
+    
+    public void actualizarPresion(int dias, int sis)
     {        
-        int diastolica= admin.staticParameters.readPresDias();
-        int sistolica= admin.staticParameters.readPresSist();        
+        /*int diastolica= dias;
+        int sistolica= sis;        
         if(diastolica<=0)
         {
             presionImprimir.setText("---/---");
@@ -2680,7 +2705,7 @@ public void reproducirRESP()
         {
             presSistolica= sistolica;
             presDiastolica= diastolica; 
-            presionImprimir.setText(sistolica+ "/" + diastolica );
+            presionImprimir.setText(sistolica+ "/" + diastolica);
             Platform.runLater(new Runnable(){
                 @Override
                 public void run() {                    
@@ -2688,7 +2713,7 @@ public void reproducirRESP()
                 }
             });
             //admin.enviarComando("stopPressure", 0);//Se resetea la toma de presión.
-        }
+        }*/
         
     }
     
