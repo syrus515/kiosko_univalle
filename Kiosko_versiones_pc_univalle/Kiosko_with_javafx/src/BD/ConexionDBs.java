@@ -13,7 +13,7 @@ public class ConexionDBs {
     public String conectar() throws Exception {
         try {
             Class.forName("com.mysql.jdbc.Driver");
-            db1 = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/Kiosko",  "kiosko",  "kiosko");
+            db1 = DriverManager.getConnection("jdbc:mysql://192.168.240.112:80/kiosko",  "root",  "pipecbd2019#");
         }
         catch (Exception error) {
             return "Error de conexión";

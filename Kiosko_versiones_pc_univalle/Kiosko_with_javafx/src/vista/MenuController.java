@@ -1710,7 +1710,15 @@ public class MenuController implements Initializable {
                     afi.setPosicion(posicionAfinamiento.getSelectionModel().getSelectedItem());
                     afi.setJornada(jornadaAfinamiento.getSelectionModel().getSelectedItem());
                     afi.setEstadoInicial(estadoAfinamiento.getText());
-                    afi.setPerimetroAbdominal(Integer.parseInt(perimetroAbdominal.getText()));
+                    int perimetro= 0;
+                    try
+                    {
+                        perimetro= Integer.parseInt(perimetroAbdominal.getText());
+                    }catch(Exception e)
+                    {
+                        //Se captura la excepción para que no haya problema con el perímetro abdominal
+                    }                    
+                    afi.setPerimetroAbdominal(perimetro);
                     afi.setPresDiastolica(this.presDiastolica);
                     afi.setPresSistolica(this.presSistolica);
                     afi.setDetalles(detallesAfinamiento.getText());
