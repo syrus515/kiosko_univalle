@@ -1715,7 +1715,6 @@ public class MenuController implements Initializable {
                     afi.setPosicion(posicionAfinamiento.getSelectionModel().getSelectedItem());
                     afi.setJornada(jornadaAfinamiento.getSelectionModel().getSelectedItem());
                     afi.setEstadoInicial(estadoAfinamiento.getText());
-<<<<<<< HEAD
                     int perimetro=0;
                     try
                     {
@@ -1724,8 +1723,7 @@ public class MenuController implements Initializable {
                     {
                         //no asigna
                     }
-=======
-                    int perimetro= 0;
+                    //int perimetro= 0;
                     try
                     {
                         perimetro= Integer.parseInt(perimetroAbdominal.getText());
@@ -1733,7 +1731,7 @@ public class MenuController implements Initializable {
                     {
                         //Se captura la excepción para que no haya problema con el perímetro abdominal
                     }                    
->>>>>>> a2757f2f970800f3415bb4f2aa3579aaee7f97b8
+
                     afi.setPerimetroAbdominal(perimetro);
                     afi.setPresDiastolica(this.presDiastolica);
                     afi.setPresSistolica(this.presSistolica);
